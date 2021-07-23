@@ -1,0 +1,63 @@
+version: "3.7"
+
+services:
+    nginx:
+        build:
+            context: docker
+            dockerfile: development/nginx/Dockerfile
+        volumes:
+            - ./api:/app
+        depends_on:
+            - php-fpm
+            - mysql
+        ports:
+            - "8088:80"
+
+    php-fpm:
+        build:
+            context: docker
+            dockerfile: development/php-fpm/Dockerfile
+        volumes:
+            - ./api:/app
+
+    mysql:
+        build:
+            context: docker
+            dockerfile: development/mysql/Dockerfile
+        ports:
+            - "3320:3306"
+        volumes:
+            - "./volumes/mysql:/var/lib/mysql"
+        environment:
+            MYSQL_DATABASE: smaki
+            MYSQL_USER: dev
+            MYSQL_PASSWORD: dev
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        command:
+            - '--default-authentication-plugin=mysql_native_password'
+            - '--character-set-server=utf8mb4'
+
+    cron:
+        build:
+            context: docker
+            dockerfile: development/php-fpm/Dockerfile
+        restart: unless-stopped
+        command: bash -c "echo '* * * * * root cd /app && php artisan schedule:run >> /dev/null 2>&1' >> /etc/crontab && chmod +x /app/cron.sh && /app/cron.sh"
+        links:
+            - mysql
+        volumes:
+            - ./api:/app
+        environment:
+            DB_HOST: mysql
+
+    queue:
+        build:
+            context: docker
+            dockerfile: development/php-fpm/Dockerfile
+        links:
+            - mysql
+        volumes:
+            - ./api:/app
+        environment:
+            DB_HOST: mysql
+        command: "php artisan queue:work --daemon"
