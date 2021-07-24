@@ -1,0 +1,186 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Smaki CRM API Documentation",
+        "version": "0.1"
+    },
+    "paths": {
+        "/register": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "operationId": "75a2a196ba9fbee468ee4cf358ef9ba7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Имя пользователя",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Имейл",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Пароль",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "description": "Токен",
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "description": "Тип токена",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "access_token": "10|ZWYsDHtiSuV7MBADO1FLUe5AX42TYBUuFbRjUqEE",
+                                        "token_type": "Bearer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "operationId": "bb86dae423d1d4dfd9cfe4f6c3d78b56",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "Имейл",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Пароль",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "description": "Токен",
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "description": "Тип токена",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "access_token": "10|ZWYsDHtiSuV7MBADO1FLUe5AX42TYBUuFbRjUqEE",
+                                        "token_type": "Bearer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "operationId": "bc2032a379aa97707ccc61511897c120",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Имя",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "Имейл",
+                                            "type": "string"
+                                        },
+                                        "email_verified_at": {
+                                            "description": "Имейл",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Имейл",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "Имейл",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "id": "10",
+                                        "name": "Administrator",
+                                        "email": "admin@smaki.com",
+                                        "created_at": "2021-07-24T12:47:09.000000Z",
+                                        "updated_at": "2021-07-24T12:47:09.000000Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
