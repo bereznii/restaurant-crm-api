@@ -17,17 +17,32 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
+                                    "first_name",
+                                    "last_name",
                                     "email",
-                                    "password"
+                                    "password",
+                                    "phone",
+                                    "position"
                                 ],
                                 "properties": {
-                                    "name": {
+                                    "first_name": {
                                         "description": "Имя пользователя",
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "description": "Фамилия",
                                         "type": "string"
                                     },
                                     "email": {
                                         "description": "Имейл",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "description": "Телефон",
+                                        "type": "string"
+                                    },
+                                    "position": {
+                                        "description": "Должность",
                                         "type": "string"
                                     },
                                     "password": {
@@ -80,12 +95,12 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "email",
+                                    "phone",
                                     "password"
                                 ],
                                 "properties": {
-                                    "email": {
-                                        "description": "Имейл",
+                                    "phone": {
+                                        "description": "Телефон",
                                         "type": "string"
                                     },
                                     "password": {
@@ -143,32 +158,48 @@
                                             "description": "ID",
                                             "type": "integer"
                                         },
-                                        "name": {
-                                            "description": "Имя",
-                                            "type": "string"
-                                        },
                                         "email": {
                                             "description": "Имейл",
                                             "type": "string"
                                         },
+                                        "phone": {
+                                            "description": "Телефон",
+                                            "type": "string"
+                                        },
+                                        "position": {
+                                            "description": "Должность",
+                                            "type": "string"
+                                        },
+                                        "first_name": {
+                                            "description": "Имя",
+                                            "type": "string"
+                                        },
+                                        "last_name": {
+                                            "description": "Фамилия",
+                                            "type": "string"
+                                        },
                                         "email_verified_at": {
-                                            "description": "Имейл",
+                                            "description": "Дата подтверждения кредов",
                                             "type": "string"
                                         },
                                         "created_at": {
-                                            "description": "Имейл",
+                                            "description": "Дата создания",
                                             "type": "string"
                                         },
                                         "updated_at": {
-                                            "description": "Имейл",
+                                            "description": "Дата последнего редактирования",
                                             "type": "string"
                                         }
                                     },
                                     "type": "object",
                                     "example": {
                                         "id": "10",
-                                        "name": "Administrator",
                                         "email": "admin@smaki.com",
+                                        "phone": "+380973334455",
+                                        "position": "Developer",
+                                        "first_name": "John",
+                                        "last_name": "Doe",
+                                        "email_verified_at": "2021-07-24T12:47:09.000000Z",
                                         "created_at": "2021-07-24T12:47:09.000000Z",
                                         "updated_at": "2021-07-24T12:47:09.000000Z"
                                     }
@@ -176,7 +207,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             }
         }
     },

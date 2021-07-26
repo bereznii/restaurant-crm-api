@@ -21,16 +21,31 @@ class AuthController extends ApiController
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *               required={"name","email","password"},
+     *               required={"first_name","last_name","email","password","phone","position"},
      *               @OA\Property(
-     *                  property="name",
+     *                  property="first_name",
      *                  type="string",
      *                  description="Имя пользователя"
+     *               ),
+     *               @OA\Property(
+     *                  property="last_name",
+     *                  type="string",
+     *                  description="Фамилия"
      *               ),
      *               @OA\Property(
      *                  property="email",
      *                  type="string",
      *                  description="Имейл"
+     *               ),
+     *               @OA\Property(
+     *                  property="phone",
+     *                  type="string",
+     *                  description="Телефон"
+     *               ),
+     *               @OA\Property(
+     *                  property="position",
+     *                  type="string",
+     *                  description="Должность"
      *               ),
      *               @OA\Property(
      *                  property="password",
@@ -73,9 +88,12 @@ class AuthController extends ApiController
     public function register(RegisterRequest $request): JsonResponse
     {
         $user = User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'position' => $request->input('position'),
+            'phone' => $request->input('phone'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -95,11 +113,11 @@ class AuthController extends ApiController
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *               required={"email","password"},
+     *               required={"phone","password"},
      *               @OA\Property(
-     *                  property="email",
+     *                  property="phone",
      *                  type="string",
-     *                  description="Имейл"
+     *                  description="Телефон"
      *               ),
      *               @OA\Property(
      *                  property="password",
@@ -141,13 +159,13 @@ class AuthController extends ApiController
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->only('phone', 'password'))) {
             return response()->json([
                 'message' => 'Invalid login details'
             ], 401);
         }
 
-        $user = User::where('email', $request['email'])->firstOrFail();
+        $user = User::where('phone', $request->input('phone'))->firstOrFail();
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -161,6 +179,7 @@ class AuthController extends ApiController
      * @OA\Get(
      *     path="/me",
      *     tags={"Auth"},
+     *     security={{"Bearer":{}}},
      *     @OA\Response(
      *         response="200",
      *         description="OK",
@@ -174,34 +193,53 @@ class AuthController extends ApiController
      *                         description="ID"
      *                     ),
      *                     @OA\Property(
-     *                         property="name",
-     *                         type="string",
-     *                         description="Имя"
-     *                     ),
-     *                     @OA\Property(
      *                         property="email",
      *                         type="string",
      *                         description="Имейл"
      *                     ),
      *                     @OA\Property(
+     *                         property="phone",
+     *                         type="string",
+     *                         description="Телефон"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="position",
+     *                         type="string",
+     *                         description="Должность"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="first_name",
+     *                         type="string",
+     *                         description="Имя"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="last_name",
+     *                         type="string",
+     *                         description="Фамилия"
+     *                     ),
+     *                     @OA\Property(
      *                         property="email_verified_at",
      *                         type="string",
-     *                         description="Имейл"
+     *                         description="Дата подтверждения кредов"
      *                     ),
      *                     @OA\Property(
      *                         property="created_at",
      *                         type="string",
-     *                         description="Имейл"
+     *                         description="Дата создания"
      *                     ),
      *                     @OA\Property(
      *                         property="updated_at",
      *                         type="string",
-     *                         description="Имейл"
+     *                         description="Дата последнего редактирования"
      *                     ),
      *                     example={
      *                      "id": "10",
-     *                      "name": "Administrator",
      *                      "email": "admin@smaki.com",
+     *                      "phone": "+380973334455",
+     *                      "position": "Developer",
+     *                      "first_name": "John",
+     *                      "last_name": "Doe",
+     *                      "email_verified_at": "2021-07-24T12:47:09.000000Z",
      *                      "created_at": "2021-07-24T12:47:09.000000Z",
      *                      "updated_at": "2021-07-24T12:47:09.000000Z",
      *                     }
@@ -210,7 +248,6 @@ class AuthController extends ApiController
      *         }
      *     ),
      * )
-     *
      *
      * @param Request $request
      * @return mixed
