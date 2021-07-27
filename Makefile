@@ -21,4 +21,10 @@ command:
 	docker exec -it crm-sm-backend_php-fpm_1 sh -c "php artisan migrate"
 
 deploy:
-	ssh dev@77.120.110.168 'cd /var/www/backend/ && git pull origin master && php artisan migrate && php artisan l5-swagger:generate'
+	ssh dev@77.120.110.168 'cd /var/www/backend/ && git pull origin master && composer install && php artisan migrate'
+
+rollback:
+	php artisan migrate:rollback --step=1
+
+swagger:
+	php artisan l5-swagger:generate

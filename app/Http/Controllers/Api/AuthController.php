@@ -218,6 +218,11 @@ class AuthController extends ApiController
      *                         description="Фамилия"
      *                     ),
      *                     @OA\Property(
+     *                         property="status",
+     *                         type="string",
+     *                         description="Статус"
+     *                     ),
+     *                     @OA\Property(
      *                         property="email_verified_at",
      *                         type="string",
      *                         description="Дата подтверждения кредов"
@@ -239,6 +244,7 @@ class AuthController extends ApiController
      *                      "position": "Developer",
      *                      "first_name": "John",
      *                      "last_name": "Doe",
+     *                      "status": "active",
      *                      "email_verified_at": "2021-07-24T12:47:09.000000Z",
      *                      "created_at": "2021-07-24T12:47:09.000000Z",
      *                      "updated_at": "2021-07-24T12:47:09.000000Z",
