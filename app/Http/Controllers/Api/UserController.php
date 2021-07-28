@@ -233,6 +233,12 @@ class UserController extends Controller
      *     path="/users/{id}",
      *     tags={"Users"},
      *     security={{"Bearer":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID пользователя",
+     *         required=true
+     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="OK",
@@ -321,6 +327,12 @@ class UserController extends Controller
      *     path="/users/{id}",
      *     tags={"Users"},
      *     security={{"Bearer":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID пользователя",
+     *         required=true
+     *     ),
      *      @OA\RequestBody(
      *         required=true,
      *          @OA\MediaType(
