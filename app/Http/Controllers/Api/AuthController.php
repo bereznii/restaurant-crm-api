@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends ApiController
 {
     /**
-     * @OA\Get(
+     * @OA\Post(
      *     path="/register",
      *     tags={"Auth"},
      *      @OA\RequestBody(
@@ -96,7 +96,7 @@ class AuthController extends ApiController
             'password' => Hash::make($request->input('password')),
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->accessToken;
 
         return response()->json([
             'access_token' => $token,
@@ -105,7 +105,7 @@ class AuthController extends ApiController
     }
 
     /**
-     * @OA\Get(
+     * @OA\Post(
      *     path="/login",
      *     tags={"Auth"},
      *      @OA\RequestBody(
@@ -161,13 +161,13 @@ class AuthController extends ApiController
     {
         if (!Auth::attempt($request->only('phone', 'password'))) {
             return response()->json([
-                'message' => 'Invalid login details'
+                'message' => 'Invalid credentials.'
             ], 401);
         }
 
         $user = User::where('phone', $request->input('phone'))->firstOrFail();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->accessToken;
 
         return response()->json([
             'access_token' => $token,

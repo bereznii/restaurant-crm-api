@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+         'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -25,9 +26,14 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Implicitly grant "system_administrator" role all permissions
+        /** @link https://spatie.be/docs/laravel-permission/v4/basic-usage/super-admin#gatebefore */
         Gate::before(function ($user, $ability) {
             return $user->hasRole('system_administrator') ? true : null;
         });
+
+        /** @link https://laravel.com/docs/8.x/passport#installation */
+        if (! $this->app->routesAreCached()) {
+            Passport::routes();
+        }
     }
 }

@@ -21,7 +21,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Кульпарковская Смаки',
-                'city' => 'Львов',
+                'city_sync_id' => 'lviv',
                 'street' => 'ул. Кульпарковская',
                 'house_number' => '95',
                 'created_at' => $date,
@@ -30,7 +30,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Кульпарковская Сушиго',
-                'city' => 'Львов',
+                'city_sync_id' => 'lviv',
                 'street' => 'ул. Кульпарковская',
                 'house_number' => '95',
                 'created_at' => $date,
@@ -39,7 +39,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Мазепы Смаки',
-                'city' => 'Львов',
+                'city_sync_id' => 'lviv',
                 'street' => 'ул. Мазепы',
                 'house_number' => '11В',
                 'created_at' => $date,
@@ -48,7 +48,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Мазепы Сушиго',
-                'city' => 'Львов',
+                'city_sync_id' => 'lviv',
                 'street' => 'ул. Мазепы',
                 'house_number' => '11В',
                 'created_at' => $date,
@@ -57,7 +57,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Садибна Смаки',
-                'city' => 'Львов',
+                'city_sync_id' => 'lviv',
                 'street' => 'ул. Садыбная',
                 'house_number' => '27',
                 'created_at' => $date,
@@ -66,7 +66,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Садибна Сушиго',
-                'city' => 'Львов',
+                'city_sync_id' => 'lviv',
                 'street' => 'ул. Садыбная',
                 'house_number' => '27',
                 'created_at' => $date,
@@ -75,7 +75,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Белоцерковская Смаки',
-                'city' => 'Львов',
+                'city_sync_id' => 'lviv',
                 'street' => 'ул. Белоцерковская',
                 'house_number' => '2А',
                 'created_at' => $date,
@@ -84,7 +84,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Белоцерковская Сушиго',
-                'city' => 'Львов',
+                'city_sync_id' => 'lviv',
                 'street' => 'ул. Белоцерковская',
                 'house_number' => '2А',
                 'created_at' => $date,
@@ -93,7 +93,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Широкая Смаки',
-                'city' => 'Львов',
+                'city_sync_id' => 'lviv',
                 'street' => 'ул. Широкая',
                 'house_number' => '11',
                 'created_at' => $date,
@@ -102,7 +102,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Широкая Сушиго',
-                'city' => 'Львов',
+                'city_sync_id' => 'lviv',
                 'street' => 'ул. Широкая',
                 'house_number' => '11',
                 'created_at' => $date,
@@ -111,7 +111,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Николаев Смаки',
-                'city' => 'Николаев',
+                'city_sync_id' => 'mykolaiv',
                 'street' => 'ул. Пивденна',
                 'house_number' => '31А',
                 'created_at' => $date,
@@ -120,7 +120,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Николаев Сушиго',
-                'city' => 'Николаев',
+                'city_sync_id' => 'mykolaiv',
                 'street' => 'ул. Пивденна',
                 'house_number' => '31А',
                 'created_at' => $date,
@@ -129,7 +129,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Сумы Смаки',
-                'city' => 'Сумы',
+                'city_sync_id' => 'sumy',
                 'street' => 'проспект Шевченко',
                 'house_number' => '15А',
                 'created_at' => $date,
@@ -138,7 +138,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Сумы Сушиго',
-                'city' => 'Сумы',
+                'city_sync_id' => 'sumy',
                 'street' => 'проспект Шевченко',
                 'house_number' => '15А',
                 'created_at' => $date,
@@ -147,7 +147,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Ивано-Франковск Смаки',
-                'city' => 'Ивано-Франковск',
+                'city_sync_id' => 'ivano-frankivsk',
                 'street' => 'ул. Береговая',
                 'house_number' => '9А',
                 'created_at' => $date,
@@ -156,7 +156,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Ивано-Франковск Сушиго',
-                'city' => 'Ивано-Франковск',
+                'city_sync_id' => 'ivano-frankivsk',
                 'street' => 'ул. Береговая',
                 'house_number' => '9А',
                 'created_at' => $date,
@@ -165,7 +165,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Хмельницький Смаки',
-                'city' => 'Хмельницький',
+                'city_sync_id' => 'khmelnytskyi',
                 'street' => 'ул. Гагарина',
                 'house_number' => '5',
                 'created_at' => $date,
@@ -174,7 +174,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Хмельницький Сушиго',
-                'city' => 'Хмельницький',
+                'city_sync_id' => 'khmelnytskyi',
                 'street' => 'ул. Гагарина',
                 'house_number' => '5',
                 'created_at' => $date,
@@ -183,7 +183,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Херсон Смаки',
-                'city' => 'Херсон',
+                'city_sync_id' => 'kherson',
                 'street' => 'ул. Рабочая',
                 'house_number' => '66',
                 'created_at' => $date,
@@ -192,7 +192,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Херсон Сушиго',
-                'city' => 'Херсон',
+                'city_sync_id' => 'kherson',
                 'street' => 'ул. Рабочая',
                 'house_number' => '66',
                 'created_at' => $date,
@@ -201,7 +201,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Ровно Смаки',
-                'city' => 'Ровно',
+                'city_sync_id' => 'rivne',
                 'street' => 'проспект Мира',
                 'house_number' => '19',
                 'created_at' => $date,
@@ -210,7 +210,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Ровно Сушиго',
-                'city' => 'Ровно',
+                'city_sync_id' => 'rivne',
                 'street' => 'проспект Мира',
                 'house_number' => '19',
                 'created_at' => $date,
@@ -219,7 +219,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Луцк Смаки',
-                'city' => 'Луцк',
+                'city_sync_id' => 'lutsk',
                 'street' => 'ул. Огиенко',
                 'house_number' => '1',
                 'created_at' => $date,
@@ -228,7 +228,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Луцк Сушиго',
-                'city' => 'Луцк',
+                'city_sync_id' => 'lutsk',
                 'street' => 'ул. Огиенко',
                 'house_number' => '1',
                 'created_at' => $date,
@@ -237,7 +237,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Винница Смаки',
-                'city' => 'Винница',
+                'city_sync_id' => 'vinnytsia',
                 'street' => 'ул. Глеба Успенского',
                 'house_number' => '46',
                 'created_at' => $date,
@@ -246,7 +246,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Винница Сушиго',
-                'city' => 'Винница',
+                'city_sync_id' => 'vinnytsia',
                 'street' => 'ул. Глеба Успенского',
                 'house_number' => '46',
                 'created_at' => $date,
@@ -255,7 +255,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SMAKI_MAKI_RESTAURANT,
                 'name' => 'Тернополь Смаки',
-                'city' => 'Тернополь',
+                'city_sync_id' => 'ternopil',
                 'street' => 'ул. Гоголя',
                 'house_number' => '2',
                 'created_at' => $date,
@@ -264,7 +264,7 @@ class PopulateLocationsTable extends Migration
             [
                 'restaurant' => Location::SUSHI_GO_RESTAURANT,
                 'name' => 'Тернополь Сушиго',
-                'city' => 'Тернополь',
+                'city_sync_id' => 'ternopil',
                 'street' => 'ул. Гоголя',
                 'house_number' => '2',
                 'created_at' => $date,

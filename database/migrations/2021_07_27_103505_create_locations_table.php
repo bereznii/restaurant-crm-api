@@ -17,7 +17,7 @@ class CreateLocationsTable extends Migration
             $table->id();
             $table->string('restaurant');
             $table->string('name');
-            $table->string('city');
+            $table->string('city_sync_id');
             $table->string('street');
             $table->string('house_number');
             $table->string('latitude')->nullable()->comment('Широта');
