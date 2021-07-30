@@ -30,6 +30,7 @@ class StoreRequest extends FormRequest
             'phone' => 'required|numeric|digits:12|unique:users',
             'position' => 'required|string|max:255',
             'password' => 'required|string|min:8',
+            'role_name' => 'required|string|exists:rbac_roles,name',
         ];
     }
 }

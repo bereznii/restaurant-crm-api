@@ -204,7 +204,7 @@
                                     "example": {
                                         "id": "10",
                                         "email": "admin@smaki.com",
-                                        "phone": "+380973334455",
+                                        "phone": "380973334455",
                                         "position": "Developer",
                                         "first_name": "John",
                                         "last_name": "Doe",
@@ -371,12 +371,235 @@
                 ]
             }
         },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "operationId": "080f057905dc32d2f11065d606dc4cd6",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Количество результатов на странице",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "integer"
+                                        },
+                                        "restaurant": {
+                                            "description": "Идентификатор ресторана",
+                                            "type": "string"
+                                        },
+                                        "city_sync_id": {
+                                            "description": "Идентификатор города",
+                                            "type": "string"
+                                        },
+                                        "article": {
+                                            "description": "Артикул",
+                                            "type": "string"
+                                        },
+                                        "title_ua": {
+                                            "description": "Название на украинском",
+                                            "type": "string"
+                                        },
+                                        "title_ru": {
+                                            "description": "Название на русском",
+                                            "type": "string"
+                                        },
+                                        "is_active": {
+                                            "description": "Активен ли товар",
+                                            "type": "string"
+                                        },
+                                        "price": {
+                                            "description": "Актуальная стоимость",
+                                            "type": "string"
+                                        },
+                                        "price_old": {
+                                            "description": "Предыдущая стоимость",
+                                            "type": "string"
+                                        },
+                                        "weight": {
+                                            "description": "Вес",
+                                            "type": "string"
+                                        },
+                                        "weight_type": {
+                                            "description": "Единица измерения веса",
+                                            "type": "string"
+                                        },
+                                        "description_ua": {
+                                            "description": "Описание на украинском",
+                                            "type": "string"
+                                        },
+                                        "description_ru": {
+                                            "description": "Описание на русском",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего редактирования",
+                                            "type": "string"
+                                        },
+                                        "city": {
+                                            "description": "Сущность города",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "id": "1",
+                                                "restaurant": "smaki",
+                                                "city_sync_id": "lviv",
+                                                "article": "art-93993",
+                                                "title_ua": "Пицца 4 Сыра",
+                                                "title_ru": "Пицца 4 Сыра",
+                                                "is_active": 0,
+                                                "price": 120,
+                                                "price_old": 114,
+                                                "weight": 250,
+                                                "weight_type": "г",
+                                                "description_ua": "Lorem ipsum dolor sit amet.",
+                                                "description_ru": "Lorem ipsum dolor sit amet.",
+                                                "created_at": "2021-07-30T15:29:31.000000Z",
+                                                "updated_at": "2021-07-30T15:29:31.000000Z",
+                                                "city": {
+                                                    "id": 1,
+                                                    "sync_id": "lviv",
+                                                    "name": "Львов",
+                                                    "created_at": "2021-07-30T15:29:31.000000Z",
+                                                    "updated_at": "2021-07-30T15:29:31.000000Z"
+                                                }
+                                            }
+                                        ],
+                                        "links": {
+                                            "first": "http://77.120.110.168:8080/api/products?page=1",
+                                            "last": "http://77.120.110.168:8080/api/products?page=1",
+                                            "prev": null,
+                                            "next": null
+                                        },
+                                        "meta": {
+                                            "current_page": 1,
+                                            "from": 1,
+                                            "last_page": 1,
+                                            "links": [],
+                                            "path": "http://77.120.110.168:8080/api/products",
+                                            "per_page": 20,
+                                            "to": 11,
+                                            "total": 11
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/rbac/roles": {
+            "get": {
+                "tags": [
+                    "RBAC"
+                ],
+                "operationId": "155e40d142471fe5295b4bafd0fb687a",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "description": "Название",
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "description": "Идентификатор",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "id": 2,
+                                                "title": "Контент-менеджер",
+                                                "name": "content_manager"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/users": {
             "get": {
                 "tags": [
                     "Users"
                 ],
                 "operationId": "7208c29037df2b8bb02499ba39ed8a78",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Количество результатов на странице",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -416,6 +639,14 @@
                                             "description": "Дата подтверждения кредов",
                                             "type": "string"
                                         },
+                                        "role_name": {
+                                            "description": "Идентификатор роли",
+                                            "type": "string"
+                                        },
+                                        "role_title": {
+                                            "description": "Развание роли",
+                                            "type": "string"
+                                        },
                                         "created_at": {
                                             "description": "Дата создания",
                                             "type": "string"
@@ -431,16 +662,34 @@
                                             {
                                                 "id": "1",
                                                 "email": "admin@smaki.com",
-                                                "phone": "+380973334455",
+                                                "phone": "380973334455",
                                                 "position": "Developer",
                                                 "first_name": "John",
                                                 "last_name": "Doe",
                                                 "status": "active",
+                                                "role_name": "content_manager",
+                                                "role_title": "Контент-менеджер",
                                                 "email_verified_at": "2021-07-24T12:47:09.000000Z",
                                                 "created_at": "2021-07-24T12:47:09.000000Z",
                                                 "updated_at": "2021-07-24T12:47:09.000000Z"
                                             }
-                                        ]
+                                        ],
+                                        "links": {
+                                            "first": "http://77.120.110.168:8080/api/users?page=1",
+                                            "last": "http://77.120.110.168:8080/api/users?page=1",
+                                            "prev": null,
+                                            "next": null
+                                        },
+                                        "meta": {
+                                            "current_page": 1,
+                                            "from": 1,
+                                            "last_page": 1,
+                                            "links": [],
+                                            "path": "http://77.120.110.168:8080/api/users",
+                                            "per_page": 20,
+                                            "to": 11,
+                                            "total": 11
+                                        }
                                     }
                                 }
                             }
@@ -469,7 +718,8 @@
                                     "email",
                                     "password",
                                     "phone",
-                                    "position"
+                                    "position",
+                                    "role"
                                 ],
                                 "properties": {
                                     "first_name": {
@@ -494,6 +744,10 @@
                                     },
                                     "password": {
                                         "description": "Пароль",
+                                        "type": "string"
+                                    },
+                                    "role_name": {
+                                        "description": "Идентификатор роли",
                                         "type": "string"
                                     }
                                 },
@@ -533,6 +787,14 @@
                                             "description": "Должность",
                                             "type": "string"
                                         },
+                                        "role_name": {
+                                            "description": "Идентификатор роли",
+                                            "type": "string"
+                                        },
+                                        "role_title": {
+                                            "description": "Развание роли",
+                                            "type": "string"
+                                        },
                                         "updated_at": {
                                             "description": "Дата последнего редактирования",
                                             "type": "string"
@@ -548,8 +810,10 @@
                                             "first_name": "Someone",
                                             "last_name": "Pupkin",
                                             "position": "CTO",
-                                            "phone": "+380997774455",
+                                            "phone": "380997774455",
                                             "email": "some@some.com",
+                                            "role_name": "content_manager",
+                                            "role_title": "Контент-менеджер",
                                             "updated_at": "2021-07-28T12:47:01.000000Z",
                                             "created_at": "2021-07-28T12:47:01.000000Z",
                                             "id": 7
@@ -616,6 +880,14 @@
                                             "description": "Статус",
                                             "type": "string"
                                         },
+                                        "role_name": {
+                                            "description": "Идентификатор роли",
+                                            "type": "string"
+                                        },
+                                        "role_title": {
+                                            "description": "Развание роли",
+                                            "type": "string"
+                                        },
                                         "email_verified_at": {
                                             "description": "Дата подтверждения кредов",
                                             "type": "string"
@@ -634,11 +906,13 @@
                                         "data": {
                                             "id": "1",
                                             "email": "admin@smaki.com",
-                                            "phone": "+380973334455",
+                                            "phone": "380973334455",
                                             "position": "Developer",
                                             "first_name": "John",
                                             "last_name": "Doe",
                                             "status": "active",
+                                            "role_name": "content_manager",
+                                            "role_title": "Контент-менеджер",
                                             "email_verified_at": "2021-07-24T12:47:09.000000Z",
                                             "created_at": "2021-07-24T12:47:09.000000Z",
                                             "updated_at": "2021-07-24T12:47:09.000000Z"
@@ -697,6 +971,10 @@
                                     "password": {
                                         "description": "Пароль",
                                         "type": "string"
+                                    },
+                                    "role_name": {
+                                        "description": "Идентификатор роли",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -735,6 +1013,14 @@
                                             "description": "Должность",
                                             "type": "string"
                                         },
+                                        "role_name": {
+                                            "description": "Идентификатор роли",
+                                            "type": "string"
+                                        },
+                                        "role_title": {
+                                            "description": "Развание роли",
+                                            "type": "string"
+                                        },
                                         "updated_at": {
                                             "description": "Дата последнего редактирования",
                                             "type": "string"
@@ -747,14 +1033,16 @@
                                     "type": "object",
                                     "example": {
                                         "data": {
+                                            "id": 7,
                                             "first_name": "Someone",
                                             "last_name": "Pupkin",
                                             "position": "CTO",
-                                            "phone": "+380997774455",
+                                            "phone": "380997774455",
                                             "email": "some@some.com",
+                                            "role_name": "content_manager",
+                                            "role_title": "Контент-менеджер",
                                             "updated_at": "2021-07-28T12:47:01.000000Z",
-                                            "created_at": "2021-07-28T12:47:01.000000Z",
-                                            "id": 7
+                                            "created_at": "2021-07-28T12:47:01.000000Z"
                                         }
                                     }
                                 }

@@ -30,6 +30,7 @@ class UpdateRequest extends FormRequest
             'phone' => 'filled|numeric|digits:12|unique:users',
             'position' => 'filled|string|max:255',
             'password' => 'filled|string|min:8',
+            'role_name' => 'filled|string|exists:rbac_roles,name',
         ];
     }
 }

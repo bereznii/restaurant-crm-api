@@ -240,7 +240,7 @@ class AuthController extends ApiController
      *                     example={
      *                      "id": "10",
      *                      "email": "admin@smaki.com",
-     *                      "phone": "+380973334455",
+     *                      "phone": "380973334455",
      *                      "position": "Developer",
      *                      "first_name": "John",
      *                      "last_name": "Doe",

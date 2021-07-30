@@ -20,6 +20,26 @@ class UserController extends Controller
      *     path="/users",
      *     tags={"Users"},
      *     security={{"Bearer":{}}},
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Количество результатов на странице",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *             default="20"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Номер страницы",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *             default="1"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="OK",
@@ -67,6 +87,16 @@ class UserController extends Controller
      *                         type="string",
      *                         description="Дата подтверждения кредов"
      *                     ),
+     *                      @OA\Property(
+     *                         property="role_name",
+     *                         type="string",
+     *                         description="Идентификатор роли"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="role_title",
+     *                         type="string",
+     *                         description="Развание роли"
+     *                      ),
      *                     @OA\Property(
      *                         property="created_at",
      *                         type="string",
@@ -77,18 +107,38 @@ class UserController extends Controller
      *                         type="string",
      *                         description="Дата последнего редактирования"
      *                     ),
-     *                     example={"data":{{
-     *                      "id": "1",
-     *                      "email": "admin@smaki.com",
-     *                      "phone": "+380973334455",
-     *                      "position": "Developer",
-     *                      "first_name": "John",
-     *                      "last_name": "Doe",
-     *                      "status": "active",
-     *                      "email_verified_at": "2021-07-24T12:47:09.000000Z",
-     *                      "created_at": "2021-07-24T12:47:09.000000Z",
-     *                      "updated_at": "2021-07-24T12:47:09.000000Z",
-     *                     }}}
+     *                     example={"data":{
+     *                      {
+     *                          "id": "1",
+     *                          "email": "admin@smaki.com",
+     *                          "phone": "380973334455",
+     *                          "position": "Developer",
+     *                          "first_name": "John",
+     *                          "last_name": "Doe",
+     *                          "status": "active",
+     *                          "role_name": "content_manager",
+     *                          "role_title": "Контент-менеджер",
+     *                          "email_verified_at": "2021-07-24T12:47:09.000000Z",
+     *                          "created_at": "2021-07-24T12:47:09.000000Z",
+     *                          "updated_at": "2021-07-24T12:47:09.000000Z",
+     *                      }},
+     *                      "links": {
+     *                          "first": "http://77.120.110.168:8080/api/users?page=1",
+     *                          "last": "http://77.120.110.168:8080/api/users?page=1",
+     *                          "prev": null,
+     *                          "next": null
+     *                      },
+     *                      "meta": {
+     *                          "current_page": 1,
+     *                          "from": 1,
+     *                          "last_page": 1,
+     *                          "links": {},
+     *                          "path": "http://77.120.110.168:8080/api/users",
+     *                          "per_page": 20,
+     *                          "to": 11,
+     *                          "total": 11,
+     *                      },
+     *                    }
      *                 )
      *             )
      *         }
@@ -97,9 +147,11 @@ class UserController extends Controller
      *
      * @return UserCollection
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new UserCollection(User::get());
+        return new UserCollection(User::with('roles')->paginate(
+            (int) $request->get('per_page', 20)
+        ));
     }
 
     /**
@@ -112,7 +164,7 @@ class UserController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *               required={"first_name","last_name","email","password","phone","position"},
+     *               required={"first_name","last_name","email","password","phone","position", "role"},
      *               @OA\Property(
      *                  property="first_name",
      *                  type="string",
@@ -142,6 +194,11 @@ class UserController extends Controller
      *                  property="password",
      *                  type="string",
      *                  description="Пароль"
+     *               ),
+     *               @OA\Property(
+     *                  property="role_name",
+     *                  type="string",
+     *                  description="Идентификатор роли"
      *               )
      *              )
      *          )
@@ -184,6 +241,16 @@ class UserController extends Controller
      *                         description="Должность"
      *                      ),
      *                      @OA\Property(
+     *                         property="role_name",
+     *                         type="string",
+     *                         description="Идентификатор роли"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="role_title",
+     *                         type="string",
+     *                         description="Развание роли"
+     *                      ),
+     *                      @OA\Property(
      *                         property="updated_at",
      *                         type="string",
      *                         description="Дата последнего редактирования"
@@ -198,8 +265,10 @@ class UserController extends Controller
      *                               "first_name": "Someone",
      *                               "last_name": "Pupkin",
      *                               "position": "CTO",
-     *                               "phone": "+380997774455",
+     *                               "phone": "380997774455",
      *                               "email": "some@some.com",
+     *                               "role_name": "content_manager",
+     *                               "role_title": "Контент-менеджер",
      *                               "updated_at": "2021-07-28T12:47:01.000000Z",
      *                               "created_at": "2021-07-28T12:47:01.000000Z",
      *                               "id": 7
@@ -225,7 +294,9 @@ class UserController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
 
-        return new UserResource($user);
+        $user->assignRole($request->input('role_name'));
+
+        return new UserResource(User::with('roles')->findOrFail($user->id));
     }
 
     /**
@@ -281,6 +352,16 @@ class UserController extends Controller
      *                         type="string",
      *                         description="Статус"
      *                     ),
+     *                      @OA\Property(
+     *                         property="role_name",
+     *                         type="string",
+     *                         description="Идентификатор роли"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="role_title",
+     *                         type="string",
+     *                         description="Развание роли"
+     *                      ),
      *                     @OA\Property(
      *                         property="email_verified_at",
      *                         type="string",
@@ -299,11 +380,13 @@ class UserController extends Controller
      *                     example={"data":{
      *                      "id": "1",
      *                      "email": "admin@smaki.com",
-     *                      "phone": "+380973334455",
+     *                      "phone": "380973334455",
      *                      "position": "Developer",
      *                      "first_name": "John",
      *                      "last_name": "Doe",
      *                      "status": "active",
+     *                      "role_name": "content_manager",
+     *                      "role_title": "Контент-менеджер",
      *                      "email_verified_at": "2021-07-24T12:47:09.000000Z",
      *                      "created_at": "2021-07-24T12:47:09.000000Z",
      *                      "updated_at": "2021-07-24T12:47:09.000000Z",
@@ -319,7 +402,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return new UserResource(User::findOrFail($id));
+        return new UserResource(User::with('roles')->findOrFail($id));
     }
 
     /**
@@ -367,6 +450,11 @@ class UserController extends Controller
      *                  property="password",
      *                  type="string",
      *                  description="Пароль"
+     *               ),
+     *               @OA\Property(
+     *                  property="role_name",
+     *                  type="string",
+     *                  description="Идентификатор роли"
      *               )
      *              )
      *          )
@@ -409,6 +497,16 @@ class UserController extends Controller
      *                         description="Должность"
      *                      ),
      *                      @OA\Property(
+     *                         property="role_name",
+     *                         type="string",
+     *                         description="Идентификатор роли"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="role_title",
+     *                         type="string",
+     *                         description="Развание роли"
+     *                      ),
+     *                      @OA\Property(
      *                         property="updated_at",
      *                         type="string",
      *                         description="Дата последнего редактирования"
@@ -420,14 +518,16 @@ class UserController extends Controller
      *                      ),
      *                     example={
      *                           "data": {
+     *                               "id": 7,
      *                               "first_name": "Someone",
      *                               "last_name": "Pupkin",
      *                               "position": "CTO",
-     *                               "phone": "+380997774455",
+     *                               "phone": "380997774455",
      *                               "email": "some@some.com",
+     *                               "role_name": "content_manager",
+     *                               "role_title": "Контент-менеджер",
      *                               "updated_at": "2021-07-28T12:47:01.000000Z",
-     *                               "created_at": "2021-07-28T12:47:01.000000Z",
-     *                               "id": 7
+     *                               "created_at": "2021-07-28T12:47:01.000000Z"
      *                           }
      *                      }
      *                 )
@@ -442,12 +542,15 @@ class UserController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('roles')->findOrFail($id);
 
         $attrs = $request->all();
 
         if (isset($attrs['password'])) {
             $attrs['password'] = Hash::make($request->input('password'));
+        }
+        if (isset($attrs['role_name'])) {
+            $user->syncRoles([$attrs['role_name']]);
         }
 
         $user->update($attrs);
