@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
             $table->integer('price_old')->nullable();
             $table->integer('weight')->nullable();
             $table->string('weight_type', 20)->nullable();
+            $table->string('type_sync_id', 20)->nullable();
             $table->text('description_ua')->nullable();
             $table->text('description_ru')->nullable();
             $table->timestamps();

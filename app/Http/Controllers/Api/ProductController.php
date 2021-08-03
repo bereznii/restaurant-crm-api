@@ -3,12 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductsCollection;
+use App\Http\Requests\Products\MassStoreRequest;
+use App\Http\Requests\Products\UpdateRequest;
+use App\Http\Resources\Products\ProductResource;
+use App\Http\Resources\Products\ProductsCollection;
 use App\Models\Product;
+use App\Services\ProductService;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
+    /** @var ProductService|Application|mixed  */
+    private ProductService $productService;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->productService = app(ProductService::class);
+    }
+
     /**
      * @OA\Get(
      *     path="/products",
@@ -34,6 +51,34 @@ class ProductController extends Controller
      *             default="1"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         name="restaurant",
+     *         in="query",
+     *         description="Идентификатор ресторана",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="city_sync_id",
+     *         in="query",
+     *         description="Идентификатор города",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="type_sync_id",
+     *         in="query",
+     *         description="Тип товара",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string",
+     *             enum={"pizza","sushi","soup","other"},
+     *         )
+     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="OK",
@@ -50,11 +95,6 @@ class ProductController extends Controller
      *                         property="restaurant",
      *                         type="string",
      *                         description="Идентификатор ресторана"
-     *                     ),
-     *                     @OA\Property(
-     *                         property="city_sync_id",
-     *                         type="string",
-     *                         description="Идентификатор города"
      *                     ),
      *                     @OA\Property(
      *                         property="article",
@@ -76,25 +116,20 @@ class ProductController extends Controller
      *                         type="string",
      *                         description="Активен ли товар"
      *                     ),
-     *                     @OA\Property(
-     *                         property="price",
-     *                         type="string",
-     *                         description="Актуальная стоимость"
-     *                     ),
-     *                      @OA\Property(
-     *                         property="price_old",
-     *                         type="string",
-     *                         description="Предыдущая стоимость"
-     *                      ),
      *                      @OA\Property(
      *                         property="weight",
-     *                         type="string",
+     *                         type="intger",
      *                         description="Вес"
      *                      ),
      *                     @OA\Property(
      *                         property="weight_type",
      *                         type="string",
      *                         description="Единица измерения веса"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="type_sync_id",
+     *                         type="string",
+     *                         description="Идентификатор типа товара"
      *                     ),
      *                     @OA\Property(
      *                         property="description_ua",
@@ -112,33 +147,47 @@ class ProductController extends Controller
      *                         description="Дата последнего редактирования"
      *                     ),
      *                     @OA\Property(
-     *                         property="city",
+     *                         property="prices",
      *                         type="string",
-     *                         description="Сущность города"
+     *                         description="Массив сущностей цены товара для каждого города"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="type",
+     *                         type="string",
+     *                         description="Сущность типа товара"
      *                     ),
      *                     example={"data":{
      *                      {
      *                          "id": "1",
      *                          "restaurant": "smaki",
-     *                          "city_sync_id": "lviv",
      *                          "article": "art-93993",
      *                          "title_ua": "Пицца 4 Сыра",
      *                          "title_ru": "Пицца 4 Сыра",
      *                          "is_active": 0,
-     *                          "price": 120,
-     *                          "price_old": 114,
      *                          "weight": 250,
      *                          "weight_type": "г",
+     *                          "type_sync_id": "pizza",
      *                          "description_ua": "Lorem ipsum dolor sit amet.",
      *                          "description_ru": "Lorem ipsum dolor sit amet.",
      *                          "created_at": "2021-07-30T15:29:31.000000Z",
      *                          "updated_at": "2021-07-30T15:29:31.000000Z",
-     *                          "city": {
-     *                              "id": 1,
-     *                              "sync_id": "lviv",
-     *                              "name": "Львов",
-     *                              "created_at": "2021-07-30T15:29:31.000000Z",
-     *                              "updated_at": "2021-07-30T15:29:31.000000Z",
+     *                          "prices": {
+     *                              {
+     *                                  "city_sync_id": "lviv",
+     *                                  "article": "art-93993",
+     *                                  "price": 120,
+     *                                  "price_old": 114
+     *                              },
+     *                              {
+     *                                  "city_sync_id": "mykolaiv",
+     *                                  "article": "art-93993",
+     *                                  "price": 125,
+     *                                  "price_old": 119
+     *                              },
+     *                          },
+     *                          "type": {
+     *                              "sync_id": "pizza",
+     *                              "name": "Пицца"
      *                          },
      *                      }},
      *                      "links": {
@@ -168,56 +217,491 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        //TODO: фильтр по ресторану
-        //TODO: фильтр по городу
-        //TODO: фильтр по типу
-        return new ProductsCollection(Product::with('city')->paginate(
-            (int) $request->get('per_page', 50)
-        ));
+        return new ProductsCollection(
+            Product::with([
+                'prices' => function ($query) use ($request) {
+                    $query->filterWhere('city_sync_id', '=', $request->get('city_sync_id'))
+                        ->select(['city_sync_id', 'article', 'price', 'price_old']);
+                },
+                'type:sync_id,name'])
+                ->filterWhere('restaurant', '=', $request->get('restaurant'))
+                ->filterWhere('type_sync_id', '=', $request->get('type_sync_id'))
+                ->orderBy('created_at', 'desc')
+                ->paginate(
+                    (int) $request->get('per_page', 50)
+                )
+        );
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/{restaurant}/products",
+     *     tags={"Products"},
+     *     security={{"Bearer":{}}},
+     *     description="Используется исключительно для синхронизации товаров с 1С",
+     *     @OA\Parameter(
+     *         name="restaurant",
+     *         in="path",
+     *         description="Идентификатор ресторана",
+     *         required=true,
+     *         example="smaki"
+     *     ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="array",
+     *                @OA\Items(
+     *                     @OA\Property(
+     *                         property="article",
+     *                         type="string",
+     *                         description="Артикул"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="title_ua",
+     *                         type="string",
+     *                         description="Название на украинском"
+     *                     ),
+     *                      @OA\Property(
+     *                         property="weight",
+     *                         type="integer",
+     *                         description="Вес"
+     *                      ),
+     *                     @OA\Property(
+     *                         property="weight_type",
+     *                         type="string",
+     *                         description="Единица измерения веса"
+     *                     ),
+     *                      @OA\Property(
+     *                         property="price",
+     *                         type="array",
+     *                          @OA\Items(
+     *                              @OA\Property(
+     *                                 property="city_sync_id",
+     *                                 type="string",
+     *                                 description="Идентификатор города для которого редактируется цена"
+     *                              ),
+     *                              @OA\Property(
+     *                                 property="price",
+     *                                 type="integer",
+     *                                 description="Актуальная цена"
+     *                              ),
+     *                          )
+     *                      ),
+     *                ),
+     *                example={
+     *                  {
+     *                     "article": "art-1",
+     *                     "title_ua": "Калифорния",
+     *                     "weight": 250,
+     *                     "weight_type": "г",
+     *                     "prices": {
+     *                          {
+     *                              "city": "lviv",
+     *                              "price": 190,
+     *                          },
+     *                          {
+     *                              "city": "sumy",
+     *                              "price": 180,
+     *                          }
+     *                      }
+     *                  },
+     *                  {
+     *                     "article": "art-2",
+     *                     "title_ua": "Филадельфия",
+     *                     "weight": 260,
+     *                     "weight_type": "г",
+     *                     "prices": {
+     *                          {
+     *                              "city": "lviv",
+     *                              "price": 210,
+     *                          },
+     *                          {
+     *                              "city": "sumy",
+     *                              "price": 200,
+     *                          },
+     *                          {
+     *                              "city": "vinnytsia",
+     *                              "price": 200,
+     *                          }
+     *                      }
+     *                  }
+     *                }
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         content={
+     *             @OA\MediaType(
+     *                 mediaType="application/json",
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="message",
+     *                         type="string",
+     *                         description="Результат синхронизации товаров"
+     *                     ),
+     *                     example={
+     *                          "message": "OK",
+     *                     }
+     *                 )
+     *             )
+     *         }
+     *     ),
+     * )
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param string $restaurant
+     * @param MassStoreRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function massStore(string $restaurant, MassStoreRequest $request)
     {
-        //
+        return response()->json([
+            'message' => $this->productService->massStore($restaurant, $request->all())
+                ? 'OK'
+                : 'При сохранении товаров произошла ошибка'
+        ]);
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/products/{id}",
+     *     tags={"Products"},
+     *     security={{"Bearer":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID товара",
+     *         required=true
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         content={
+     *             @OA\MediaType(
+     *                 mediaType="application/json",
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="id",
+     *                         type="integer",
+     *                         description="ID"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="restaurant",
+     *                         type="string",
+     *                         description="Идентификатор ресторана"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="article",
+     *                         type="string",
+     *                         description="Артикул"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="title_ua",
+     *                         type="string",
+     *                         description="Название на украинском"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="title_ru",
+     *                         type="string",
+     *                         description="Название на русском"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="is_active",
+     *                         type="string",
+     *                         description="Активен ли товар"
+     *                     ),
+     *                      @OA\Property(
+     *                         property="weight",
+     *                         type="integer",
+     *                         description="Вес"
+     *                      ),
+     *                     @OA\Property(
+     *                         property="weight_type",
+     *                         type="string",
+     *                         description="Единица измерения веса"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="type_sync_id",
+     *                         type="string",
+     *                         description="Идентификатор типа товара"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="description_ua",
+     *                         type="string",
+     *                         description="Описание на украинском"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="description_ru",
+     *                         type="string",
+     *                         description="Описание на русском"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="updated_at",
+     *                         type="string",
+     *                         description="Дата последнего редактирования"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="prices",
+     *                         type="string",
+     *                         description="Массив сущностей цены товара для каждого города"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="type",
+     *                         type="string",
+     *                         description="Сущность типа товара"
+     *                     ),
+     *                     example={"data":{
+     *                          "id": "1",
+     *                          "restaurant": "smaki",
+     *                          "city_sync_id": "lviv",
+     *                          "article": "art-93993",
+     *                          "title_ua": "Пицца 4 Сыра",
+     *                          "title_ru": "Пицца 4 Сыра",
+     *                          "is_active": 0,
+     *                          "price": 120,
+     *                          "price_old": 114,
+     *                          "weight": 250,
+     *                          "weight_type": "г",
+     *                          "type_sync_id": "pizza",
+     *                          "description_ua": "Lorem ipsum dolor sit amet.",
+     *                          "description_ru": "Lorem ipsum dolor sit amet.",
+     *                          "created_at": "2021-07-30T15:29:31.000000Z",
+     *                          "updated_at": "2021-07-30T15:29:31.000000Z",
+     *                          "prices": {
+     *                              {
+     *                                  "city_sync_id": "lviv",
+     *                                  "article": "art-93993",
+     *                                  "price": 120,
+     *                                  "price_old": 114
+     *                              },
+     *                              {
+     *                                  "city_sync_id": "mykolaiv",
+     *                                  "article": "art-93993",
+     *                                  "price": 125,
+     *                                  "price_old": 119
+     *                              },
+     *                          },
+     *                          "type": {
+     *                              "sync_id": "pizza",
+     *                              "name": "Пицца"
+     *                          },
+     *                      }
+     *                    }
+     *                 )
+     *             )
+     *         }
+     *     ),
+     * )
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return ProductResource
      */
     public function show($id)
     {
-        //
+        return new ProductResource(
+            Product::with('prices:city_sync_id,article,price,price_old', 'type:sync_id,name')->findOrFail($id)
+        );
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Patch(
+     *     path="/products/{id}",
+     *     tags={"Products"},
+     *     security={{"Bearer":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID товара",
+     *         required=true
+     *     ),
+     *      @OA\RequestBody(
+     *         required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *               @OA\Property(
+     *                  property="title_ua",
+     *                  type="string",
+     *                  description="Название на украинском"
+     *               ),
+     *               @OA\Property(
+     *                  property="title_ru",
+     *                  type="string",
+     *                  enum={"1","0"},
+     *                  description="Название на русском"
+     *               ),
+     *               @OA\Property(
+     *                  property="prices",
+     *                  type="array",
+     *                  description="Массив цен товара для редактирования",
+     *                  @OA\Items(
+     *                      type="array",
+     *                      @OA\Items(
+     *                          @OA\Property(
+     *                             property="city_sync_id",
+     *                             type="string",
+     *                             description="Идентификатор города для которого редактируется цена"
+     *                          ),
+     *                          @OA\Property(
+     *                             property="price_old",
+     *                             type="integer",
+     *                             description="Новое значения предыдщуей цены"
+     *                          ),
+     *                      ),
+     *                  ),
+     *               ),
+     *               @OA\Property(
+     *                  property="is_active",
+     *                  type="integer",
+     *                  description="Активен ли товар"
+     *               ),
+     *               @OA\Property(
+     *                  property="description_ua",
+     *                  type="string",
+     *                  description="Описание на украинском"
+     *               ),
+     *               @OA\Property(
+     *                  property="description_ru",
+     *                  type="string",
+     *                  description="Описание на русском"
+     *               ),
+     *               @OA\Property(
+     *                  property="type_sync_id",
+     *                  type="string",
+     *                  description="Идентификатор типа товара",
+     *                  enum={"pizza","sushi","soup","other"}
+     *               )
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         content={
+     *             @OA\MediaType(
+     *                 mediaType="application/json",
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="id",
+     *                         type="integer",
+     *                         description="ID"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="restaurant",
+     *                         type="string",
+     *                         description="Идентификатор ресторана"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="article",
+     *                         type="string",
+     *                         description="Артикул"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="title_ua",
+     *                         type="string",
+     *                         description="Название на украинском"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="title_ru",
+     *                         type="string",
+     *                         description="Название на русском"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="is_active",
+     *                         type="string",
+     *                         description="Активен ли товар"
+     *                     ),
+     *                      @OA\Property(
+     *                         property="weight",
+     *                         type="integer",
+     *                         description="Вес"
+     *                      ),
+     *                     @OA\Property(
+     *                         property="weight_type",
+     *                         type="string",
+     *                         description="Единица измерения веса"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="type_sync_id",
+     *                         type="string",
+     *                         description="Идентификатор типа товара"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="description_ua",
+     *                         type="string",
+     *                         description="Описание на украинском"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="description_ru",
+     *                         type="string",
+     *                         description="Описание на русском"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="updated_at",
+     *                         type="string",
+     *                         description="Дата последнего редактирования"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="prices",
+     *                         type="string",
+     *                         description="Массив сущностей цены товара для каждого города"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="type",
+     *                         type="string",
+     *                         description="Сущность типа товара"
+     *                     ),
+     *                     example={"data":{
+     *                          "id": "1",
+     *                          "restaurant": "smaki",
+     *                          "city_sync_id": "lviv",
+     *                          "article": "art-93993",
+     *                          "title_ua": "Пицца 4 Сыра",
+     *                          "title_ru": "Пицца 4 Сыра",
+     *                          "is_active": 0,
+     *                          "price": 120,
+     *                          "price_old": 114,
+     *                          "weight": 250,
+     *                          "weight_type": "г",
+     *                          "type_sync_id": "pizza",
+     *                          "description_ua": "Lorem ipsum dolor sit amet.",
+     *                          "description_ru": "Lorem ipsum dolor sit amet.",
+     *                          "created_at": "2021-07-30T15:29:31.000000Z",
+     *                          "updated_at": "2021-07-30T15:29:31.000000Z",
+     *                          "prices": {
+     *                              {
+     *                                  "city_sync_id": "lviv",
+     *                                  "article": "art-93993",
+     *                                  "price": 120,
+     *                                  "price_old": 114
+     *                              },
+     *                              {
+     *                                  "city_sync_id": "mykolaiv",
+     *                                  "article": "art-93993",
+     *                                  "price": 125,
+     *                                  "price_old": 119
+     *                              },
+     *                          },
+     *                          "type": {
+     *                              "sync_id": "pizza",
+     *                              "name": "Пицца"
+     *                          },
+     *                      }
+     *                    }
+     *                 )
+     *             )
+     *         }
+     *     ),
+     * )
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateRequest $request
+     * @param Product $product
+     * @return ProductResource
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Product $product)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return new ProductResource(
+            $this->productService->update($product, $request->all())
+        );
     }
 }

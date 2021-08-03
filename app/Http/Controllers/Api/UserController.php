@@ -149,7 +149,9 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return new UserCollection(User::with('roles')->paginate(
+        return new UserCollection(User::with('roles')
+            ->orderBy('created_at', 'desc')
+            ->paginate(
             (int) $request->get('per_page', 20)
         ));
     }

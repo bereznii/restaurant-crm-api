@@ -397,6 +397,39 @@
                             "type": "integer",
                             "default": "1"
                         }
+                    },
+                    {
+                        "name": "restaurant",
+                        "in": "query",
+                        "description": "Идентификатор ресторана",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "city_sync_id",
+                        "in": "query",
+                        "description": "Идентификатор города",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type_sync_id",
+                        "in": "query",
+                        "description": "Тип товара",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pizza",
+                                "sushi",
+                                "soup",
+                                "other"
+                            ]
+                        }
                     }
                 ],
                 "responses": {
@@ -412,10 +445,6 @@
                                         },
                                         "restaurant": {
                                             "description": "Идентификатор ресторана",
-                                            "type": "string"
-                                        },
-                                        "city_sync_id": {
-                                            "description": "Идентификатор города",
                                             "type": "string"
                                         },
                                         "article": {
@@ -434,20 +463,16 @@
                                             "description": "Активен ли товар",
                                             "type": "string"
                                         },
-                                        "price": {
-                                            "description": "Актуальная стоимость",
-                                            "type": "string"
-                                        },
-                                        "price_old": {
-                                            "description": "Предыдущая стоимость",
-                                            "type": "string"
-                                        },
                                         "weight": {
                                             "description": "Вес",
-                                            "type": "string"
+                                            "type": "intger"
                                         },
                                         "weight_type": {
                                             "description": "Единица измерения веса",
+                                            "type": "string"
+                                        },
+                                        "type_sync_id": {
+                                            "description": "Идентификатор типа товара",
                                             "type": "string"
                                         },
                                         "description_ua": {
@@ -462,8 +487,12 @@
                                             "description": "Дата последнего редактирования",
                                             "type": "string"
                                         },
-                                        "city": {
-                                            "description": "Сущность города",
+                                        "prices": {
+                                            "description": "Массив сущностей цены товара для каждого города",
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "description": "Сущность типа товара",
                                             "type": "string"
                                         }
                                     },
@@ -473,25 +502,34 @@
                                             {
                                                 "id": "1",
                                                 "restaurant": "smaki",
-                                                "city_sync_id": "lviv",
                                                 "article": "art-93993",
                                                 "title_ua": "Пицца 4 Сыра",
                                                 "title_ru": "Пицца 4 Сыра",
                                                 "is_active": 0,
-                                                "price": 120,
-                                                "price_old": 114,
                                                 "weight": 250,
                                                 "weight_type": "г",
+                                                "type_sync_id": "pizza",
                                                 "description_ua": "Lorem ipsum dolor sit amet.",
                                                 "description_ru": "Lorem ipsum dolor sit amet.",
                                                 "created_at": "2021-07-30T15:29:31.000000Z",
                                                 "updated_at": "2021-07-30T15:29:31.000000Z",
-                                                "city": {
-                                                    "id": 1,
-                                                    "sync_id": "lviv",
-                                                    "name": "Львов",
-                                                    "created_at": "2021-07-30T15:29:31.000000Z",
-                                                    "updated_at": "2021-07-30T15:29:31.000000Z"
+                                                "prices": [
+                                                    {
+                                                        "city_sync_id": "lviv",
+                                                        "article": "art-93993",
+                                                        "price": 120,
+                                                        "price_old": 114
+                                                    },
+                                                    {
+                                                        "city_sync_id": "mykolaiv",
+                                                        "article": "art-93993",
+                                                        "price": 125,
+                                                        "price_old": 119
+                                                    }
+                                                ],
+                                                "type": {
+                                                    "sync_id": "pizza",
+                                                    "name": "Пицца"
                                                 }
                                             }
                                         ],
@@ -510,6 +548,457 @@
                                             "per_page": 20,
                                             "to": 11,
                                             "total": 11
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/{restaurant}/products": {
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "description": "Используется исключительно для синхронизации товаров с 1С",
+                "operationId": "a2759cbdb9801519e268bd1abf5aa20e",
+                "parameters": [
+                    {
+                        "name": "restaurant",
+                        "in": "path",
+                        "description": "Идентификатор ресторана",
+                        "required": true,
+                        "example": "smaki"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "article": {
+                                            "description": "Артикул",
+                                            "type": "string"
+                                        },
+                                        "title_ua": {
+                                            "description": "Название на украинском",
+                                            "type": "string"
+                                        },
+                                        "weight": {
+                                            "description": "Вес",
+                                            "type": "integer"
+                                        },
+                                        "weight_type": {
+                                            "description": "Единица измерения веса",
+                                            "type": "string"
+                                        },
+                                        "price": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "city_sync_id": {
+                                                        "description": "Идентификатор города для которого редактируется цена",
+                                                        "type": "string"
+                                                    },
+                                                    "price": {
+                                                        "description": "Актуальная цена",
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "example": [
+                                {
+                                    "article": "art-1",
+                                    "title_ua": "Калифорния",
+                                    "weight": 250,
+                                    "weight_type": "г",
+                                    "prices": [
+                                        {
+                                            "city": "lviv",
+                                            "price": 190
+                                        },
+                                        {
+                                            "city": "sumy",
+                                            "price": 180
+                                        }
+                                    ]
+                                },
+                                {
+                                    "article": "art-2",
+                                    "title_ua": "Филадельфия",
+                                    "weight": 260,
+                                    "weight_type": "г",
+                                    "prices": [
+                                        {
+                                            "city": "lviv",
+                                            "price": 210
+                                        },
+                                        {
+                                            "city": "sumy",
+                                            "price": 200
+                                        },
+                                        {
+                                            "city": "vinnytsia",
+                                            "price": 200
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Результат синхронизации товаров",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "message": "OK"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/products/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "operationId": "b5099368868dbe7900acd129345eb148",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID товара",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "integer"
+                                        },
+                                        "restaurant": {
+                                            "description": "Идентификатор ресторана",
+                                            "type": "string"
+                                        },
+                                        "article": {
+                                            "description": "Артикул",
+                                            "type": "string"
+                                        },
+                                        "title_ua": {
+                                            "description": "Название на украинском",
+                                            "type": "string"
+                                        },
+                                        "title_ru": {
+                                            "description": "Название на русском",
+                                            "type": "string"
+                                        },
+                                        "is_active": {
+                                            "description": "Активен ли товар",
+                                            "type": "string"
+                                        },
+                                        "weight": {
+                                            "description": "Вес",
+                                            "type": "integer"
+                                        },
+                                        "weight_type": {
+                                            "description": "Единица измерения веса",
+                                            "type": "string"
+                                        },
+                                        "type_sync_id": {
+                                            "description": "Идентификатор типа товара",
+                                            "type": "string"
+                                        },
+                                        "description_ua": {
+                                            "description": "Описание на украинском",
+                                            "type": "string"
+                                        },
+                                        "description_ru": {
+                                            "description": "Описание на русском",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего редактирования",
+                                            "type": "string"
+                                        },
+                                        "prices": {
+                                            "description": "Массив сущностей цены товара для каждого города",
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "description": "Сущность типа товара",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": {
+                                            "id": "1",
+                                            "restaurant": "smaki",
+                                            "city_sync_id": "lviv",
+                                            "article": "art-93993",
+                                            "title_ua": "Пицца 4 Сыра",
+                                            "title_ru": "Пицца 4 Сыра",
+                                            "is_active": 0,
+                                            "price": 120,
+                                            "price_old": 114,
+                                            "weight": 250,
+                                            "weight_type": "г",
+                                            "type_sync_id": "pizza",
+                                            "description_ua": "Lorem ipsum dolor sit amet.",
+                                            "description_ru": "Lorem ipsum dolor sit amet.",
+                                            "created_at": "2021-07-30T15:29:31.000000Z",
+                                            "updated_at": "2021-07-30T15:29:31.000000Z",
+                                            "prices": [
+                                                {
+                                                    "city_sync_id": "lviv",
+                                                    "article": "art-93993",
+                                                    "price": 120,
+                                                    "price_old": 114
+                                                },
+                                                {
+                                                    "city_sync_id": "mykolaiv",
+                                                    "article": "art-93993",
+                                                    "price": 125,
+                                                    "price_old": 119
+                                                }
+                                            ],
+                                            "type": {
+                                                "sync_id": "pizza",
+                                                "name": "Пицца"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Products"
+                ],
+                "operationId": "8204cc45c64088529e69c8f6b6880545",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID товара",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title_ua": {
+                                        "description": "Название на украинском",
+                                        "type": "string"
+                                    },
+                                    "title_ru": {
+                                        "description": "Название на русском",
+                                        "type": "string",
+                                        "enum": [
+                                            "1",
+                                            "0"
+                                        ]
+                                    },
+                                    "prices": {
+                                        "description": "Массив цен товара для редактирования",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "city_sync_id": {
+                                                        "description": "Идентификатор города для которого редактируется цена",
+                                                        "type": "string"
+                                                    },
+                                                    "price_old": {
+                                                        "description": "Новое значения предыдщуей цены",
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "is_active": {
+                                        "description": "Активен ли товар",
+                                        "type": "integer"
+                                    },
+                                    "description_ua": {
+                                        "description": "Описание на украинском",
+                                        "type": "string"
+                                    },
+                                    "description_ru": {
+                                        "description": "Описание на русском",
+                                        "type": "string"
+                                    },
+                                    "type_sync_id": {
+                                        "description": "Идентификатор типа товара",
+                                        "type": "string",
+                                        "enum": [
+                                            "pizza",
+                                            "sushi",
+                                            "soup",
+                                            "other"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "integer"
+                                        },
+                                        "restaurant": {
+                                            "description": "Идентификатор ресторана",
+                                            "type": "string"
+                                        },
+                                        "article": {
+                                            "description": "Артикул",
+                                            "type": "string"
+                                        },
+                                        "title_ua": {
+                                            "description": "Название на украинском",
+                                            "type": "string"
+                                        },
+                                        "title_ru": {
+                                            "description": "Название на русском",
+                                            "type": "string"
+                                        },
+                                        "is_active": {
+                                            "description": "Активен ли товар",
+                                            "type": "string"
+                                        },
+                                        "weight": {
+                                            "description": "Вес",
+                                            "type": "integer"
+                                        },
+                                        "weight_type": {
+                                            "description": "Единица измерения веса",
+                                            "type": "string"
+                                        },
+                                        "type_sync_id": {
+                                            "description": "Идентификатор типа товара",
+                                            "type": "string"
+                                        },
+                                        "description_ua": {
+                                            "description": "Описание на украинском",
+                                            "type": "string"
+                                        },
+                                        "description_ru": {
+                                            "description": "Описание на русском",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего редактирования",
+                                            "type": "string"
+                                        },
+                                        "prices": {
+                                            "description": "Массив сущностей цены товара для каждого города",
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "description": "Сущность типа товара",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": {
+                                            "id": "1",
+                                            "restaurant": "smaki",
+                                            "city_sync_id": "lviv",
+                                            "article": "art-93993",
+                                            "title_ua": "Пицца 4 Сыра",
+                                            "title_ru": "Пицца 4 Сыра",
+                                            "is_active": 0,
+                                            "price": 120,
+                                            "price_old": 114,
+                                            "weight": 250,
+                                            "weight_type": "г",
+                                            "type_sync_id": "pizza",
+                                            "description_ua": "Lorem ipsum dolor sit amet.",
+                                            "description_ru": "Lorem ipsum dolor sit amet.",
+                                            "created_at": "2021-07-30T15:29:31.000000Z",
+                                            "updated_at": "2021-07-30T15:29:31.000000Z",
+                                            "prices": [
+                                                {
+                                                    "city_sync_id": "lviv",
+                                                    "article": "art-93993",
+                                                    "price": 120,
+                                                    "price_old": 114
+                                                },
+                                                {
+                                                    "city_sync_id": "mykolaiv",
+                                                    "article": "art-93993",
+                                                    "price": 125,
+                                                    "price_old": 119
+                                                }
+                                            ],
+                                            "type": {
+                                                "sync_id": "pizza",
+                                                "name": "Пицца"
+                                            }
                                         }
                                     }
                                 }

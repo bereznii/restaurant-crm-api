@@ -30,8 +30,12 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/roles', [RoleController::class, 'index']);
     });
 
-    Route::apiResource('locations', LocationController::class)->only(['index']);
-    Route::apiResource('cities', CityController::class)->only(['index']);
-    Route::apiResource('users', UserController::class)->except(['destroy']);
-    Route::apiResource('products', ProductController::class)->except(['destroy']);
+    Route::apiResource('locations', LocationController::class)->only(['index',]);
+
+    Route::apiResource('cities', CityController::class)->only(['index',]);
+
+    Route::apiResource('users', UserController::class)->except(['destroy',]);
+
+    Route::apiResource('products', ProductController::class)->only(['index','update','show']);
+    Route::post('/{restaurant}/products', [ProductController::class, 'massStore']);
 });
