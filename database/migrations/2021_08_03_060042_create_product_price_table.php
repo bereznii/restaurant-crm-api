@@ -28,8 +28,6 @@ class CreateProductPriceTable extends Migration
             $table->integer('price');
             $table->integer('price_old')->nullable();
             $table->timestamps();
-
-            $table->unique(['city_sync_id', 'article'], 'unique_product');
         });
     }
 

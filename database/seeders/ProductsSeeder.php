@@ -272,6 +272,9 @@ class ProductsSeeder extends Seeder
         DB::table('products')->delete();
         DB::statement('ALTER TABLE products AUTO_INCREMENT=1');
 
+        DB::table('product_prices')->delete();
+        DB::statement('ALTER TABLE product_prices AUTO_INCREMENT=1');
+
         $date = date('Y-m-d H:i:s');
 
         foreach ($restaurants as $restaurant) {
