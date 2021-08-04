@@ -277,10 +277,11 @@ class ProductsSeeder extends Seeder
 
         $date = date('Y-m-d H:i:s');
 
+        $i = 1;
         foreach ($restaurants as $restaurant) {
-            $i = 1;
             foreach ($productPrototypes as $productPrototype) {
                 $productsToInsert[] = [
+                    'id' => $i,
                     'restaurant' => $restaurant,
                     'article' => "art-{$i}",
                     'title_ua' => $productPrototype['name'],
@@ -297,8 +298,8 @@ class ProductsSeeder extends Seeder
 
                 foreach ($cities as $city) {
                     $productPricesToInsert[] = [
+                        'product_id' => $i,
                         'city_sync_id' => $city,
-                        'article' => "art-{$i}",
                         'price' => $productPrototype['price'],
                         'price_old' => $productPrototype['price'] * 0.95,
                         'created_at' => $date,

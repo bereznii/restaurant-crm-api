@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::apiResource('users', UserController::class)->except(['destroy',]);
 
+    Route::get('/products/search', [ProductController::class, 'search']);
     Route::apiResource('products', ProductController::class)->only(['index','update','show']);
     Route::post('/{restaurant}/products', [ProductController::class, 'massStore']);
 });

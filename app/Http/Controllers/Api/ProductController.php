@@ -3,28 +3,26 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Products\IndexRequest;
 use App\Http\Requests\Products\MassStoreRequest;
+use App\Http\Requests\Products\SearchRequest;
 use App\Http\Requests\Products\UpdateRequest;
 use App\Http\Resources\Products\ProductResource;
 use App\Http\Resources\Products\ProductsCollection;
 use App\Models\Product;
+use App\Repositories\ProductRepository;
 use App\Services\ProductService;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
-    /** @var ProductService|Application|mixed  */
-    private ProductService $productService;
-
     /**
-     *
+     * @param ProductService $productService
+     * @param ProductRepository $productRepository
      */
-    public function __construct()
-    {
-        $this->productService = app(ProductService::class);
-    }
+    public function __construct(
+        private ProductService $productService,
+        private ProductRepository $productRepository
+    ) {}
 
     /**
      * @OA\Get(
@@ -173,14 +171,14 @@ class ProductController extends Controller
      *                          "updated_at": "2021-07-30T15:29:31.000000Z",
      *                          "prices": {
      *                              {
+     *                                  "product_id": 1,
      *                                  "city_sync_id": "lviv",
-     *                                  "article": "art-93993",
      *                                  "price": 120,
      *                                  "price_old": 114
      *                              },
      *                              {
+     *                                  "product_id": 1,
      *                                  "city_sync_id": "mykolaiv",
-     *                                  "article": "art-93993",
      *                                  "price": 125,
      *                                  "price_old": 119
      *                              },
@@ -215,21 +213,10 @@ class ProductController extends Controller
      *
      * @return ProductsCollection
      */
-    public function index(Request $request)
+    public function index(IndexRequest $request)
     {
         return new ProductsCollection(
-            Product::with([
-                'prices' => function ($query) use ($request) {
-                    $query->filterWhere('city_sync_id', '=', $request->get('city_sync_id'))
-                        ->select(['city_sync_id', 'article', 'price', 'price_old']);
-                },
-                'type:sync_id,name'])
-                ->filterWhere('restaurant', '=', $request->get('restaurant'))
-                ->filterWhere('type_sync_id', '=', $request->get('type_sync_id'))
-                ->orderBy('created_at', 'desc')
-                ->paginate(
-                    (int) $request->get('per_page', 50)
-                )
+            $this->productRepository->index($request->validated())
         );
     }
 
@@ -356,7 +343,7 @@ class ProductController extends Controller
     public function massStore(string $restaurant, MassStoreRequest $request)
     {
         return response()->json([
-            'message' => $this->productService->massStore($restaurant, $request->all())
+            'message' => $this->productService->massStore($restaurant, $request->validated())
                 ? 'OK'
                 : 'При сохранении товаров произошла ошибка'
         ]);
@@ -469,14 +456,14 @@ class ProductController extends Controller
      *                          "updated_at": "2021-07-30T15:29:31.000000Z",
      *                          "prices": {
      *                              {
+     *                                  "product_id": 1,
      *                                  "city_sync_id": "lviv",
-     *                                  "article": "art-93993",
      *                                  "price": 120,
      *                                  "price_old": 114
      *                              },
      *                              {
+     *                                  "product_id": 1,
      *                                  "city_sync_id": "mykolaiv",
-     *                                  "article": "art-93993",
      *                                  "price": 125,
      *                                  "price_old": 119
      *                              },
@@ -499,7 +486,7 @@ class ProductController extends Controller
     public function show($id)
     {
         return new ProductResource(
-            Product::with('prices:city_sync_id,article,price,price_old', 'type:sync_id,name')->findOrFail($id)
+            $this->productRepository->show($id)
         );
     }
 
@@ -670,14 +657,14 @@ class ProductController extends Controller
      *                          "updated_at": "2021-07-30T15:29:31.000000Z",
      *                          "prices": {
      *                              {
+     *                                  "product_id": 1,
      *                                  "city_sync_id": "lviv",
-     *                                  "article": "art-93993",
      *                                  "price": 120,
      *                                  "price_old": 114
      *                              },
      *                              {
+     *                                  "product_id": 1,
      *                                  "city_sync_id": "mykolaiv",
-     *                                  "article": "art-93993",
      *                                  "price": 125,
      *                                  "price_old": 119
      *                              },
@@ -701,7 +688,18 @@ class ProductController extends Controller
     public function update(UpdateRequest $request, Product $product)
     {
         return new ProductResource(
-            $this->productService->update($product, $request->all())
+            $this->productService->update($product, $request->validated())
+        );
+    }
+
+    /**
+     * @param SearchRequest $request
+     * @return ProductsCollection
+     */
+    public function search(SearchRequest $request)
+    {
+        return new ProductsCollection(
+            $this->productRepository->search($request->validated())
         );
     }
 }

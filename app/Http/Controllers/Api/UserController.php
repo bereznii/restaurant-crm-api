@@ -546,7 +546,7 @@ class UserController extends Controller
     {
         $user = User::with('roles')->findOrFail($id);
 
-        $attrs = $request->all();
+        $attrs = $request->validated();
 
         if (isset($attrs['password'])) {
             $attrs['password'] = Hash::make($request->input('password'));

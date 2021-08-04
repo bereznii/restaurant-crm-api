@@ -27,14 +27,14 @@ class ProductService
             foreach ($attributes['prices'] as $priceToSave) {
                 ProductPrice::where([
                     ['city_sync_id', $priceToSave['city_sync_id']],
-                    ['article', $product->article]
+                    ['product_id', $product->id]
                 ])->update([
                     'price_old' => $priceToSave['price_old']
                 ]);
             }
         }
 
-        return Product::where('id', $product->id)->with('prices:city_sync_id,article,price,price_old', 'type')->first();
+        return Product::where('id', $product->id)->with('prices:product_id,city_sync_id,price,price_old', 'type')->first();
     }
 
     /**
@@ -72,7 +72,7 @@ class ProductService
         if (isset($receivedProduct['prices']) && is_array($receivedProduct['prices'])) {
             foreach ($receivedProduct['prices'] as $receivedProductPrice) {
                 ProductPrice::where([
-                    ['article', $receivedProduct['article']],
+                    ['product_id', $correspondentExistingProduct->id],
                     ['city_sync_id', $receivedProductPrice['city']],
                 ])->update([
                     'price' => $receivedProductPrice['price']
@@ -101,8 +101,8 @@ class ProductService
             $date = date('Y-m-d H:i:s');
             foreach ($receivedProduct['prices'] as $receivedProductPrice) {
                 DB::table('product_prices')->insert([
+                    'product_id' => $product->id,
                     'city_sync_id' => $receivedProductPrice['city'],
-                    'article' => $receivedProduct['article'],
                     'price' => $receivedProductPrice['price'],
                     'created_at' => $date,
                     'updated_at' => $date,

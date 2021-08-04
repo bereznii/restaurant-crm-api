@@ -515,14 +515,14 @@
                                                 "updated_at": "2021-07-30T15:29:31.000000Z",
                                                 "prices": [
                                                     {
+                                                        "product_id": 1,
                                                         "city_sync_id": "lviv",
-                                                        "article": "art-93993",
                                                         "price": 120,
                                                         "price_old": 114
                                                     },
                                                     {
+                                                        "product_id": 1,
                                                         "city_sync_id": "mykolaiv",
-                                                        "article": "art-93993",
                                                         "price": 125,
                                                         "price_old": 119
                                                     }
@@ -790,14 +790,14 @@
                                             "updated_at": "2021-07-30T15:29:31.000000Z",
                                             "prices": [
                                                 {
+                                                    "product_id": 1,
                                                     "city_sync_id": "lviv",
-                                                    "article": "art-93993",
                                                     "price": 120,
                                                     "price_old": 114
                                                 },
                                                 {
+                                                    "product_id": 1,
                                                     "city_sync_id": "mykolaiv",
-                                                    "article": "art-93993",
                                                     "price": 125,
                                                     "price_old": 119
                                                 }
@@ -983,14 +983,14 @@
                                             "updated_at": "2021-07-30T15:29:31.000000Z",
                                             "prices": [
                                                 {
+                                                    "product_id": 1,
                                                     "city_sync_id": "lviv",
-                                                    "article": "art-93993",
                                                     "price": 120,
                                                     "price_old": 114
                                                 },
                                                 {
+                                                    "product_id": 1,
                                                     "city_sync_id": "mykolaiv",
-                                                    "article": "art-93993",
                                                     "price": 125,
                                                     "price_old": 119
                                                 }
