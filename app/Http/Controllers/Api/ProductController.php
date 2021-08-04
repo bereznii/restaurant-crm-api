@@ -521,8 +521,6 @@ class ProductController extends Controller
      *                  property="prices",
      *                  type="array",
      *                  description="Массив цен товара для редактирования",
-     *                  @OA\Items(
-     *                      type="array",
      *                      @OA\Items(
      *                          @OA\Property(
      *                             property="city_sync_id",
@@ -534,7 +532,6 @@ class ProductController extends Controller
      *                             type="integer",
      *                             description="Новое значения предыдщуей цены"
      *                          ),
-     *                      ),
      *                  ),
      *               ),
      *               @OA\Property(

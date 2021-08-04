@@ -854,20 +854,17 @@
                                         "description": "Массив цен товара для редактирования",
                                         "type": "array",
                                         "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "city_sync_id": {
-                                                        "description": "Идентификатор города для которого редактируется цена",
-                                                        "type": "string"
-                                                    },
-                                                    "price_old": {
-                                                        "description": "Новое значения предыдщуей цены",
-                                                        "type": "integer"
-                                                    }
+                                            "properties": {
+                                                "city_sync_id": {
+                                                    "description": "Идентификатор города для которого редактируется цена",
+                                                    "type": "string"
                                                 },
-                                                "type": "object"
-                                            }
+                                                "price_old": {
+                                                    "description": "Новое значения предыдщуей цены",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "is_active": {
