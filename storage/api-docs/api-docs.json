@@ -500,7 +500,7 @@
                                     "example": {
                                         "data": [
                                             {
-                                                "id": "1",
+                                                "id": 1,
                                                 "restaurant": "smaki",
                                                 "article": "art-93993",
                                                 "title_ua": "Пицца 4 Сыра",
@@ -772,7 +772,7 @@
                                     "type": "object",
                                     "example": {
                                         "data": {
-                                            "id": "1",
+                                            "id": 1,
                                             "restaurant": "smaki",
                                             "city_sync_id": "lviv",
                                             "article": "art-93993",
@@ -965,7 +965,7 @@
                                     "type": "object",
                                     "example": {
                                         "data": {
-                                            "id": "1",
+                                            "id": 1,
                                             "restaurant": "smaki",
                                             "city_sync_id": "lviv",
                                             "article": "art-93993",

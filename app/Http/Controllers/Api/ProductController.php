@@ -156,7 +156,7 @@ class ProductController extends Controller
      *                     ),
      *                     example={"data":{
      *                      {
-     *                          "id": "1",
+     *                          "id": 1,
      *                          "restaurant": "smaki",
      *                          "article": "art-93993",
      *                          "title_ua": "Пицца 4 Сыра",
@@ -438,7 +438,7 @@ class ProductController extends Controller
      *                         description="Сущность типа товара"
      *                     ),
      *                     example={"data":{
-     *                          "id": "1",
+     *                          "id": 1,
      *                          "restaurant": "smaki",
      *                          "city_sync_id": "lviv",
      *                          "article": "art-93993",
@@ -639,7 +639,7 @@ class ProductController extends Controller
      *                         description="Сущность типа товара"
      *                     ),
      *                     example={"data":{
-     *                          "id": "1",
+     *                          "id": 1,
      *                          "restaurant": "smaki",
      *                          "city_sync_id": "lviv",
      *                          "article": "art-93993",
