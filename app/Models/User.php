@@ -21,6 +21,8 @@ class User extends Authenticatable
     /** @var string */
     public const STATUS_DISABLED = 'disabled';
 
+    public const ROLE_COURIER = 'courier';
+
     /**
      * The attributes that are mass assignable.
      *

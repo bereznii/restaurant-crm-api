@@ -371,6 +371,24 @@
                 ]
             }
         },
+        "/mobile/orders": {
+            "get": {
+                "tags": [
+                    "Mobile.Orders"
+                ],
+                "operationId": "757135def13829fa121e85a6ec8281e3",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/products": {
             "get": {
                 "tags": [
@@ -1205,7 +1223,7 @@
                                     "password",
                                     "phone",
                                     "position",
-                                    "role"
+                                    "role_name"
                                 ],
                                 "properties": {
                                     "first_name": {
@@ -1234,6 +1252,10 @@
                                     },
                                     "role_name": {
                                         "description": "Идентификатор роли",
+                                        "type": "string"
+                                    },
+                                    "iiko_id": {
+                                        "description": "ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)",
                                         "type": "string"
                                     }
                                 },

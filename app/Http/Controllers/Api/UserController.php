@@ -8,6 +8,7 @@ use App\Http\Requests\Users\UpdateRequest;
 use App\Http\Resources\Users\UserCollection;
 use App\Http\Resources\Users\UserResource;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,13 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UserController extends Controller
 {
+    /**
+     * @param UserService $userService
+     */
+    public function __construct(
+        private UserService $userService
+    ) {}
+
     /**
      * @OA\Get(
      *     path="/users",
@@ -166,7 +174,7 @@ class UserController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *               required={"first_name","last_name","email","password","phone","position", "role"},
+     *               required={"first_name","last_name","email","password","phone","position", "role_name"},
      *               @OA\Property(
      *                  property="first_name",
      *                  type="string",
@@ -201,7 +209,12 @@ class UserController extends Controller
      *                  property="role_name",
      *                  type="string",
      *                  description="Идентификатор роли"
-     *               )
+     *               ),
+     *               @OA\Property(
+     *                  property="iiko_id",
+     *                  type="string",
+     *                  description="ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)"
+     *               ),
      *              )
      *          )
      *      ),
@@ -287,18 +300,9 @@ class UserController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $user = User::create([
-            'first_name' => $request->input('first_name'),
-            'last_name' => $request->input('last_name'),
-            'position' => $request->input('position'),
-            'phone' => $request->input('phone'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
-
-        $user->assignRole($request->input('role_name'));
-
-        return new UserResource(User::with('roles')->findOrFail($user->id));
+        return new UserResource(
+            $this->userService->store($request->validated())
+        );
     }
 
     /**

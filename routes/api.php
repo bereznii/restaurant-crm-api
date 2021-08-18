@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\Mobile\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,4 +40,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/products/search', [ProductController::class, 'search']);
     Route::apiResource('products', ProductController::class)->only(['index','update','show']);
     Route::post('/{restaurant}/products', [ProductController::class, 'massStore']);
+
+    Route::prefix('mobile')->group(function () {
+        Route::apiResource('orders', OrderController::class)->only(['index',]);
+    });
 });

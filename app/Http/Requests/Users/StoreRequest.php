@@ -31,6 +31,7 @@ class StoreRequest extends FormRequest
             'position' => 'required|string|max:255',
             'password' => 'required|string|min:8',
             'role_name' => 'required|string|exists:rbac_roles,name',
+            'iiko_id' => 'required_if:role_name,courier|uuid',
         ];
     }
 }
