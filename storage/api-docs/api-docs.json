@@ -376,10 +376,125 @@
                 "tags": [
                     "Mobile.Orders"
                 ],
+                "description": "Доступ для пользователей с ролью: <b>Courier</b>",
                 "operationId": "757135def13829fa121e85a6ec8281e3",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "statusTitle": {
+                                            "description": "Название статуса заказа",
+                                            "type": "string"
+                                        },
+                                        "orderUuid": {
+                                            "description": "Уникальный идентификатор заказа",
+                                            "type": "string"
+                                        },
+                                        "orderId": {
+                                            "description": "Понятный номер заказа. Может использоваться для передачи клиенту. Уникальность не гарантирована",
+                                            "type": "string"
+                                        },
+                                        "paymentTitle": {
+                                            "description": "Название типа оплаты",
+                                            "type": "string"
+                                        },
+                                        "paymentSum": {
+                                            "description": "Сумма к оплате",
+                                            "type": "integer"
+                                        },
+                                        "comment": {
+                                            "description": "Комментарий к заказу",
+                                            "type": "integer"
+                                        },
+                                        "customer": {
+                                            "properties": {
+                                                "name": {
+                                                    "description": "Имя клиента",
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "description": "Телефон клиента доставки",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "address": {
+                                            "properties": {
+                                                "city": {
+                                                    "description": "Наименование города",
+                                                    "type": "string"
+                                                },
+                                                "street": {
+                                                    "description": "Наименование улицы",
+                                                    "type": "string"
+                                                },
+                                                "index": {
+                                                    "description": "Индекс улицы в адресе, если есть",
+                                                    "type": "string"
+                                                },
+                                                "home": {
+                                                    "description": "Дом",
+                                                    "type": "string"
+                                                },
+                                                "housing": {
+                                                    "description": "Корпус",
+                                                    "type": "string"
+                                                },
+                                                "apartment": {
+                                                    "description": "Квартира",
+                                                    "type": "string"
+                                                },
+                                                "entrance": {
+                                                    "description": "Подъезд",
+                                                    "type": "string"
+                                                },
+                                                "floor": {
+                                                    "description": "Этаж",
+                                                    "type": "string"
+                                                },
+                                                "comment": {
+                                                    "description": "Дополнительная информация",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "statusTitle": "В пути",
+                                                "orderUuid": "257fd1c0-3015-dc6c-f751-d78dd06b4ef5",
+                                                "orderId": 83112,
+                                                "paymentTitle": "Наличные",
+                                                "paymentSum": 609,
+                                                "comment": "Доставка за 29хв; | Замовлення онлайн | Підготувати решту з: готівка;",
+                                                "customer": {
+                                                    "name": "Юлія Кухар",
+                                                    "phone": "+380974747560"
+                                                },
+                                                "address": {
+                                                    "city": "Львів",
+                                                    "street": "Чернівецька вул.",
+                                                    "index": "",
+                                                    "home": "11",
+                                                    "housing": "",
+                                                    "apartment": "",
+                                                    "entrance": "",
+                                                    "floor": "2",
+                                                    "comment": "Львів, Чернівецька , дім 11, поверх 2\\nЛьвів Чернівецька 11 2"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [

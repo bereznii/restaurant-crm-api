@@ -2,10 +2,7 @@
 
 namespace App\Services;
 
-use App\Http\Resources\Users\UserResource;
 use App\Models\Location;
-use App\Models\Product;
-use App\Models\ProductPrice;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;

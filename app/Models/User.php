@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\iiko\CourierIiko;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -55,4 +56,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @return HasOne
+     */
+    public function iiko()
+    {
+        return $this->hasOne(CourierIiko::class, 'user_id', 'id');
+    }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getIikoIdAttribute($value)
+    {
+        return $this->iiko?->iiko_id;
+    }
 }
