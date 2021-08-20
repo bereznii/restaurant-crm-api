@@ -29,7 +29,7 @@ class LocationController extends Controller
      *                     @OA\Property(
      *                         property="restaurant",
      *                         type="string",
-     *                         description="Код ресторана"
+     *                         description="Идентификатор ресторана"
      *                     ),
      *                     @OA\Property(
      *                         property="name",

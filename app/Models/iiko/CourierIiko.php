@@ -15,4 +15,15 @@ class CourierIiko extends Model
      * @var string
      */
     protected $table = 'courier_iiko';
+
+    /**
+     * @var string[]
+     */
+    protected $fillable = [
+        'restaurant',
+        'user_id',
+        'iiko_id',
+        'created_at',
+        'updated_at',
+    ];
 }

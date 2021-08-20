@@ -7,6 +7,8 @@ use App\Http\Requests\Users\StoreRequest;
 use App\Http\Requests\Users\UpdateRequest;
 use App\Http\Resources\Users\UserCollection;
 use App\Http\Resources\Users\UserResource;
+use App\Models\iiko\CourierIiko;
+use App\Models\Location;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -157,11 +159,11 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return new UserCollection(User::with('roles')
-            ->orderBy('created_at', 'desc')
-            ->paginate(
-            (int) $request->get('per_page', 20)
-        ));
+        return new UserCollection(
+            User::with('roles')
+                ->orderBy('created_at', 'desc')
+                ->paginate((int) $request->get('per_page', 20))
+        );
     }
 
     /**
@@ -408,7 +410,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return new UserResource(User::with('roles')->findOrFail($id));
+        return new UserResource(
+            User::with('roles')->findOrFail($id)
+        );
     }
 
     /**
@@ -461,7 +465,17 @@ class UserController extends Controller
      *                  property="role_name",
      *                  type="string",
      *                  description="Идентификатор роли"
-     *               )
+     *               ),
+     *               @OA\Property(
+     *                  property="iiko_id",
+     *                  type="string",
+     *                  description="ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)"
+     *               ),
+     *               @OA\Property(
+     *                  property="restaurant",
+     *                  type="string",
+     *                  description="Идентификатор ресторана"
+     *               ),
      *              )
      *          )
      *      ),
@@ -548,20 +562,9 @@ class UserController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-        $user = User::with('roles')->findOrFail($id);
-
-        $attrs = $request->validated();
-
-        if (isset($attrs['password'])) {
-            $attrs['password'] = Hash::make($request->input('password'));
-        }
-        if (isset($attrs['role_name'])) {
-            $user->syncRoles([$attrs['role_name']]);
-        }
-
-        $user->update($attrs);
-
-        return new UserResource($user);
+        return new UserResource(
+            $this->userService->update($id, $request->validated())
+        );
     }
 
     /**
