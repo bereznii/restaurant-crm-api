@@ -7,6 +7,7 @@ use App\Http\Requests\Mobile\Orders\IndexRequest;
 use App\Http\Resources\Mobile\Orders\OrdersCollection;
 use App\Services\iiko\IikoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class OrderController extends Controller
 {
@@ -31,6 +32,11 @@ class OrderController extends Controller
      *                 mediaType="application/json",
      *                 @OA\Schema(
      *                     @OA\Property(
+     *                         property="restaurant",
+     *                         type="string",
+     *                         description="Код ресторана"
+     *                     ),
+     *                     @OA\Property(
      *                         property="statusTitle",
      *                         type="string",
      *                         description="Название статуса заказа"
@@ -46,19 +52,23 @@ class OrderController extends Controller
      *                         description="Понятный номер заказа. Может использоваться для передачи клиенту. Уникальность не гарантирована"
      *                     ),
      *                     @OA\Property(
-     *                         property="paymentTitle",
-     *                         type="string",
-     *                         description="Название типа оплаты"
-     *                     ),
-     *                     @OA\Property(
-     *                         property="paymentSum",
-     *                         type="integer",
-     *                         description="Сумма к оплате"
-     *                     ),
-     *                     @OA\Property(
      *                         property="comment",
      *                         type="integer",
      *                         description="Комментарий к заказу"
+     *                     ),
+     *                     @OA\Property(
+     *                        property="payment",
+     *                        type="object",
+     *                        @OA\Property(
+     *                            property="title",
+     *                            type="string",
+     *                            description="Название типа оплаты"
+     *                        ),
+     *                        @OA\Property(
+     *                            property="sum",
+     *                            type="integer",
+     *                            description="Сумма к оплате"
+     *                        ),
      *                     ),
      *                     @OA\Property(
      *                        property="customer",
@@ -125,11 +135,14 @@ class OrderController extends Controller
      *                     ),
      *                     example={"data":{
      *                      {
+     *                          "restaurant": "smaki",
      *                          "statusTitle": "В пути",
      *                          "orderUuid": "257fd1c0-3015-dc6c-f751-d78dd06b4ef5",
      *                          "orderId": 83112,
-     *                          "paymentTitle": "Наличные",
-     *                          "paymentSum": 609,
+     *                          "payment": {
+     *                              "title": "Наличные",
+     *                              "sum": 609,
+     *                          },
      *                          "comment": "Доставка за 29хв; | Замовлення онлайн | Підготувати решту з: готівка;",
      *                          "customer": {
      *                              "name": "Юлія Кухар",

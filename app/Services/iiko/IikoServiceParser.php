@@ -2,6 +2,7 @@
 
 namespace App\Services\iiko;
 
+use App\Models\Location;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
 
@@ -20,14 +21,15 @@ class IikoServiceParser
              * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.xqk6fzvxgaeo
              */
 
-            $parsedPayments = $this->parsePayments($orderInfo['payments']);
-
+            $parsed[$key]['restaurant'] = Location::SMAKI_MAKI_RESTAURANT;
             $parsed[$key]['statusTitle'] = $orderInfo['status'];
             $parsed[$key]['orderUuid'] = $orderInfo['orderId'];
             $parsed[$key]['orderId'] = (int) $orderInfo['number'];
-            $parsed[$key]['paymentTitle'] = $parsedPayments['mainPayment']['title'];
-            $parsed[$key]['paymentSum'] = $parsedPayments['mainPayment']['sum'];
             $parsed[$key]['comment'] = $orderInfo['comment'];
+
+            $parsedPayments = $this->parsePayments($orderInfo['payments']);
+            $parsed[$key]['payment']['title'] = $parsedPayments['mainPayment']['title'];
+            $parsed[$key]['payment']['sum'] = $parsedPayments['mainPayment']['sum'];
 
             /** @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.uknh114942rg */
             $parsed[$key]['customer']['name'] = trim("{$orderInfo['customer']['name']} {$orderInfo['customer']['surName']}") !== ''

@@ -385,6 +385,10 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "restaurant": {
+                                            "description": "Код ресторана",
+                                            "type": "string"
+                                        },
                                         "statusTitle": {
                                             "description": "Название статуса заказа",
                                             "type": "string"
@@ -397,17 +401,22 @@
                                             "description": "Понятный номер заказа. Может использоваться для передачи клиенту. Уникальность не гарантирована",
                                             "type": "string"
                                         },
-                                        "paymentTitle": {
-                                            "description": "Название типа оплаты",
-                                            "type": "string"
-                                        },
-                                        "paymentSum": {
-                                            "description": "Сумма к оплате",
-                                            "type": "integer"
-                                        },
                                         "comment": {
                                             "description": "Комментарий к заказу",
                                             "type": "integer"
+                                        },
+                                        "payment": {
+                                            "properties": {
+                                                "title": {
+                                                    "description": "Название типа оплаты",
+                                                    "type": "string"
+                                                },
+                                                "sum": {
+                                                    "description": "Сумма к оплате",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "customer": {
                                             "properties": {
@@ -468,11 +477,14 @@
                                     "example": {
                                         "data": [
                                             {
+                                                "restaurant": "smaki",
                                                 "statusTitle": "В пути",
                                                 "orderUuid": "257fd1c0-3015-dc6c-f751-d78dd06b4ef5",
                                                 "orderId": 83112,
-                                                "paymentTitle": "Наличные",
-                                                "paymentSum": 609,
+                                                "payment": {
+                                                    "title": "Наличные",
+                                                    "sum": 609
+                                                },
                                                 "comment": "Доставка за 29хв; | Замовлення онлайн | Підготувати решту з: готівка;",
                                                 "customer": {
                                                     "name": "Юлія Кухар",

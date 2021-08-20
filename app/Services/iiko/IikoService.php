@@ -16,6 +16,7 @@ class IikoService
 
     /**
      * @return Collection
+     * @throws \Exception
      */
     public function getOrdersForCourier(): Collection
     {

@@ -2,13 +2,17 @@
 
 namespace App\Services\iiko;
 
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 class IikoServiceInterface
 {
     /**
+     * @param IikoClient $iikoClient
      * @param IikoServiceParser $iikoServiceParser
      */
     public function __construct(
-//        private IikoClient $iikoClient,
+        private IikoClient $iikoClient,
         private IikoServiceParser $iikoServiceParser,
     ) {}
 
@@ -16,16 +20,22 @@ class IikoServiceInterface
      * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.f85lxd2yapf1
      * @param string $courierIikoId
      * @return mixed
+     * @throws \Exception
      */
     public function getCourierOrders(string $courierIikoId): mixed
     {
-//        $response = Http::get(IikoClient::API_URL . '/orders/get_courier_orders', [
-//            'access_token' => $this->iikoClient->getAccessToken(),
-//            'courier' => $courierIikoId,
-//            'organization' => IikoClient::ORGANIZATION_ID_SMAKI
-//        ]);
+//        try {
+//            $response = Http::get(IikoClient::API_URL . '/orders/get_courier_orders', [
+//                'access_token' => $this->iikoClient->getAccessToken(),
+//                'courier' => $courierIikoId,
+//                'organization' => IikoClient::ORGANIZATION_ID_SMAKI
+//            ]);
 //
-//        return $response->json();
+//            return $response->json();
+//        } catch (\Exception $e) {
+//            Log::error($e->getMessage());
+//            throw $e;
+//        }
 
         return $this->iikoServiceParser->parseDeliveryOrdersResponse(json_decode($this->onlineBonuses, true));
     }
