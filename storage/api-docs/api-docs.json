@@ -301,7 +301,7 @@
                                             "type": "string"
                                         },
                                         "restaurant": {
-                                            "description": "Код ресторана",
+                                            "description": "Идентификатор ресторана",
                                             "type": "string"
                                         },
                                         "name": {
@@ -386,7 +386,7 @@
                                 "schema": {
                                     "properties": {
                                         "restaurant": {
-                                            "description": "Код ресторана",
+                                            "description": "Идентификатор ресторана",
                                             "type": "string"
                                         },
                                         "statusTitle": {
@@ -1384,6 +1384,10 @@
                                     "iiko_id": {
                                         "description": "ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)",
                                         "type": "string"
+                                    },
+                                    "restaurant": {
+                                        "description": "Идентификатор ресторана (обязательно при создании пользователя с ролью courier)",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -1609,6 +1613,14 @@
                                     },
                                     "role_name": {
                                         "description": "Идентификатор роли",
+                                        "type": "string"
+                                    },
+                                    "iiko_id": {
+                                        "description": "ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)",
+                                        "type": "string"
+                                    },
+                                    "restaurant": {
+                                        "description": "Идентификатор ресторана (обязательно при создании пользователя с ролью courier)",
                                         "type": "string"
                                     }
                                 },

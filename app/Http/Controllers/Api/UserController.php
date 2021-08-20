@@ -217,6 +217,11 @@ class UserController extends Controller
      *                  type="string",
      *                  description="ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)"
      *               ),
+     *               @OA\Property(
+     *                  property="restaurant",
+     *                  type="string",
+     *                  description="Идентификатор ресторана (обязательно при создании пользователя с ролью courier)"
+     *               ),
      *              )
      *          )
      *      ),
@@ -474,7 +479,7 @@ class UserController extends Controller
      *               @OA\Property(
      *                  property="restaurant",
      *                  type="string",
-     *                  description="Идентификатор ресторана"
+     *                  description="Идентификатор ресторана (обязательно при создании пользователя с ролью courier)"
      *               ),
      *              )
      *          )
