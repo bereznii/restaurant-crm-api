@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Mobile\Orders\IndexRequest;
+use App\Http\Requests\Mobile\Orders\UpdateRequest;
+use App\Http\Resources\Mobile\Orders\OrderResource;
 use App\Http\Resources\Mobile\Orders\OrdersCollection;
 use App\Services\iiko\IikoService;
 use Illuminate\Http\Request;
@@ -37,17 +39,17 @@ class OrderController extends Controller
      *                         description="Идентификатор ресторана"
      *                     ),
      *                     @OA\Property(
-     *                         property="statusTitle",
+     *                         property="status_title",
      *                         type="string",
      *                         description="Название статуса заказа"
      *                     ),
      *                     @OA\Property(
-     *                         property="orderUuid",
+     *                         property="order_uuid",
      *                         type="string",
      *                         description="Уникальный идентификатор заказа"
      *                     ),
      *                     @OA\Property(
-     *                         property="orderId",
+     *                         property="order_id",
      *                         type="string",
      *                         description="Понятный номер заказа. Может использоваться для передачи клиенту. Уникальность не гарантирована"
      *                     ),
@@ -136,9 +138,9 @@ class OrderController extends Controller
      *                     example={"data":{
      *                      {
      *                          "restaurant": "smaki",
-     *                          "statusTitle": "В пути",
-     *                          "orderUuid": "257fd1c0-3015-dc6c-f751-d78dd06b4ef5",
-     *                          "orderId": 83112,
+     *                          "status_title": "В пути",
+     *                          "order_uuid": "257fd1c0-3015-dc6c-f751-d78dd06b4ef5",
+     *                          "order_id": 83112,
      *                          "payment": {
      *                              "title": "Наличные",
      *                              "sum": 609,
@@ -168,6 +170,7 @@ class OrderController extends Controller
      * )
      *
      * @return OrdersCollection
+     * @throws \Exception
      */
     public function index(IndexRequest $request)
     {
@@ -178,19 +181,9 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -210,26 +203,65 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @OA\Patch(
+     *     path="/mobile/orders/{order_uuid}",
+     *     tags={"Mobile.Orders"},
+     *     description="Отметить заказ доставленным или недоставленным. Доступ для пользователей с ролью: <b>Courier</b>",
+     *     security={{"Bearer":{}}},
+     *     @OA\Parameter(
+     *         name="order_uuid",
+     *         in="path",
+     *         description="UUID заказа",
+     *         required=true
+     *     ),
+     *      @OA\RequestBody(
+     *         required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *               @OA\Property(
+     *                  property="restaurant",
+     *                  type="string",
+     *                  description="Идентификатор ресторана"
+     *               ),
+     *               @OA\Property(
+     *                  property="delivered",
+     *                  type="boolean",
+     *                  description="Флаг доставлен/не доставлен. true - запрос переводит заказ из ON_WAY в DELIVERED, false - в обратную сторону."
+     *               ),
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         content={
+     *             @OA\MediaType(
+     *                 mediaType="application/json",
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="data",
+     *                         type="object",
+     *                         @OA\Property(
+     *                             property="success",
+     *                             type="boolean"
+     *                         )
+     *                     ),
+     *                 )
+     *             )
+     *         }
+     *     ),
+     * )
      *
-     * @param  int  $id
+     * @param UpdateRequest $request
+     * @param string $orderUuid
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function update(UpdateRequest $request, string $orderUuid)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        return new OrderResource(
+            $this->iikoService->setOrderDelivered($orderUuid, $request->validated())
+        );
     }
 
     /**

@@ -42,6 +42,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/{restaurant}/products', [ProductController::class, 'massStore']);
 
     Route::prefix('mobile')->group(function () {
-        Route::apiResource('orders', OrderController::class)->only(['index',]);
+        Route::apiResource('orders', OrderController::class)->only(['index','update']);
     });
 });

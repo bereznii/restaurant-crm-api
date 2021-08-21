@@ -389,15 +389,15 @@
                                             "description": "Идентификатор ресторана",
                                             "type": "string"
                                         },
-                                        "statusTitle": {
+                                        "status_title": {
                                             "description": "Название статуса заказа",
                                             "type": "string"
                                         },
-                                        "orderUuid": {
+                                        "order_uuid": {
                                             "description": "Уникальный идентификатор заказа",
                                             "type": "string"
                                         },
-                                        "orderId": {
+                                        "order_id": {
                                             "description": "Понятный номер заказа. Может использоваться для передачи клиенту. Уникальность не гарантирована",
                                             "type": "string"
                                         },
@@ -478,9 +478,9 @@
                                         "data": [
                                             {
                                                 "restaurant": "smaki",
-                                                "statusTitle": "В пути",
-                                                "orderUuid": "257fd1c0-3015-dc6c-f751-d78dd06b4ef5",
-                                                "orderId": 83112,
+                                                "status_title": "В пути",
+                                                "order_uuid": "257fd1c0-3015-dc6c-f751-d78dd06b4ef5",
+                                                "order_id": 83112,
                                                 "payment": {
                                                     "title": "Наличные",
                                                     "sum": 609
@@ -504,6 +504,70 @@
                                             }
                                         ]
                                     }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/mobile/orders/{order_uuid}": {
+            "patch": {
+                "tags": [
+                    "Mobile.Orders"
+                ],
+                "description": "Отметить заказ доставленным или недоставленным. Доступ для пользователей с ролью: <b>Courier</b>",
+                "operationId": "15126adb21cb72a1f88d446ba7a8c49e",
+                "parameters": [
+                    {
+                        "name": "order_uuid",
+                        "in": "path",
+                        "description": "UUID заказа",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "restaurant": {
+                                        "description": "Идентификатор ресторана",
+                                        "type": "string"
+                                    },
+                                    "delivered": {
+                                        "description": "Флаг доставлен/не доставлен. true - запрос переводит заказ из ON_WAY в DELIVERED, false - в обратную сторону.",
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "boolean"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }

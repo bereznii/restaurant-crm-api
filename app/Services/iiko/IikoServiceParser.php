@@ -22,9 +22,9 @@ class IikoServiceParser
              */
 
             $parsed[$key]['restaurant'] = Location::SMAKI_MAKI_RESTAURANT;
-            $parsed[$key]['statusTitle'] = $orderInfo['status'];
-            $parsed[$key]['orderUuid'] = $orderInfo['orderId'];
-            $parsed[$key]['orderId'] = (int) $orderInfo['number'];
+            $parsed[$key]['status_title'] = $orderInfo['status'];
+            $parsed[$key]['order_uuid'] = $orderInfo['orderId'];
+            $parsed[$key]['order_id'] = (int) $orderInfo['number'];
             $parsed[$key]['comment'] = $orderInfo['comment'];
 
             $parsedPayments = $this->parsePayments($orderInfo['payments']);

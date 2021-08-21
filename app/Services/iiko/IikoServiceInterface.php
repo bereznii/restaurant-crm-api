@@ -17,6 +17,39 @@ class IikoServiceInterface
     ) {}
 
     /**
+     * @param string $courierIikoId
+     * @param string $orderUuid
+     * @param array $validated
+     * @return bool[]
+     * @throws \Exception
+     */
+    public function setOrderDelivered(string $courierIikoId, string $orderUuid, array $validated): array
+    {
+//        try {
+//            $organizationId = IikoClient::ORGANIZATION_ID_SMAKI;
+//
+//            $response = Http::post(
+//                IikoClient::API_URL . "/orders/set_order_delivered?access_token={$this->iikoClient->getAccessToken()}&organization={$organizationId}",
+//                [
+//                    'courierId' => $courierIikoId,
+//                    'orderId' => $orderUuid,
+//                    'delivered' => $validated['delivered'],
+//                    'actualDeliveryTime' => date('Y-m-d H:i:s'),
+//                ]
+//            );
+//
+//            return $response->json();
+//        } catch (\Exception $e) {
+//            Log::error($e->getMessage());
+//            throw $e;
+//        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    /**
      * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.f85lxd2yapf1
      * @param string $courierIikoId
      * @return mixed

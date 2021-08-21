@@ -24,4 +24,17 @@ class IikoService
 
         return collect($response);
     }
+
+    /**
+     * @param string $orderUuid
+     * @param array $validated
+     * @return Collection
+     * @throws \Exception
+     */
+    public function setOrderDelivered(string $orderUuid, array $validated): Collection
+    {
+        $response = $this->iikoServiceInterface->setOrderDelivered(Auth::user()->iikoId, $orderUuid, $validated);
+
+        return collect($response);
+    }
 }
