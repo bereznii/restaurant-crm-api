@@ -108,6 +108,22 @@ class UserController extends Controller
      *                         description="Развание роли"
      *                      ),
      *                     @OA\Property(
+     *                         property="locations",
+     *                         type="array",
+     *                         description="Массив сущностей локаций, к которым привязан пользователь",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         ),
+     *                     ),
+     *                     @OA\Property(
+     *                         property="iiko",
+     *                         type="array",
+     *                         description="Данные из iiko CRM (для пользователей с ролью Courier)",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         ),
+     *                     ),
+     *                     @OA\Property(
      *                         property="created_at",
      *                         type="string",
      *                         description="Дата создания"
@@ -129,6 +145,24 @@ class UserController extends Controller
      *                          "role_name": "content_manager",
      *                          "role_title": "Контент-менеджер",
      *                          "email_verified_at": "2021-07-24T12:47:09.000000Z",
+     *                          "locations": {{
+     *                              "id": 1,
+     *                              "restaurant": "smaki",
+     *                              "name": "Кульпарковская Смаки",
+     *                              "city_sync_id": "lviv",
+     *                              "city": "Львов",
+     *                              "street": "ул. Кульпарковская",
+     *                              "house_number": "95",
+     *                              "latitude": null,
+     *                              "longitude": null,
+     *                              "created_at": "2021-07-28T11:08:01.000000Z",
+     *                              "updated_at": "2021-07-28T11:08:01.000000Z"
+     *                          }},
+     *                          "iiko": {
+     *                              "iiko_id": "8f423953-8d9e-47c5-a409-1e7cb33c6f00",
+     *                              "created_at": "2021-08-25T20:36:13.000000Z",
+     *                              "updated_at": "2021-08-25T20:36:13.000000Z"
+     *                          },
      *                          "created_at": "2021-07-24T12:47:09.000000Z",
      *                          "updated_at": "2021-07-24T12:47:09.000000Z",
      *                      }},
@@ -160,7 +194,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         return new UserCollection(
-            User::with('roles')
+            User::with('roles', 'iiko', 'locations')
                 ->orderBy('created_at', 'desc')
                 ->paginate((int) $request->get('per_page', 20))
         );
@@ -218,9 +252,12 @@ class UserController extends Controller
      *                  description="ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)"
      *               ),
      *               @OA\Property(
-     *                  property="restaurant",
-     *                  type="string",
-     *                  description="Идентификатор ресторана (обязательно при создании пользователя с ролью courier)"
+     *                  property="locations",
+     *                  type="array",
+     *                  description="ID локаций, к которым будет привязан пользователь",
+     *                  @OA\Items(
+     *                      type="integer"
+     *                  )
      *               ),
      *              )
      *          )
@@ -273,6 +310,22 @@ class UserController extends Controller
      *                         description="Развание роли"
      *                      ),
      *                      @OA\Property(
+     *                          property="locations",
+     *                          type="array",
+     *                          description="Массив сущностей локаций, к которым привязан пользователь",
+     *                          @OA\Items(
+     *                              type="object"
+     *                          ),
+     *                      ),
+     *                      @OA\Property(
+     *                          property="iiko",
+     *                          type="array",
+     *                          description="Данные из iiko CRM (для пользователей с ролью Courier)",
+     *                          @OA\Items(
+     *                              type="object"
+     *                          ),
+     *                      ),
+     *                      @OA\Property(
      *                         property="updated_at",
      *                         type="string",
      *                         description="Дата последнего редактирования"
@@ -284,6 +337,7 @@ class UserController extends Controller
      *                      ),
      *                     example={
      *                           "data": {
+     *                               "id": 7,
      *                               "first_name": "Someone",
      *                               "last_name": "Pupkin",
      *                               "position": "CTO",
@@ -291,9 +345,26 @@ class UserController extends Controller
      *                               "email": "some@some.com",
      *                               "role_name": "content_manager",
      *                               "role_title": "Контент-менеджер",
+     *                               "locations": {{
+     *                                   "id": 1,
+     *                                   "restaurant": "smaki",
+     *                                   "name": "Кульпарковская Смаки",
+     *                                   "city_sync_id": "lviv",
+     *                                   "city": "Львов",
+     *                                   "street": "ул. Кульпарковская",
+     *                                   "house_number": "95",
+     *                                   "latitude": null,
+     *                                   "longitude": null,
+     *                                   "created_at": "2021-07-28T11:08:01.000000Z",
+     *                                   "updated_at": "2021-07-28T11:08:01.000000Z"
+     *                               }},
+     *                               "iiko": {
+     *                                   "iiko_id": "8f423953-8d9e-47c5-a409-1e7cb33c6f00",
+     *                                   "created_at": "2021-08-25T20:36:13.000000Z",
+     *                                   "updated_at": "2021-08-25T20:36:13.000000Z"
+     *                               },
      *                               "updated_at": "2021-07-28T12:47:01.000000Z",
-     *                               "created_at": "2021-07-28T12:47:01.000000Z",
-     *                               "id": 7
+     *                               "created_at": "2021-07-28T12:47:01.000000Z"
      *                           }
      *                      }
      *                 )
@@ -381,6 +452,22 @@ class UserController extends Controller
      *                         description="Дата подтверждения кредов"
      *                     ),
      *                     @OA\Property(
+     *                         property="locations",
+     *                         type="array",
+     *                         description="Массив сущностей локаций, к которым привязан пользователь",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         ),
+     *                     ),
+     *                     @OA\Property(
+     *                         property="iiko",
+     *                         type="array",
+     *                         description="Данные из iiko CRM (для пользователей с ролью Courier)",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         ),
+     *                     ),
+     *                     @OA\Property(
      *                         property="created_at",
      *                         type="string",
      *                         description="Дата создания"
@@ -401,6 +488,24 @@ class UserController extends Controller
      *                      "role_name": "content_manager",
      *                      "role_title": "Контент-менеджер",
      *                      "email_verified_at": "2021-07-24T12:47:09.000000Z",
+     *                      "locations": {{
+     *                          "id": 1,
+     *                          "restaurant": "smaki",
+     *                          "name": "Кульпарковская Смаки",
+     *                          "city_sync_id": "lviv",
+     *                          "city": "Львов",
+     *                          "street": "ул. Кульпарковская",
+     *                          "house_number": "95",
+     *                          "latitude": null,
+     *                          "longitude": null,
+     *                          "created_at": "2021-07-28T11:08:01.000000Z",
+     *                          "updated_at": "2021-07-28T11:08:01.000000Z"
+     *                      }},
+     *                      "iiko": {
+     *                          "iiko_id": "8f423953-8d9e-47c5-a409-1e7cb33c6f00",
+     *                          "created_at": "2021-08-25T20:36:13.000000Z",
+     *                          "updated_at": "2021-08-25T20:36:13.000000Z"
+     *                      },
      *                      "created_at": "2021-07-24T12:47:09.000000Z",
      *                      "updated_at": "2021-07-24T12:47:09.000000Z",
      *                     }}
@@ -416,7 +521,7 @@ class UserController extends Controller
     public function show($id)
     {
         return new UserResource(
-            User::with('roles')->findOrFail($id)
+            User::with('roles', 'iiko', 'locations')->findOrFail($id)
         );
     }
 
@@ -477,9 +582,12 @@ class UserController extends Controller
      *                  description="ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)"
      *               ),
      *               @OA\Property(
-     *                  property="restaurant",
-     *                  type="string",
-     *                  description="Идентификатор ресторана (обязательно при создании пользователя с ролью courier)"
+     *                  property="locations",
+     *                  type="array",
+     *                  description="ID локаций, к которым будет привязан пользователь",
+     *                  @OA\Items(
+     *                      type="integer"
+     *                  )
      *               ),
      *              )
      *          )
@@ -532,6 +640,22 @@ class UserController extends Controller
      *                         description="Развание роли"
      *                      ),
      *                      @OA\Property(
+     *                          property="locations",
+     *                          type="array",
+     *                          description="Массив сущностей локаций, к которым привязан пользователь",
+     *                          @OA\Items(
+     *                              type="object"
+     *                          ),
+     *                      ),
+     *                      @OA\Property(
+     *                          property="iiko",
+     *                          type="array",
+     *                          description="Данные из iiko CRM (для пользователей с ролью Courier)",
+     *                          @OA\Items(
+     *                              type="object"
+     *                          ),
+     *                      ),
+     *                      @OA\Property(
      *                         property="updated_at",
      *                         type="string",
      *                         description="Дата последнего редактирования"
@@ -551,6 +675,24 @@ class UserController extends Controller
      *                               "email": "some@some.com",
      *                               "role_name": "content_manager",
      *                               "role_title": "Контент-менеджер",
+     *                                "locations": {{
+     *                                    "id": 1,
+     *                                    "restaurant": "smaki",
+     *                                    "name": "Кульпарковская Смаки",
+     *                                    "city_sync_id": "lviv",
+     *                                    "city": "Львов",
+     *                                    "street": "ул. Кульпарковская",
+     *                                    "house_number": "95",
+     *                                    "latitude": null,
+     *                                    "longitude": null,
+     *                                    "created_at": "2021-07-28T11:08:01.000000Z",
+     *                                    "updated_at": "2021-07-28T11:08:01.000000Z"
+     *                                }},
+     *                               "iiko": {
+     *                                   "iiko_id": "8f423953-8d9e-47c5-a409-1e7cb33c6f00",
+     *                                   "created_at": "2021-08-25T20:36:13.000000Z",
+     *                                   "updated_at": "2021-08-25T20:36:13.000000Z"
+     *                               },
      *                               "updated_at": "2021-07-28T12:47:01.000000Z",
      *                               "created_at": "2021-07-28T12:47:01.000000Z"
      *                           }
@@ -570,16 +712,5 @@ class UserController extends Controller
         return new UserResource(
             $this->userService->update($id, $request->validated())
         );
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

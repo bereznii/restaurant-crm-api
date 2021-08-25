@@ -21,7 +21,9 @@ class IikoServiceParser
              * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.xqk6fzvxgaeo
              */
 
-            $parsed[$key]['restaurant'] = Location::SMAKI_MAKI_RESTAURANT;
+            $parsed[$key]['restaurant'] = $orderInfo['organization'] === IikoClient::ORGANIZATION_ID_SMAKI
+                ? Location::SMAKI_MAKI_RESTAURANT
+                : Location::SUSHI_GO_RESTAURANT;
             $parsed[$key]['status_title'] = $orderInfo['status'];
             $parsed[$key]['order_uuid'] = $orderInfo['orderId'];
             $parsed[$key]['order_id'] = (int) $orderInfo['number'];

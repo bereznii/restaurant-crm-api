@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\iiko\CourierIiko;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -56,6 +57,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @return HasManyThrough
+     */
+    public function locations()
+    {
+        return $this->hasManyThrough(
+            Location::class,
+            UserLocation::class,
+            'user_id',
+            'id',
+            'id',
+            'location_id'
+        );
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function locationsIds()
+    {
+        return $this->hasMany(UserLocation::class, 'user_id', 'id');
+    }
 
     /**
      * @return HasOne

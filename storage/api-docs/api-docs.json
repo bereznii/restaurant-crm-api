@@ -1342,6 +1342,20 @@
                                             "description": "Развание роли",
                                             "type": "string"
                                         },
+                                        "locations": {
+                                            "description": "Массив сущностей локаций, к которым привязан пользователь",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "iiko": {
+                                            "description": "Данные из iiko CRM (для пользователей с ролью Courier)",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
                                         "created_at": {
                                             "description": "Дата создания",
                                             "type": "string"
@@ -1365,6 +1379,26 @@
                                                 "role_name": "content_manager",
                                                 "role_title": "Контент-менеджер",
                                                 "email_verified_at": "2021-07-24T12:47:09.000000Z",
+                                                "locations": [
+                                                    {
+                                                        "id": 1,
+                                                        "restaurant": "smaki",
+                                                        "name": "Кульпарковская Смаки",
+                                                        "city_sync_id": "lviv",
+                                                        "city": "Львов",
+                                                        "street": "ул. Кульпарковская",
+                                                        "house_number": "95",
+                                                        "latitude": null,
+                                                        "longitude": null,
+                                                        "created_at": "2021-07-28T11:08:01.000000Z",
+                                                        "updated_at": "2021-07-28T11:08:01.000000Z"
+                                                    }
+                                                ],
+                                                "iiko": {
+                                                    "iiko_id": "8f423953-8d9e-47c5-a409-1e7cb33c6f00",
+                                                    "created_at": "2021-08-25T20:36:13.000000Z",
+                                                    "updated_at": "2021-08-25T20:36:13.000000Z"
+                                                },
                                                 "created_at": "2021-07-24T12:47:09.000000Z",
                                                 "updated_at": "2021-07-24T12:47:09.000000Z"
                                             }
@@ -1449,9 +1483,12 @@
                                         "description": "ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)",
                                         "type": "string"
                                     },
-                                    "restaurant": {
-                                        "description": "Идентификатор ресторана (обязательно при создании пользователя с ролью courier)",
-                                        "type": "string"
+                                    "locations": {
+                                        "description": "ID локаций, к которым будет привязан пользователь",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -1498,6 +1535,20 @@
                                             "description": "Развание роли",
                                             "type": "string"
                                         },
+                                        "locations": {
+                                            "description": "Массив сущностей локаций, к которым привязан пользователь",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "iiko": {
+                                            "description": "Данные из iiko CRM (для пользователей с ролью Courier)",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
                                         "updated_at": {
                                             "description": "Дата последнего редактирования",
                                             "type": "string"
@@ -1510,6 +1561,7 @@
                                     "type": "object",
                                     "example": {
                                         "data": {
+                                            "id": 7,
                                             "first_name": "Someone",
                                             "last_name": "Pupkin",
                                             "position": "CTO",
@@ -1517,9 +1569,28 @@
                                             "email": "some@some.com",
                                             "role_name": "content_manager",
                                             "role_title": "Контент-менеджер",
+                                            "locations": [
+                                                {
+                                                    "id": 1,
+                                                    "restaurant": "smaki",
+                                                    "name": "Кульпарковская Смаки",
+                                                    "city_sync_id": "lviv",
+                                                    "city": "Львов",
+                                                    "street": "ул. Кульпарковская",
+                                                    "house_number": "95",
+                                                    "latitude": null,
+                                                    "longitude": null,
+                                                    "created_at": "2021-07-28T11:08:01.000000Z",
+                                                    "updated_at": "2021-07-28T11:08:01.000000Z"
+                                                }
+                                            ],
+                                            "iiko": {
+                                                "iiko_id": "8f423953-8d9e-47c5-a409-1e7cb33c6f00",
+                                                "created_at": "2021-08-25T20:36:13.000000Z",
+                                                "updated_at": "2021-08-25T20:36:13.000000Z"
+                                            },
                                             "updated_at": "2021-07-28T12:47:01.000000Z",
-                                            "created_at": "2021-07-28T12:47:01.000000Z",
-                                            "id": 7
+                                            "created_at": "2021-07-28T12:47:01.000000Z"
                                         }
                                     }
                                 }
@@ -1595,6 +1666,20 @@
                                             "description": "Дата подтверждения кредов",
                                             "type": "string"
                                         },
+                                        "locations": {
+                                            "description": "Массив сущностей локаций, к которым привязан пользователь",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "iiko": {
+                                            "description": "Данные из iiko CRM (для пользователей с ролью Courier)",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
                                         "created_at": {
                                             "description": "Дата создания",
                                             "type": "string"
@@ -1617,6 +1702,26 @@
                                             "role_name": "content_manager",
                                             "role_title": "Контент-менеджер",
                                             "email_verified_at": "2021-07-24T12:47:09.000000Z",
+                                            "locations": [
+                                                {
+                                                    "id": 1,
+                                                    "restaurant": "smaki",
+                                                    "name": "Кульпарковская Смаки",
+                                                    "city_sync_id": "lviv",
+                                                    "city": "Львов",
+                                                    "street": "ул. Кульпарковская",
+                                                    "house_number": "95",
+                                                    "latitude": null,
+                                                    "longitude": null,
+                                                    "created_at": "2021-07-28T11:08:01.000000Z",
+                                                    "updated_at": "2021-07-28T11:08:01.000000Z"
+                                                }
+                                            ],
+                                            "iiko": {
+                                                "iiko_id": "8f423953-8d9e-47c5-a409-1e7cb33c6f00",
+                                                "created_at": "2021-08-25T20:36:13.000000Z",
+                                                "updated_at": "2021-08-25T20:36:13.000000Z"
+                                            },
                                             "created_at": "2021-07-24T12:47:09.000000Z",
                                             "updated_at": "2021-07-24T12:47:09.000000Z"
                                         }
@@ -1683,9 +1788,12 @@
                                         "description": "ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)",
                                         "type": "string"
                                     },
-                                    "restaurant": {
-                                        "description": "Идентификатор ресторана (обязательно при создании пользователя с ролью courier)",
-                                        "type": "string"
+                                    "locations": {
+                                        "description": "ID локаций, к которым будет привязан пользователь",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -1732,6 +1840,20 @@
                                             "description": "Развание роли",
                                             "type": "string"
                                         },
+                                        "locations": {
+                                            "description": "Массив сущностей локаций, к которым привязан пользователь",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "iiko": {
+                                            "description": "Данные из iiko CRM (для пользователей с ролью Courier)",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
                                         "updated_at": {
                                             "description": "Дата последнего редактирования",
                                             "type": "string"
@@ -1752,6 +1874,26 @@
                                             "email": "some@some.com",
                                             "role_name": "content_manager",
                                             "role_title": "Контент-менеджер",
+                                            "locations": [
+                                                {
+                                                    "id": 1,
+                                                    "restaurant": "smaki",
+                                                    "name": "Кульпарковская Смаки",
+                                                    "city_sync_id": "lviv",
+                                                    "city": "Львов",
+                                                    "street": "ул. Кульпарковская",
+                                                    "house_number": "95",
+                                                    "latitude": null,
+                                                    "longitude": null,
+                                                    "created_at": "2021-07-28T11:08:01.000000Z",
+                                                    "updated_at": "2021-07-28T11:08:01.000000Z"
+                                                }
+                                            ],
+                                            "iiko": {
+                                                "iiko_id": "8f423953-8d9e-47c5-a409-1e7cb33c6f00",
+                                                "created_at": "2021-08-25T20:36:13.000000Z",
+                                                "updated_at": "2021-08-25T20:36:13.000000Z"
+                                            },
                                             "updated_at": "2021-07-28T12:47:01.000000Z",
                                             "created_at": "2021-07-28T12:47:01.000000Z"
                                         }

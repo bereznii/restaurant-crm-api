@@ -14,7 +14,7 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $userRecourse = [
             'id' => $this->id,
             'email' => $this->email,
             'phone' => $this->phone,
@@ -25,8 +25,17 @@ class UserResource extends JsonResource
             'role_name' => $this->roles[0]->name,
             'role_title' => $this->roles[0]->title,
             'email_verified_at' => $this->email_verified_at,
+            'locations' => $this->locations,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
+
+        if (isset($this->iiko)) {
+            $userRecourse['iiko']['iiko_id'] = $this->iiko->iiko_id;
+            $userRecourse['iiko']['created_at'] = $this->iiko->created_at;
+            $userRecourse['iiko']['updated_at'] = $this->iiko->updated_at;
+        }
+
+        return $userRecourse;
     }
 }

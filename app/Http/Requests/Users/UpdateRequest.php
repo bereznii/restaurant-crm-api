@@ -33,6 +33,7 @@ class UpdateRequest extends FormRequest
             'role_name' => 'filled|string|exists:rbac_roles,name',
             'iiko_id' => 'required_if:role_name,courier|uuid',
             'restaurant' => 'required_if:role_name,courier|string|in:go,smaki',
+            'locations.*' => 'required|integer|exists:locations,id',
         ];
     }
 }

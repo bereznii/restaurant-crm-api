@@ -29,6 +29,7 @@ class UserCollection extends ResourceCollection
                     'role_name' => $item->roles[0]->name,
                     'role_title' => $item->roles[0]->title,
                     'email_verified_at' => $item->email_verified_at,
+                    'locations' => $item->locations,
                     'created_at' => $item->created_at,
                     'updated_at' => $item->updated_at,
                 ];

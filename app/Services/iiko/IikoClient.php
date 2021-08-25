@@ -2,14 +2,17 @@
 
 namespace App\Services\iiko;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Illuminate\Support\Facades\Http;
 
 class IikoClient
 {
+    public const SMAKI = 'smaki';
+    public const GO = 'go';
+
     public const API_URL = 'https://iiko.biz:9900/api/0';
     public const ORGANIZATION_ID_SMAKI = 'f445683a-adf7-11e9-80dd-d8d385655247';
+    public const ORGANIZATION_ID_GO = 'dcc74ad6-ad40-11e9-80dd-d8d385655247';
 
     private const API_URL_ACCESS_TOKEN = '/auth/access_token';
 
@@ -23,12 +26,22 @@ class IikoClient
     private ?string $userSecret;
 
     /**
-     *
+     * @param string $restaurantKey
      */
-    public function __construct()
+    public function __construct(string $restaurantKey)
     {
-        $this->userId = config('iiko.smaki.user_id');
-        $this->userSecret= config('iiko.smaki.user_secret');
+        switch ($restaurantKey) {
+            case self::SMAKI:
+                $this->userId = config('iiko.smaki.user_id');
+                $this->userSecret= config('iiko.smaki.user_secret');
+                break;
+            case self::GO:
+                $this->userId = config('iiko.go.user_id');
+                $this->userSecret= config('iiko.go.user_secret');
+                break;
+            default:
+                throw new InvalidArgumentException();
+        }
 
         $this->accessToken = $this->requestAccessToken();
     }

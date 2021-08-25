@@ -9,6 +9,7 @@ use App\Http\Resources\Mobile\Orders\OrderResource;
 use App\Http\Resources\Mobile\Orders\OrdersCollection;
 use App\Services\iiko\IikoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class OrderController extends Controller
@@ -255,7 +256,7 @@ class OrderController extends Controller
      *
      * @param UpdateRequest $request
      * @param string $orderUuid
-     * @return \Illuminate\Http\Response
+     * @return OrderResource
      */
     public function update(UpdateRequest $request, string $orderUuid)
     {
