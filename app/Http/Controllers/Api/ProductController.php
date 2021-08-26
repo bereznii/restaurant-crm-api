@@ -189,8 +189,8 @@ class ProductController extends Controller
      *                          },
      *                      }},
      *                      "links": {
-     *                          "first": "http://77.120.110.168:8080/api/products?page=1",
-     *                          "last": "http://77.120.110.168:8080/api/products?page=1",
+     *                          "first": "https://api.smaki.com.ua/api/products?page=1",
+     *                          "last": "https://api.smaki.com.ua/api/products?page=1",
      *                          "prev": null,
      *                          "next": null
      *                      },
@@ -199,7 +199,7 @@ class ProductController extends Controller
      *                          "from": 1,
      *                          "last_page": 1,
      *                          "links": {},
-     *                          "path": "http://77.120.110.168:8080/api/products",
+     *                          "path": "https://api.smaki.com.ua/api/products",
      *                          "per_page": 20,
      *                          "to": 11,
      *                          "total": 11,

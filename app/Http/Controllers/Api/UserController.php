@@ -167,8 +167,8 @@ class UserController extends Controller
      *                          "updated_at": "2021-07-24T12:47:09.000000Z",
      *                      }},
      *                      "links": {
-     *                          "first": "http://77.120.110.168:8080/api/users?page=1",
-     *                          "last": "http://77.120.110.168:8080/api/users?page=1",
+     *                          "first": "https://api.smaki.com.ua/api/users?page=1",
+     *                          "last": "https://api.smaki.com.ua/api/users?page=1",
      *                          "prev": null,
      *                          "next": null
      *                      },
@@ -177,7 +177,7 @@ class UserController extends Controller
      *                          "from": 1,
      *                          "last_page": 1,
      *                          "links": {},
-     *                          "path": "http://77.120.110.168:8080/api/users",
+     *                          "path": "https://api.smaki.com.ua/api/users",
      *                          "per_page": 20,
      *                          "to": 11,
      *                          "total": 11,
