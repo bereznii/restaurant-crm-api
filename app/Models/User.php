@@ -90,6 +90,14 @@ class User extends Authenticatable
     }
 
     /**
+     * @return HasOne
+     */
+    public function coordinates()
+    {
+        return $this->hasOne(UserCoordinate::class, 'user_id', 'id');
+    }
+
+    /**
      * @param $value
      * @return string
      */

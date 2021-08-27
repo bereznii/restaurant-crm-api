@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Mobile\Orders;
+namespace App\Http\Requests\Mobile\Deliveries;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,10 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'restaurant' => 'required|string|in:go,smaki'
+            'orders' => 'required|array',
+            'orders.*' => 'required|array:restaurant,order_uuid',
+            'orders.*.restaurant' => 'required|string|in:go,smaki',
+            'orders.*.order_uuid' => 'required|uuid',
         ];
     }
 }

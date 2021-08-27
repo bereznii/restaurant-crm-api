@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\Mobile\DeliveryController;
+use App\Http\Controllers\Api\Mobile\MeController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
@@ -42,6 +44,12 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/{restaurant}/products', [ProductController::class, 'massStore']);
 
     Route::prefix('mobile')->group(function () {
-        Route::apiResource('orders', OrderController::class)->only(['index','update']);
+
+        Route::apiResource('orders', OrderController::class)->only(['index', 'update']);
+        Route::apiResource('deliveries', DeliveryController::class)->only(['store']);
+
+        Route::prefix('me')->group(function () {
+            Route::put('/coordinates', [MeController::class, 'updateCoordinates']);
+        });
     });
 });

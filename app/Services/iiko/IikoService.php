@@ -18,11 +18,9 @@ class IikoService
      * @return Collection
      * @throws \Exception
      */
-    public function getOrdersForCourier(): Collection
+    public function update(string $orderUuid, array $validated)
     {
-        $response = $this->iikoServiceInterface->getCourierOrders(Auth::user()->iikoId);
-
-        return collect($response);
+        return $this->setOrderDelivered($orderUuid, $validated);
     }
 
     /**
@@ -33,8 +31,19 @@ class IikoService
      */
     public function setOrderDelivered(string $orderUuid, array $validated): Collection
     {
-        $response = $this->iikoServiceInterface->setOrderDelivered(Auth::user()->iikoId, $orderUuid, $validated);
+        return collect(
+            $this->iikoServiceInterface->setOrderDelivered(Auth::user()->iikoId, Auth::id(), $orderUuid, $validated)
+        );
+    }
 
-        return collect($response);
+    /**
+     * @return Collection
+     * @throws \Exception
+     */
+    public function getOrdersForCourier(): Collection
+    {
+        return collect(
+            $this->iikoServiceInterface->getCourierOrders(Auth::user()->iikoId)
+        );
     }
 }

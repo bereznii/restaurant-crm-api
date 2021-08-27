@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Mobile\Orders;
+namespace App\Http\Requests\Mobile\Me;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateRequest extends FormRequest
+class UpdateCoordinatesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,8 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'restaurant' => 'required|string|in:go,smaki'
+            'latitude' => 'required|string',
+            'longitude' => 'required|string',
         ];
     }
 }

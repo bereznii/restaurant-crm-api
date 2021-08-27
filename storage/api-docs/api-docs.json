@@ -371,6 +371,127 @@
                 ]
             }
         },
+        "/mobile/deliveries": {
+            "post": {
+                "tags": [
+                    "Mobile.Deliveries"
+                ],
+                "description": "Создать доставку (поездку). Доступ для пользователей с ролью: <b>Courier</b>",
+                "operationId": "670cebde49f781237f96d6f8e473227c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "orders": {
+                                        "description": "Массив сущностей заказов в доставке",
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "restaurant": {
+                                                    "description": "Идентификатор ресторана",
+                                                    "type": "string"
+                                                },
+                                                "order_uuid": {
+                                                    "description": "Уникальный идентификатор заказа",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "boolean"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/mobile/me/coordinates": {
+            "put": {
+                "tags": [
+                    "Mobile.Me"
+                ],
+                "description": "Обновить свои координаты. Доступ для пользователей с ролью: <b>Courier</b>",
+                "operationId": "b74a97f6023eb869d08630e4cd77889b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "latitude": {
+                                        "description": "Широта",
+                                        "type": "string"
+                                    },
+                                    "longitude": {
+                                        "description": "Долгота",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "boolean"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/mobile/orders": {
             "get": {
                 "tags": [
@@ -540,10 +661,6 @@
                                     "restaurant": {
                                         "description": "Идентификатор ресторана",
                                         "type": "string"
-                                    },
-                                    "delivered": {
-                                        "description": "Флаг доставлен/не доставлен. true - запрос переводит заказ из ON_WAY в DELIVERED, false - в обратную сторону.",
-                                        "type": "boolean"
                                     }
                                 },
                                 "type": "object"

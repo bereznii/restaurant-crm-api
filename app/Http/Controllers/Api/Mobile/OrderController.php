@@ -178,29 +178,6 @@ class OrderController extends Controller
         return new OrdersCollection(
             $this->iikoService->getOrdersForCourier()
         );
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -224,12 +201,7 @@ class OrderController extends Controller
      *                  property="restaurant",
      *                  type="string",
      *                  description="Идентификатор ресторана"
-     *               ),
-     *               @OA\Property(
-     *                  property="delivered",
-     *                  type="boolean",
-     *                  description="Флаг доставлен/не доставлен. true - запрос переводит заказ из ON_WAY в DELIVERED, false - в обратную сторону."
-     *               ),
+     *               )
      *              )
      *          )
      *      ),
@@ -257,22 +229,12 @@ class OrderController extends Controller
      * @param UpdateRequest $request
      * @param string $orderUuid
      * @return OrderResource
+     * @throws \Exception
      */
     public function update(UpdateRequest $request, string $orderUuid)
     {
         return new OrderResource(
-            $this->iikoService->setOrderDelivered($orderUuid, $request->validated())
+            $this->iikoService->update($orderUuid, $request->validated())
         );
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
