@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Models\Delivery;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Collection;
 
 class DeliveryService
 {
@@ -79,5 +80,21 @@ class DeliveryService
         $formattedAddressString .= "{$address['home']}";
 
         return $formattedAddressString;
+    }
+
+    /**
+     * @param string $courierIikoId
+     * @return Collection|null
+     */
+    public function existingDeliveryForCourier(string $courierIikoId): ?Collection
+    {
+        return Delivery::with('orders')
+            ->where([
+                ['iiko_courier_id', '=', $courierIikoId],
+                ['status', '=', Delivery::STATUS_ON_WAY],
+            ])
+            ->orderBy('id', 'desc')
+            ->first()
+            ?->orders;
     }
 }

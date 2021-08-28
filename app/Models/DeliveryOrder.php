@@ -9,6 +9,7 @@ class DeliveryOrder extends Model
 {
     use HasFactory;
 
+    public const STATUS_WAITING = 'waiting';
     public const STATUS_ON_WAY = 'on_way';
     public const STATUS_DELIVERED = 'delivered';
 

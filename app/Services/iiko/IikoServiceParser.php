@@ -2,16 +2,21 @@
 
 namespace App\Services\iiko;
 
+use App\Models\DeliveryOrder;
 use App\Models\Location;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class IikoServiceParser
 {
     /**
      * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=id.xsy1q2yg3v46
+     *
+     * @param array $responseObjects
+     * @param Collection|null $ordersInWork
+     * @return array
      */
-    public function parseDeliveryOrdersResponse(array $responseObjects): array
+    public function parseDeliveryOrdersResponse(array $responseObjects, ?Collection $ordersInWork): array
     {
         $parsed = [];
 
@@ -29,7 +34,9 @@ class IikoServiceParser
                 ? Location::SMAKI_MAKI_RESTAURANT
                 : Location::SUSHI_GO_RESTAURANT;
             $parsed[$key]['delivery_terminal_id'] = $orderInfo['deliveryTerminal']['deliveryTerminalId'];
-            $parsed[$key]['status_title'] = $orderInfo['status'];
+            $parsed[$key]['status'] = $ordersInWork === null
+                ? DeliveryOrder::STATUS_WAITING
+                : $this->parseStatus($orderInfo, $ordersInWork);
             $parsed[$key]['order_uuid'] = $orderInfo['orderId'];
             $parsed[$key]['order_id'] = (int) $orderInfo['number'];
             $parsed[$key]['comment'] = $orderInfo['comment'];
@@ -82,5 +89,23 @@ class IikoServiceParser
         }
 
         return $parsedPayments;
+    }
+
+    /**
+     * @param array $orderInfo
+     * @param Collection $ordersInWork
+     * @return string
+     */
+    private function parseStatus(array $orderInfo, Collection $ordersInWork): string
+    {
+        $currentOrderInWork = $ordersInWork->where('iiko_order_id', $orderInfo['orderId'])->first();
+
+        if (isset($currentOrderInWork)) {
+            $status = $currentOrderInWork->status;
+        } else {
+            $status = DeliveryOrder::STATUS_WAITING;
+        }
+
+        return $status;
     }
 }

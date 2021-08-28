@@ -45,9 +45,9 @@ class OrderController extends Controller
      *                         description="Уникальный идентификатор доставочного терминала в iiko"
      *                     ),
      *                     @OA\Property(
-     *                         property="status_title",
+     *                         property="status",
      *                         type="string",
-     *                         description="Название статуса заказа"
+     *                         description="Статус заказа"
      *                     ),
      *                     @OA\Property(
      *                         property="order_uuid",
@@ -145,7 +145,7 @@ class OrderController extends Controller
      *                      {
      *                          "restaurant": "smaki",
      *                          "delivery_terminal_id": "018cf4d4-0e07-b00a-0172-e4f18ac4ce92",
-     *                          "status_title": "В пути",
+     *                          "status": "waiting",
      *                          "order_uuid": "257fd1c0-3015-dc6c-f751-d78dd06b4ef5",
      *                          "order_id": 83112,
      *                          "payment": {

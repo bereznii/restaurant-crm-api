@@ -15,6 +15,9 @@ class IikoServiceInterface
     /** @var DeliveryOrderService  */
     private DeliveryOrderService $deliveryOrderService;
 
+    /** @var DeliveryOrderService  */
+    private DeliveryService $deliveryService;
+
     /**
      * @param IikoServiceParser $iikoServiceParser
      */
@@ -25,6 +28,7 @@ class IikoServiceInterface
         $this->iikoGoClient = new IikoClient(IikoClient::GO);
 
         $this->deliveryOrderService = new DeliveryOrderService();
+        $this->deliveryService = new DeliveryService();
     }
 
     /**
@@ -109,9 +113,11 @@ class IikoServiceInterface
         $smakiOrders = json_decode($this->smaki, true);
         $goOrders = json_decode($this->go, true);
 
+        $existingOrdersInWork = $this->deliveryService->existingDeliveryForCourier($courierIikoId);
+
         return array_merge(
-            $this->iikoServiceParser->parseDeliveryOrdersResponse($smakiOrders),
-            $this->iikoServiceParser->parseDeliveryOrdersResponse($goOrders)
+            $this->iikoServiceParser->parseDeliveryOrdersResponse($smakiOrders, $existingOrdersInWork),
+            $this->iikoServiceParser->parseDeliveryOrdersResponse($goOrders, $existingOrdersInWork)
         );
     }
 
