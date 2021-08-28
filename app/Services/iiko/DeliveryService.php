@@ -76,7 +76,7 @@ class DeliveryService
         $formattedAddressString = '';
 
         $formattedAddressString .= "{$address['city']}, ";
-        $formattedAddressString .= "{$address['street']}, ";
+        $formattedAddressString .= "{$address['street']} ";
         $formattedAddressString .= "{$address['home']}";
 
         return $formattedAddressString;

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Delivery extends Model
 {
@@ -22,5 +23,13 @@ class Delivery extends Model
     public function orders(): HasMany
     {
         return $this->hasMany(DeliveryOrder::class, 'delivery_id', 'id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function location(): HasOne
+    {
+        return $this->hasOne(Location::class, 'delivery_terminal_id', 'delivery_terminal_id');
     }
 }

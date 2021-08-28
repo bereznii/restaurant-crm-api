@@ -24,4 +24,13 @@ class Location extends Model
     {
         return $this->hasOne(City::class, 'sync_id', 'city_sync_id');
     }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getAddressAttribute($value)
+    {
+        return "{$this->city->name_ua}, {$this->street_ua} {$this->house_number}";
+    }
 }
