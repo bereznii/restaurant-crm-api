@@ -2,6 +2,7 @@
 
 namespace App\Services\iiko;
 
+use App\Models\City;
 use App\Models\Delivery;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -56,8 +57,26 @@ class DeliveryService
                 return [
                     'restaurant' => $order['restaurant'],
                     'iiko_order_id' => $order['order_uuid'],
-                    'range_type' => Delivery::RANGE_TYPE_WITHIN_CITY,//TODO: определять
+                    'address' => $this->formatAddress($order['address']),
+                    'range_type' => in_array($order['address']['city'], City::CITIES_UA)
+                        ? Delivery::RANGE_TYPE_WITHIN_CITY
+                        : Delivery::RANGE_TYPE_OUTSIDE_CITY,
                 ];
             }, $validated['orders']));
+    }
+
+    /**
+     * @param array $address
+     * @return string
+     */
+    private function formatAddress(array $address): string
+    {
+        $formattedAddressString = '';
+
+        $formattedAddressString .= "{$address['city']}, ";
+        $formattedAddressString .= "{$address['street']}, ";
+        $formattedAddressString .= "{$address['home']}";
+
+        return $formattedAddressString;
     }
 }

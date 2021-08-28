@@ -17,6 +17,7 @@ class DeliveryOrder extends Model
      */
     protected $fillable = [
         'restaurant',
+        'address',
         'iiko_order_id',
         'range_type',
     ];

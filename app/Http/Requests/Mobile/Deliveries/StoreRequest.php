@@ -25,10 +25,19 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'orders' => 'required|array',
-            'orders.*' => 'required|array:restaurant,order_uuid',
+            'orders' => 'required',
+            'orders.*' => 'required',
             'orders.*.restaurant' => 'required|string|in:go,smaki',
             'orders.*.order_uuid' => 'required|uuid',
+            'orders.*.address' => 'required',
+            'orders.*.address.city' => 'required|string',
+            'orders.*.address.street' => 'required|string',
+            'orders.*.address.index' => 'present',
+            'orders.*.address.home' => 'required|string',
+            'orders.*.address.housing' => 'present',
+            'orders.*.address.apartment' => 'present',
+            'orders.*.address.entrance' => 'present',
+            'orders.*.address.floor' => 'present'
         ];
     }
 }

@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Smaki CRM API Documentation",
-        "version": "0.2"
+        "version": "0.3"
     },
     "servers": [
         {
@@ -388,14 +388,77 @@
                                         "description": "Массив сущностей заказов в доставке",
                                         "type": "array",
                                         "items": {
+                                            "required": [
+                                                "restaurant",
+                                                "order_uuid",
+                                                "address"
+                                            ],
                                             "properties": {
                                                 "restaurant": {
                                                     "description": "Идентификатор ресторана",
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "example": "smaki"
                                                 },
                                                 "order_uuid": {
                                                     "description": "Уникальный идентификатор заказа",
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "example": "446cbc3d-325c-8bef-d629-0503ba247f40"
+                                                },
+                                                "address": {
+                                                    "description": "Объект адреса, полученный по адресу GET /api/mobile/orders",
+                                                    "required": [
+                                                        "city",
+                                                        "street",
+                                                        "home"
+                                                    ],
+                                                    "properties": {
+                                                        "city": {
+                                                            "description": "Наименование города",
+                                                            "type": "string",
+                                                            "example": "Львів"
+                                                        },
+                                                        "street": {
+                                                            "description": "Наименование улицы",
+                                                            "type": "string",
+                                                            "example": "Зелена вул."
+                                                        },
+                                                        "index": {
+                                                            "description": "Индекс улицы в адресе, если есть",
+                                                            "type": "string",
+                                                            "example": ""
+                                                        },
+                                                        "home": {
+                                                            "description": "Дом",
+                                                            "type": "string",
+                                                            "example": "105"
+                                                        },
+                                                        "housing": {
+                                                            "description": "Корпус",
+                                                            "type": "string",
+                                                            "example": ""
+                                                        },
+                                                        "apartment": {
+                                                            "description": "Квартира",
+                                                            "type": "string",
+                                                            "example": ""
+                                                        },
+                                                        "entrance": {
+                                                            "description": "Подъезд",
+                                                            "type": "string",
+                                                            "example": ""
+                                                        },
+                                                        "floor": {
+                                                            "description": "Этаж",
+                                                            "type": "string",
+                                                            "example": ""
+                                                        },
+                                                        "comment": {
+                                                            "description": "Дополнительная информация",
+                                                            "type": "string",
+                                                            "example": ""
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 }
                                             },
                                             "type": "object"

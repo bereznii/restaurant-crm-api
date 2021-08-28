@@ -26,8 +26,8 @@ class ProductService
         if (isset($attributes['prices']) && is_array($attributes['prices'])) {
             foreach ($attributes['prices'] as $priceToSave) {
                 ProductPrice::where([
-                    ['city_sync_id', $priceToSave['city_sync_id']],
-                    ['product_id', $product->id]
+                    ['city_sync_id', '=', $priceToSave['city_sync_id']],
+                    ['product_id', '=', $product->id]
                 ])->update([
                     'price_old' => $priceToSave['price_old']
                 ]);
@@ -72,8 +72,8 @@ class ProductService
         if (isset($receivedProduct['prices']) && is_array($receivedProduct['prices'])) {
             foreach ($receivedProduct['prices'] as $receivedProductPrice) {
                 ProductPrice::where([
-                    ['product_id', $correspondentExistingProduct->id],
-                    ['city_sync_id', $receivedProductPrice['city']],
+                    ['product_id', '=', $correspondentExistingProduct->id],
+                    ['city_sync_id', '=', $receivedProductPrice['city']],
                 ])->update([
                     'price' => $receivedProductPrice['price']
                 ]);
