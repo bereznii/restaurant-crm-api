@@ -39,6 +39,11 @@ class CityController extends Controller
      *                         description="Название города"
      *                     ),
      *                     @OA\Property(
+     *                         property="name_ua",
+     *                         type="string",
+     *                         description="Название города на украинском"
+     *                     ),
+     *                     @OA\Property(
      *                         property="created_at",
      *                         type="string",
      *                         description="Дата создания"
@@ -53,6 +58,7 @@ class CityController extends Controller
      *                                  "id":1,
      *                                  "sync_id":"lviv",
      *                                  "name": "Львов",
+     *                                  "name_ua": "Львів",
      *                                  "created_at": "2021-07-28T11:08:01.000000Z",
      *                                  "updated_at": "2021-07-28T11:08:01.000000Z"
      *                              }

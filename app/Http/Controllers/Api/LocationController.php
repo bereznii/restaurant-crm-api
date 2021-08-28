@@ -27,6 +27,11 @@ class LocationController extends Controller
      *                         description="ID"
      *                     ),
      *                     @OA\Property(
+     *                         property="delivery_terminal_id",
+     *                         type="string",
+     *                         description="Уникальный идентификатор доставочного терминала в iiko"
+     *                     ),
+     *                     @OA\Property(
      *                         property="restaurant",
      *                         type="string",
      *                         description="Идентификатор ресторана"
@@ -50,6 +55,11 @@ class LocationController extends Controller
      *                         property="street",
      *                         type="string",
      *                         description="Улица"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="street_ua",
+     *                         type="string",
+     *                         description="Улица на украинском"
      *                     ),
      *                     @OA\Property(
      *                         property="house_number",
@@ -79,11 +89,13 @@ class LocationController extends Controller
      *                     example={"data":{
      *                          {
      *                              "id": 1,
+     *                              "delivery_terminal_id": "aa15c7b2-768f-dbf1-016c-8fc96e6aa61b",
      *                              "restaurant": "smaki",
      *                              "name": "Кульпарковская Смаки",
      *                              "city_sync_id": "lviv",
      *                              "city": "Львов",
-     *                              "street": "ул. Кульпарковская",
+     *                              "street": "улица Кульпарковская",
+     *                              "street_ua": "вулиця Кульпарківська",
      *                              "house_number": "95",
      *                              "latitude": null,
      *                              "longitude": null,

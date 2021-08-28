@@ -250,6 +250,10 @@
                                             "description": "Название города",
                                             "type": "string"
                                         },
+                                        "name_ua": {
+                                            "description": "Название города на украинском",
+                                            "type": "string"
+                                        },
                                         "created_at": {
                                             "description": "Дата создания",
                                             "type": "string"
@@ -266,6 +270,7 @@
                                                 "id": 1,
                                                 "sync_id": "lviv",
                                                 "name": "Львов",
+                                                "name_ua": "Львів",
                                                 "created_at": "2021-07-28T11:08:01.000000Z",
                                                 "updated_at": "2021-07-28T11:08:01.000000Z"
                                             }
@@ -300,6 +305,10 @@
                                             "description": "ID",
                                             "type": "string"
                                         },
+                                        "delivery_terminal_id": {
+                                            "description": "Уникальный идентификатор доставочного терминала в iiko",
+                                            "type": "string"
+                                        },
                                         "restaurant": {
                                             "description": "Идентификатор ресторана",
                                             "type": "string"
@@ -318,6 +327,10 @@
                                         },
                                         "street": {
                                             "description": "Улица",
+                                            "type": "string"
+                                        },
+                                        "street_ua": {
+                                            "description": "Улица на украинском",
                                             "type": "string"
                                         },
                                         "house_number": {
@@ -346,11 +359,13 @@
                                         "data": [
                                             {
                                                 "id": 1,
+                                                "delivery_terminal_id": "aa15c7b2-768f-dbf1-016c-8fc96e6aa61b",
                                                 "restaurant": "smaki",
                                                 "name": "Кульпарковская Смаки",
                                                 "city_sync_id": "lviv",
                                                 "city": "Львов",
-                                                "street": "ул. Кульпарковская",
+                                                "street": "улица Кульпарковская",
+                                                "street_ua": "вулиця Кульпарківська",
                                                 "house_number": "95",
                                                 "latitude": null,
                                                 "longitude": null,
@@ -384,12 +399,18 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
+                                    "delivery_terminal_id": {
+                                        "description": "Уникальный идентификатор доставочного терминала в iiko, полученный по адресу GET /api/mobile/orders",
+                                        "type": "string",
+                                        "example": "de2d1799-0786-3122-0174-832d7233ac11"
+                                    },
                                     "orders": {
                                         "description": "Массив сущностей заказов в доставке",
                                         "type": "array",
                                         "items": {
                                             "required": [
                                                 "restaurant",
+                                                "delivery_terminal_id",
                                                 "order_uuid",
                                                 "address"
                                             ],
@@ -573,6 +594,10 @@
                                             "description": "Идентификатор ресторана",
                                             "type": "string"
                                         },
+                                        "delivery_terminal_id": {
+                                            "description": "Уникальный идентификатор доставочного терминала в iiko",
+                                            "type": "string"
+                                        },
                                         "status_title": {
                                             "description": "Название статуса заказа",
                                             "type": "string"
@@ -662,6 +687,7 @@
                                         "data": [
                                             {
                                                 "restaurant": "smaki",
+                                                "delivery_terminal_id": "018cf4d4-0e07-b00a-0172-e4f18ac4ce92",
                                                 "status_title": "В пути",
                                                 "order_uuid": "257fd1c0-3015-dc6c-f751-d78dd06b4ef5",
                                                 "order_id": 83112,

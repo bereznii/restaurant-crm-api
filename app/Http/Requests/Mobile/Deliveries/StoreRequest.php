@@ -25,6 +25,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
+            'delivery_terminal_id' => 'required|uuid',
             'orders' => 'required',
             'orders.*' => 'required',
             'orders.*.restaurant' => 'required|string|in:go,smaki',

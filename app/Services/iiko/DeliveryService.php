@@ -22,6 +22,7 @@ class DeliveryService
 
         try {
             $delivery = new Delivery();
+            $delivery->delivery_terminal_id = $validated['delivery_terminal_id'];
             $delivery->iiko_courier_id = $courierUuid;
             $delivery->user_id = $userId;
             $delivery->distance = 0;

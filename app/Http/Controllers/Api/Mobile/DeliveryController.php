@@ -41,11 +41,17 @@ class DeliveryController extends Controller
      *             mediaType="application/json",
      *             @OA\Schema(
      *                  @OA\Property(
+     *                      property="delivery_terminal_id",
+     *                      type="string",
+     *                      description="Уникальный идентификатор доставочного терминала в iiko, полученный по адресу GET /api/mobile/orders",
+     *                      example="de2d1799-0786-3122-0174-832d7233ac11"
+     *                  ),
+     *                  @OA\Property(
      *                      property="orders",
      *                      type="array",
      *                      description="Массив сущностей заказов в доставке",
      *                      @OA\Items(
-     *                          required={"restaurant","order_uuid","address"},
+     *                          required={"restaurant","delivery_terminal_id","order_uuid","address"},
      *                          @OA\Property(
      *                              property="restaurant",
      *                              type="string",
