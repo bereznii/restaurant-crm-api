@@ -44,9 +44,7 @@ class GoogleClient
             'key' => $this->token,
         ]);
 
-        if (!$response->successful()) {
-            Log::error($response->body());
-        }
+            Log::error($response->json());
 
         return $this->parseResponse($response->json());
     }
