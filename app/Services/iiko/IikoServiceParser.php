@@ -35,7 +35,7 @@ class IikoServiceParser
                 : Location::SUSHI_GO_RESTAURANT;
             $parsed[$key]['delivery_terminal_id'] = $orderInfo['deliveryTerminal']['deliveryTerminalId'];
             $parsed[$key]['status'] = $ordersInDb === null
-                ? strtolower($orderInfo['statusCode'])
+                ? DeliveryOrder::STATUS_WAITING
                 : $this->parseStatus($orderInfo, $ordersInDb);
             $parsed[$key]['order_uuid'] = $orderInfo['orderId'];
             $parsed[$key]['order_id'] = (int) $orderInfo['number'];
