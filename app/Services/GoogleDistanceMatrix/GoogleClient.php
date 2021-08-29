@@ -14,12 +14,16 @@ class GoogleClient
     /** @var string */
     private $token;
 
+    /** @var MatrixService */
+    private $matrixService;
+
     /**
      *
      */
     public function __construct()
     {
         $this->token = config('google.distance-matrix.token');
+        $this->matrixService = new MatrixService();
     }
 
     /**
@@ -29,8 +33,6 @@ class GoogleClient
      */
     public function getDistances(Collection $deliveredOrders, Location $location): array
     {
-        $distances = [];
-
         $origins = $this->getOriginsFromOrders($deliveredOrders, $location->address);
         $destinations = $this->getDestinationsFromOrders($deliveredOrders, $location->address);
 
@@ -42,7 +44,7 @@ class GoogleClient
         ])->json();
 
         $distances = $this->parseResponse($response);
-
+dd($distances);
         return $distances;
     }
 
@@ -76,14 +78,6 @@ class GoogleClient
      */
     private function parseResponse(array $response): array
     {
-        $matrixRows = count($response['rows']);
-
-        $returnDistance = $response['rows'][$matrixRows - 1]['elements'][$matrixRows - 1];
-        $deliveryDistance = 0;//TODO: найти универсальную формулу расчёта
-
-        return [
-            'deliveryDistance' => $deliveryDistance,
-            'returnDistance' => $returnDistance,
-        ];
+        return $this->matrixService->calculateDistances($response['rows']);
     }
 }

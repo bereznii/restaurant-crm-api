@@ -22,7 +22,7 @@ class DeliveryOrderService
                 ['iiko_courier_id', '=', $courierIikoUuid],
                 ['status', '=', Delivery::STATUS_ON_WAY],
                 ['user_id', '=', $userId],
-            ])->first();
+            ])->orderBy('id', 'desc')->first();
 
         // Обновляем статус нужному заказу в поездке
         DeliveryOrder::where([
@@ -42,13 +42,13 @@ class DeliveryOrderService
 
         if (!$remainingOrdersToDeliver->has('status', DeliveryOrder::STATUS_ON_WAY)) {
             // Отмечаем поездку завершенной, считаем расстояния
-            $delivery->status = Delivery::STATUS_DELIVERED;
-
-            $distances = (new GoogleClient())->getDistances($remainingOrdersToDeliver, $delivery->location);
-
-            $delivery->delivery_distance = $distances['deliveryDistance'];
-            $delivery->return_distance = $distances['returnDistance'];
-            $delivery->save();
+//            $delivery->status = Delivery::STATUS_DELIVERED;
+//
+//            $distances = (new GoogleClient())->getDistances($remainingOrdersToDeliver, $delivery->location);
+//
+//            $delivery->delivery_distance = $distances['deliveryDistance'];
+//            $delivery->return_distance = $distances['returnDistance'];
+//            $delivery->save();
         }
     }
 }
