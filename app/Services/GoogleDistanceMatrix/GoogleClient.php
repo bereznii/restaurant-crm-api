@@ -5,6 +5,7 @@ namespace App\Services\GoogleDistanceMatrix;
 use App\Models\Location;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GoogleClient
 {
@@ -42,6 +43,10 @@ class GoogleClient
             'units' => self::API_UNITS,
             'key' => $this->token,
         ])->json();
+
+        if (!$response->successful()) {
+            Log::error($response->body());
+        }
 
         return $this->parseResponse($response);
     }
