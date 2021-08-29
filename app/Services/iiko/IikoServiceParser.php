@@ -13,10 +13,10 @@ class IikoServiceParser
      * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=id.xsy1q2yg3v46
      *
      * @param array $responseObjects
-     * @param Collection|null $ordersInWork
+     * @param Collection|null $ordersInDb
      * @return array
      */
-    public function parseDeliveryOrdersResponse(array $responseObjects, ?Collection $ordersInWork): array
+    public function parseDeliveryOrdersResponse(array $responseObjects, ?Collection $ordersInDb): array
     {
         $parsed = [];
 
@@ -34,9 +34,7 @@ class IikoServiceParser
                 ? Location::SMAKI_MAKI_RESTAURANT
                 : Location::SUSHI_GO_RESTAURANT;
             $parsed[$key]['delivery_terminal_id'] = $orderInfo['deliveryTerminal']['deliveryTerminalId'];
-            $parsed[$key]['status'] = $ordersInWork === null
-                ? DeliveryOrder::STATUS_WAITING
-                : $this->parseStatus($orderInfo, $ordersInWork);
+            $parsed[$key]['status'] = $this->parseStatus($orderInfo, $ordersInDb);
             $parsed[$key]['order_uuid'] = $orderInfo['orderId'];
             $parsed[$key]['order_id'] = (int) $orderInfo['number'];
             $parsed[$key]['comment'] = $orderInfo['comment'];
@@ -93,15 +91,15 @@ class IikoServiceParser
 
     /**
      * @param array $orderInfo
-     * @param Collection $ordersInWork
+     * @param Collection $ordersInDb
      * @return string
      */
-    private function parseStatus(array $orderInfo, Collection $ordersInWork): string
+    private function parseStatus(array $orderInfo, Collection $ordersInDb): string
     {
-        $currentOrderInWork = $ordersInWork->where('iiko_order_id', $orderInfo['orderId'])->first();
+        $currentOrderInDb = $ordersInDb->where('iiko_order_id', $orderInfo['orderId'])->first();
 
-        if (isset($currentOrderInWork)) {
-            $status = $currentOrderInWork->status;
+        if (isset($currentOrderInDb)) {
+            $status = $currentOrderInDb->status;
         } else {
             $status = DeliveryOrder::STATUS_WAITING;
         }

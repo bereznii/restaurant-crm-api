@@ -122,11 +122,11 @@ class IikoServiceInterface
         $smakiOrders = json_decode($this->smaki, true);
         $goOrders = json_decode($this->go, true);
 
-        $existingOrdersInWork = $this->deliveryService->existingDeliveryForCourier($courierIikoId);
+        $existingOrdersInDb = $this->deliveryService->existingDeliveryForCourier($courierIikoId);
 
         return array_merge(
-            $this->iikoServiceParser->parseDeliveryOrdersResponse($smakiOrders, $existingOrdersInWork),
-            $this->iikoServiceParser->parseDeliveryOrdersResponse($goOrders, $existingOrdersInWork)
+            $this->iikoServiceParser->parseDeliveryOrdersResponse($smakiOrders, $existingOrdersInDb),
+            $this->iikoServiceParser->parseDeliveryOrdersResponse($goOrders, $existingOrdersInDb)
         );
     }
 

@@ -43,9 +43,7 @@ class GoogleClient
             'key' => $this->token,
         ])->json();
 
-        $distances = $this->parseResponse($response);
-dd($distances);
-        return $distances;
+        return $this->parseResponse($response);
     }
 
     /**

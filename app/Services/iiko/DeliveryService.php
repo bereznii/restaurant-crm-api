@@ -91,7 +91,6 @@ class DeliveryService
         return Delivery::with('orders')
             ->where([
                 ['iiko_courier_id', '=', $courierIikoId],
-                ['status', '=', Delivery::STATUS_ON_WAY],
             ])
             ->orderBy('id', 'desc')
             ->first()
