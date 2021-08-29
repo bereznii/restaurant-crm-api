@@ -26,7 +26,6 @@ class DeliveryService
             $delivery->delivery_terminal_id = $validated['delivery_terminal_id'];
             $delivery->iiko_courier_id = $courierUuid;
             $delivery->user_id = $userId;
-            $delivery->distance = 0;
             $delivery->started_at = date('Y-m-d H:i:s');
             if ($delivery->save()) {
                 $success = $this->createRelatedDeliveryOrders($delivery, $validated);

@@ -182,7 +182,7 @@ class OrderController extends Controller
     public function index(IndexRequest $request)
     {
         return new OrdersCollection(
-            $this->iikoService->getOrdersForCourier()
+            $this->iikoService->getOrdersForCourier(Auth::user()->iikoId)
         );
     }
 
@@ -207,6 +207,16 @@ class OrderController extends Controller
      *                  property="restaurant",
      *                  type="string",
      *                  description="Идентификатор ресторана"
+     *               ),
+     *               @OA\Property(
+     *                  property="latitude",
+     *                  type="string",
+     *                  description="Широта"
+     *               ),
+     *               @OA\Property(
+     *                  property="longitude",
+     *                  type="string",
+     *                  description="Долгота"
      *               )
      *              )
      *          )
@@ -240,7 +250,7 @@ class OrderController extends Controller
     public function update(UpdateRequest $request, string $orderUuid)
     {
         return new OrderResource(
-            $this->iikoService->update($orderUuid, $request->validated())
+            $this->iikoService->update(Auth::user()->iikoId, Auth::id(), $orderUuid, $request->validated())
         );
     }
 }

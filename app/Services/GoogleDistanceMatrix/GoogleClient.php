@@ -53,7 +53,7 @@ class GoogleClient
      */
     private function getOriginsFromOrders(Collection $deliveredOrders, string $locationAddress): string
     {
-        $addresses = array_column($deliveredOrders->toArray(), 'address');
+        $addresses = array_map(fn ($item) => "{$item['latitude']},{$item['longitude']}", $deliveredOrders->toArray());
 
         return $locationAddress . '|' . implode('|', $addresses);
     }
@@ -65,7 +65,7 @@ class GoogleClient
      */
     private function getDestinationsFromOrders(Collection $deliveredOrders, string $locationAddress): string
     {
-        $addresses = array_column($deliveredOrders->toArray(), 'address');
+        $addresses = array_map(fn ($item) => "{$item['latitude']},{$item['longitude']}", $deliveredOrders->toArray());
 
         return implode('|', $addresses) . '|' . $locationAddress;
     }

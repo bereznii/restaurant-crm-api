@@ -750,6 +750,14 @@
                                     "restaurant": {
                                         "description": "Идентификатор ресторана",
                                         "type": "string"
+                                    },
+                                    "latitude": {
+                                        "description": "Широта",
+                                        "type": "string"
+                                    },
+                                    "longitude": {
+                                        "description": "Долгота",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"

@@ -33,6 +33,8 @@ class DeliveryOrderService
         ])->update([
             'status' => DeliveryOrder::STATUS_DELIVERED,
             'delivered_at' => date('Y-m-d H:i:s'),
+            'latitude' => $validated['latitude'],
+            'longitude' => $validated['longitude'],
         ]);
 
         // Проверяем остались ли ещё не доставленные заказы в поездке

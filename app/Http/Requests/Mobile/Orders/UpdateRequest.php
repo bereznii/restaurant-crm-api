@@ -25,7 +25,9 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'restaurant' => 'required|string|in:go,smaki'
+            'restaurant' => 'required|string|in:go,smaki',
+            'latitude' => 'required|string',
+            'longitude' => 'required|string',
         ];
     }
 }
