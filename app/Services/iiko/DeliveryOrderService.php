@@ -42,7 +42,7 @@ class DeliveryOrderService
             ['delivery_id', '=', $delivery->id]
         ])->orderBy('delivered_at', 'asc')->get();
 
-        if (!$remainingOrdersToDeliver->has('status', DeliveryOrder::STATUS_ON_WAY)) {
+        if ($remainingOrdersToDeliver->where('status', DeliveryOrder::STATUS_ON_WAY)->first() === null) {
             // Отмечаем поездку завершенной, считаем расстояния
             $delivery->status = Delivery::STATUS_DELIVERED;
 
