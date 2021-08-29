@@ -24,6 +24,10 @@ class DeliveryOrderService
                 ['user_id', '=', $userId],
             ])->orderBy('id', 'desc')->first();
 
+        if (!isset($delivery)) {
+            throw new \RuntimeException(__METHOD__ . ': Поездка не найдена');
+        }
+
         // Обновляем статус нужному заказу в поездке
         DeliveryOrder::where([
             ['delivery_id', '=', $delivery->id],

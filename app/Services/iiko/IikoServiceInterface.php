@@ -71,6 +71,8 @@ class IikoServiceInterface
                 ]
             );
 
+            Log::info(IikoClient::API_URL . "/orders/set_order_delivered" . ' : ' . $response->body());
+
             if ($response->successful()) {
                 $this->deliveryOrderService->setAsDelivered($courierIikoId, $userId, $orderUuid, $validated);
                 $success = true;
@@ -81,7 +83,6 @@ class IikoServiceInterface
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            throw $e;
         }
 
         if ($success) {
@@ -110,6 +111,8 @@ class IikoServiceInterface
                 'organization' => IikoClient::ORGANIZATION_ID_SMAKI
             ]);
 
+            Log::info(IikoClient::API_URL . "/orders/get_courier_orders" . ' : ' . $response->body());
+
             $smakiOrders = $response->json();
 
             $response = Http::get(IikoClient::API_URL . '/orders/get_courier_orders', [
@@ -117,6 +120,8 @@ class IikoServiceInterface
                 'courier' => $courierIikoId,
                 'organization' => IikoClient::ORGANIZATION_ID_GO
             ]);
+
+            Log::info(IikoClient::API_URL . "/orders/get_courier_orders" . ' : ' . $response->body());
 
             $goOrders = $response->json();
         } catch (\Exception $e) {

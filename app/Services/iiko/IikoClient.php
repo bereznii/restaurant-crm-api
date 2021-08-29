@@ -2,6 +2,7 @@
 
 namespace App\Services\iiko;
 
+use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\Http;
 
@@ -55,6 +56,8 @@ class IikoClient
             'user_id' => $this->userId,
             'user_secret' => $this->userSecret,
         ]);
+
+        Log::info(self::API_URL . self::API_URL_ACCESS_TOKEN . ' : ' . $response->body());
 
         return trim($response->body(), '"');
     }

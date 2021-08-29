@@ -44,7 +44,8 @@ class GoogleClient
             'key' => $this->token,
         ]);
 
-        Log::error($response->json());
+        Log::info(self::API_URL . ' Request: ' . json_encode(['origins' => $origins, 'destinations' => $destinations,]));
+        Log::info(self::API_URL . ' Response: ' . $response->body());
 
         return $this->parseResponse($response->json());
     }
