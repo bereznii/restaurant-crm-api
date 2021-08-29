@@ -42,13 +42,13 @@ class GoogleClient
             'destinations' => $destinations,
             'units' => self::API_UNITS,
             'key' => $this->token,
-        ])->json();
+        ]);
 
         if (!$response->successful()) {
             Log::error($response->body());
         }
 
-        return $this->parseResponse($response);
+        return $this->parseResponse($response->json());
     }
 
     /**
