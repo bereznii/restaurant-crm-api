@@ -250,7 +250,7 @@ class OrderController extends Controller
     public function update(UpdateRequest $request, string $orderUuid)
     {
         return new OrderResource(
-            $this->iikoService->update(Auth::user()->iikoId, Auth::id(), $orderUuid, $request->validated())
+            $this->iikoService->setOrderDelivered(Auth::user()->iikoId, Auth::id(), $orderUuid, $request->validated())
         );
     }
 }

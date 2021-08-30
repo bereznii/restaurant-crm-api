@@ -29,6 +29,7 @@ class MatrixService
     private function getReturnDistance(array $rows, int $rowsCount): float
     {
         // MATRIX[n-1][n-1], где размер матрицы N x N
+        // TODO: учесть вероятность невалидного адреса и как результат отсутсвия результата
         $neededElement = $rows[$rowsCount - 1]['elements'][$rowsCount - 1];
 
         return $neededElement['distance']['value'];
@@ -45,6 +46,7 @@ class MatrixService
 
         $distance = 0;
         foreach (range(0,$rowsCount - 2) as $index) {
+            // TODO: учесть вероятность невалидного адреса и как результат отсутсвия результата
             $distance += $rows[$index]['elements'][$index]['distance']['value'];
         }
 

@@ -17,10 +17,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens, HasRoles;
 
-    /** @var string */
     public const STATUS_ACTIVE = 'active';
-
-    /** @var string */
     public const STATUS_DISABLED = 'disabled';
 
     public const ROLE_COURIER = 'courier';

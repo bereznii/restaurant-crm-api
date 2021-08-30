@@ -15,12 +15,15 @@ class IikoService
     ) {}
 
     /**
+     * @param string $courierIikoId
      * @return Collection
      * @throws \Exception
      */
-    public function update(string $courierIikoId, int $userId, string $orderUuid, array $validated)
+    public function getOrdersForCourier(string $courierIikoId): Collection
     {
-        return $this->setOrderDelivered($courierIikoId, $userId, $orderUuid, $validated);
+        return collect(
+            $this->iikoServiceInterface->getCourierOrders($courierIikoId)
+        );
     }
 
     /**
@@ -35,18 +38,6 @@ class IikoService
     {
         return collect(
             $this->iikoServiceInterface->setOrderDelivered($courierIikoId, $userId, $orderUuid, $validated)
-        );
-    }
-
-    /**
-     * @param string $courierIikoId
-     * @return Collection
-     * @throws \Exception
-     */
-    public function getOrdersForCourier(string $courierIikoId): Collection
-    {
-        return collect(
-            $this->iikoServiceInterface->getCourierOrders($courierIikoId)
         );
     }
 }

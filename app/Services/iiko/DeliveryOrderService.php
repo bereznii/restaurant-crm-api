@@ -41,11 +41,12 @@ class DeliveryOrderService
             'longitude' => $validated['longitude'],
         ]);
 
-        // Проверяем остались ли ещё не доставленные заказы в поездке
+        // Берем заказы с текущей поездки по порядку доставки
         $remainingOrdersToDeliver = DeliveryOrder::where([
             ['delivery_id', '=', $delivery->id]
         ])->orderBy('delivered_at', 'asc')->get();
 
+        // Проверяем остались ли ещё не доставленные заказы в поездке
         if ($remainingOrdersToDeliver->where('status', DeliveryOrder::STATUS_ON_WAY)->first() === null) {
             // Отмечаем поездку завершенной, считаем расстояния
             $delivery->status = Delivery::STATUS_DELIVERED;
