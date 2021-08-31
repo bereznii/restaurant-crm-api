@@ -44,8 +44,12 @@ class IikoServiceParser
             $parsed[$key]['comment'] = $orderInfo['comment'];
 
             $parsedPayment = $this->parsePayments($orderInfo['payments']);
-            $parsed[$key]['payment']['title'] = $parsedPayment['title'];
-            $parsed[$key]['payment']['sum'] = $parsedPayment['sum'];
+            if (isset($parsedPayment)) {
+                $parsed[$key]['payment']['title'] = $parsedPayment['title'];
+                $parsed[$key]['payment']['sum'] = $parsedPayment['sum'];
+            } else {
+                $parsed[$key]['payment'] = null;
+            }
 
             /** @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.uknh114942rg */
             $parsed[$key]['customer']['name'] = trim("{$orderInfo['customer']['name']} {$orderInfo['customer']['surName']}") !== ''
@@ -71,11 +75,11 @@ class IikoServiceParser
     /**
      * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.ka5lk06p09ui
      * @param array $payments
-     * @return array
+     * @return array|null
      */
-    private function parsePayments(array $payments): array
+    private function parsePayments(array $payments): ?array
     {
-        $parsedPayment = [];
+        $parsedPayment = null;
 
         $mainPayment = array_values(array_filter($payments, function ($item) {
             return in_array($item['paymentType']['code'], self::PAYMENTS_TO_SHOW);
