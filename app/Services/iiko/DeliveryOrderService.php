@@ -5,6 +5,7 @@ namespace App\Services\iiko;
 use App\Models\Delivery;
 use App\Models\DeliveryOrder;
 use App\Services\GoogleDistanceMatrix\GoogleClient;
+use Illuminate\Support\Facades\Log;
 
 class DeliveryOrderService
 {
@@ -40,6 +41,8 @@ class DeliveryOrderService
             'latitude' => $validated['latitude'],
             'longitude' => $validated['longitude'],
         ]);
+
+        Log::channel('mobile')->debug("{$userId} | Закрыл заказ {$orderUuid}");
 
         // Берем заказы с текущей поездки по порядку доставки
         $remainingOrdersToDeliver = DeliveryOrder::where([

@@ -11,6 +11,7 @@ use App\Services\iiko\IikoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -181,6 +182,8 @@ class OrderController extends Controller
      */
     public function index(IndexRequest $request)
     {
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getRequestUri());
+
         return new OrdersCollection(
             $this->iikoService->getOrdersForCourier(Auth::user()->iikoId)
         );
@@ -249,6 +252,8 @@ class OrderController extends Controller
      */
     public function update(UpdateRequest $request, string $orderUuid)
     {
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
+
         return new OrderResource(
             $this->iikoService->setOrderDelivered(Auth::user()->iikoId, Auth::id(), $orderUuid, $request->validated())
         );

@@ -9,6 +9,7 @@ use App\Models\UserCoordinate;
 use App\Services\Mobile\MeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class MeController extends Controller
 {
@@ -69,6 +70,8 @@ class MeController extends Controller
      */
     public function updateCoordinates(UpdateCoordinatesRequest $request)
     {
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
+
         return new DefaultResource([
             'success' => $this->meService->updateCoordinates($request->validated()),
         ]);
