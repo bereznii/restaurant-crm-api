@@ -4,6 +4,7 @@ namespace App\Services\GoogleDistanceMatrix;
 
 use App\Models\Location;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -44,8 +45,8 @@ class GoogleClient
             'key' => $this->token,
         ]);
 
-        Log::channel('outgoing')->info(self::API_URL . ' Request: ' . json_encode(['origins' => $origins, 'destinations' => $destinations,]));
-        Log::channel('outgoing')->info(self::API_URL . ' Response: ' . $response->body());
+        Log::channel('outgoing')->info(Auth::id() . ' | ' . self::API_URL . ' Request: ' . json_encode(['origins' => $origins, 'destinations' => $destinations,]));
+        Log::channel('outgoing')->info(Auth::id() . ' | ' . self::API_URL . ' Response: ' . $response->body());
 
         return $this->parseResponse($response->json());
     }

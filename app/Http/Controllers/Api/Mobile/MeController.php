@@ -70,7 +70,7 @@ class MeController extends Controller
      */
     public function updateCoordinates(UpdateCoordinatesRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
 
         return new DefaultResource([
             'success' => $this->meService->updateCoordinates($request->validated()),
