@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 class IikoServiceParser
 {
+    private const PAYMENTS_TO_SHOW = ['CASH', 'VISA'];
+
     /**
      * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=id.xsy1q2yg3v46
      *
@@ -41,9 +43,9 @@ class IikoServiceParser
             $parsed[$key]['order_id'] = (int) $orderInfo['number'];
             $parsed[$key]['comment'] = $orderInfo['comment'];
 
-            $parsedPayments = $this->parsePayments($orderInfo['payments']);
-            $parsed[$key]['payment']['title'] = $parsedPayments['mainPayment']['title'];
-            $parsed[$key]['payment']['sum'] = $parsedPayments['mainPayment']['sum'];
+            $parsedPayment = $this->parsePayments($orderInfo['payments']);
+            $parsed[$key]['payment']['title'] = $parsedPayment['title'];
+            $parsed[$key]['payment']['sum'] = $parsedPayment['sum'];
 
             /** @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.uknh114942rg */
             $parsed[$key]['customer']['name'] = trim("{$orderInfo['customer']['name']} {$orderInfo['customer']['surName']}") !== ''
@@ -73,22 +75,18 @@ class IikoServiceParser
      */
     private function parsePayments(array $payments): array
     {
-        $parsedPayments = [];
+        $parsedPayment = [];
 
-        $mainPayment = array_values(array_filter($payments, fn ($item) => $item['paymentType']['code'] !== 'BALL'))[0] ?? null;
-        $additionalPayment = array_values(array_filter($payments, fn ($item) => $item['paymentType']['code'] === 'BALL'))[0] ?? null;
+        $mainPayment = array_values(array_filter($payments, function ($item) {
+            return in_array($item['paymentType']['code'], self::PAYMENTS_TO_SHOW);
+        }))[0] ?? null;
 
         if (isset($mainPayment)) {
-            $parsedPayments['mainPayment']['title'] = $mainPayment['paymentType']['name'];
-            $parsedPayments['mainPayment']['sum'] = $mainPayment['sum'];
+            $parsedPayment['title'] = $mainPayment['paymentType']['name'];
+            $parsedPayment['sum'] = $mainPayment['sum'];
         }
 
-        if (isset($additionalPayment)) {
-            $parsedPayments['additionalPayment']['title'] = $mainPayment['paymentType']['name'];
-            $parsedPayments['additionalPayment']['sum'] = $mainPayment['sum'];
-        }
-
-        return $parsedPayments;
+        return $parsedPayment;
     }
 
     /**
