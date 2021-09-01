@@ -66,6 +66,11 @@ class OrderController extends Controller
      *                         description="Комментарий к заказу"
      *                     ),
      *                     @OA\Property(
+     *                         property="expected_delivery_at",
+     *                         type="integer",
+     *                         description="Время, к которому нужно доставить заказ"
+     *                     ),
+     *                     @OA\Property(
      *                        property="payment",
      *                        type="object",
      *                        @OA\Property(
@@ -154,6 +159,7 @@ class OrderController extends Controller
      *                              "sum": 609,
      *                          },
      *                          "comment": "Доставка за 29хв; | Замовлення онлайн | Підготувати решту з: готівка;",
+     *                          "expected_delivery_at": "2021-08-27 20:15:18",
      *                          "customer": {
      *                              "name": "Юлія Кухар",
      *                              "phone": "+380974747560"

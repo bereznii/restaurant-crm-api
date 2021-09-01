@@ -288,55 +288,6 @@
                 ]
             }
         },
-        "/couriers/{courier_uuid}/coordinates": {
-            "get": {
-                "tags": [
-                    "Couriers"
-                ],
-                "operationId": "9a5017a098dc77b71edd9d9ec0760805",
-                "parameters": [
-                    {
-                        "name": "courier_uuid",
-                        "in": "path",
-                        "description": "UUID курьера в iiko",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "latitude": {
-                                            "description": "Широта",
-                                            "type": "string"
-                                        },
-                                        "longitude": {
-                                            "description": "Долгота",
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object",
-                                    "example": {
-                                        "data": {
-                                            "latitude": "50.436518",
-                                            "longitude": "30.5502122"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
-            }
-        },
         "/locations": {
             "get": {
                 "tags": [
@@ -663,6 +614,10 @@
                                             "description": "Комментарий к заказу",
                                             "type": "integer"
                                         },
+                                        "expected_delivery_at": {
+                                            "description": "Время, к которому нужно доставить заказ",
+                                            "type": "integer"
+                                        },
                                         "payment": {
                                             "properties": {
                                                 "title": {
@@ -745,6 +700,7 @@
                                                     "sum": 609
                                                 },
                                                 "comment": "Доставка за 29хв; | Замовлення онлайн | Підготувати решту з: готівка;",
+                                                "expected_delivery_at": "2021-08-27 20:15:18",
                                                 "customer": {
                                                     "name": "Юлія Кухар",
                                                     "phone": "+380974747560"
@@ -928,6 +884,55 @@
                                                 "orders_outside_city": 1
                                             }
                                         ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/orders/{order_uuid}/courier": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "operationId": "59547859bcbf678f3be39f30a2c87da7",
+                "parameters": [
+                    {
+                        "name": "order_uuid",
+                        "in": "path",
+                        "description": "UUID заказа в iiko",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "latitude": {
+                                            "description": "Широта",
+                                            "type": "string"
+                                        },
+                                        "longitude": {
+                                            "description": "Долгота",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": {
+                                            "latitude": "50.436518",
+                                            "longitude": "30.5502122"
+                                        }
                                     }
                                 }
                             }

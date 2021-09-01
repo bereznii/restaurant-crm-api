@@ -8,7 +8,7 @@ use App\Http\Resources\DefaultResource;
 use App\Repositories\CourierRepository;
 use Illuminate\Http\Request;
 
-class CourierController extends Controller
+class OrderController extends Controller
 {
     /**
      * @param CourierRepository $courierRepository
@@ -19,13 +19,13 @@ class CourierController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/couriers/{courier_uuid}/coordinates",
-     *     tags={"Couriers"},
+     *     path="/orders/{order_uuid}/courier",
+     *     tags={"Orders"},
      *     security={{"Bearer":{}}},
      *     @OA\Parameter(
-     *         name="courier_uuid",
+     *         name="order_uuid",
      *         in="path",
-     *         description="UUID курьера в iiko",
+     *         description="UUID заказа в iiko",
      *         required=true
      *     ),
      *     @OA\Response(
@@ -56,13 +56,13 @@ class CourierController extends Controller
      * )
      *
      * @param CoordinatesRequest $request
-     * @param string $courierUuid
+     * @param string $orderUuid
      * @return DefaultResource
      */
-    public function coordinates(CoordinatesRequest $request, string $courierUuid)
+    public function courier(CoordinatesRequest $request, string $orderUuid)
     {
         return new DefaultResource(
-            $this->courierRepository->getCoordinates($courierUuid)
+            $this->courierRepository->getCoordinates($orderUuid)
         );
     }
 }

@@ -42,6 +42,7 @@ class IikoServiceParser
             $parsed[$key]['order_uuid'] = $orderInfo['orderId'];
             $parsed[$key]['order_id'] = (int) $orderInfo['number'];
             $parsed[$key]['comment'] = $orderInfo['comment'];
+            $parsed[$key]['expected_delivery_at'] = $orderInfo['deliveryDate'];
 
             $parsedPayment = $this->parsePayments($orderInfo['payments']);
             if (isset($parsedPayment)) {

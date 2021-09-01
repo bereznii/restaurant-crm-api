@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CityController;
-use App\Http\Controllers\Api\CourierController;
+use App\Http\Controllers\Api\OrderController as CrmOrderController;
 use App\Http\Controllers\Api\Mobile\DeliveryController;
 use App\Http\Controllers\Api\Mobile\MeController;
 use App\Http\Controllers\Api\Olap\DeliveriesOlapController;
@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::apiResource('users', UserController::class)->except(['destroy',]);
 
-    Route::get('couriers/{iikoId}/coordinates', [CourierController::class, 'coordinates']);
+    Route::get('/orders/{iikoId}/courier', [CrmOrderController::class, 'courier']);
 
     Route::get('/products/search', [ProductController::class, 'search']);
     Route::apiResource('products', ProductController::class)->only(['index','update','show']);

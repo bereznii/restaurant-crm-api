@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Models\Delivery;
+use App\Models\DeliveryOrder;
 use App\Models\iiko\CourierIiko;
 use App\Models\UserCoordinate;
 
@@ -11,14 +13,19 @@ class CourierRepository extends AbstractRepository
     protected string $modelClass = CourierIiko::class;
 
     /**
-     * @param string $courierIikoId
-     * @return mixed
+     * @param string $orderId
+     * @return array
      */
-    public function getCoordinates(string $courierIikoId)
+    public function getCoordinates(string $orderId): array
     {
-        $userId = $this->_getInstance()
-            ->where('iiko_id', '=', $courierIikoId)
-            ->firstOrFail()?->user_id;
+        $deliveryId = DeliveryOrder::where([
+                ['iiko_order_id', '=', $orderId],
+                ['status', '=', DeliveryOrder::STATUS_ON_WAY]
+            ])
+            ->orderBy('id', 'desc')
+            ->firstOrFail()?->delivery_id;
+
+        $userId = Delivery::where('id', '=', $deliveryId)->firstOrfail()?->user_id;
 
         $coordinatesModel = UserCoordinate::where('user_id', '=', $userId)->firstOrFail();
 
