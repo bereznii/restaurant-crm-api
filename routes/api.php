@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\CourierController;
 use App\Http\Controllers\Api\Mobile\DeliveryController;
 use App\Http\Controllers\Api\Mobile\MeController;
+use App\Http\Controllers\Api\Olap\DeliveriesOlapController;
+use App\Http\Controllers\Api\OlapController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
@@ -39,6 +42,8 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::apiResource('users', UserController::class)->except(['destroy',]);
 
+    Route::get('couriers/{iikoId}/coordinates', [CourierController::class, 'coordinates']);
+
     Route::get('/products/search', [ProductController::class, 'search']);
     Route::apiResource('products', ProductController::class)->only(['index','update','show']);
     Route::post('/{restaurant}/products', [ProductController::class, 'massStore']);
@@ -51,5 +56,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::prefix('me')->group(function () {
             Route::put('/coordinates', [MeController::class, 'updateCoordinates']);
         });
+    });
+
+    Route::prefix('olap')->group(function () {
+        Route::get('/deliveries', [DeliveriesOlapController::class, 'index']);
     });
 });

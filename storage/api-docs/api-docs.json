@@ -288,6 +288,55 @@
                 ]
             }
         },
+        "/couriers/{courier_uuid}/coordinates": {
+            "get": {
+                "tags": [
+                    "Couriers"
+                ],
+                "operationId": "9a5017a098dc77b71edd9d9ec0760805",
+                "parameters": [
+                    {
+                        "name": "courier_uuid",
+                        "in": "path",
+                        "description": "UUID курьера в iiko",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "latitude": {
+                                            "description": "Широта",
+                                            "type": "string"
+                                        },
+                                        "longitude": {
+                                            "description": "Долгота",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": {
+                                            "latitude": "50.436518",
+                                            "longitude": "30.5502122"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/locations": {
             "get": {
                 "tags": [
@@ -782,6 +831,104 @@
                                         }
                                     },
                                     "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/olap/deliveries": {
+            "get": {
+                "tags": [
+                    "OLAP"
+                ],
+                "operationId": "b69faf2842e3d2d9567340669ae4ae79",
+                "parameters": [
+                    {
+                        "name": "date_from",
+                        "in": "query",
+                        "description": "Дата доставок от (включительно)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "date_to",
+                        "in": "query",
+                        "description": "Дата доставок до (включительно)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "description": "ID пользователя",
+                                            "type": "string"
+                                        },
+                                        "courier_iiko_id": {
+                                            "description": "ID курьера из iiko в формате UUID",
+                                            "type": "string"
+                                        },
+                                        "first_name": {
+                                            "description": "Имя пользователя",
+                                            "type": "string"
+                                        },
+                                        "last_name": {
+                                            "description": "Фамилия пользователя",
+                                            "type": "string"
+                                        },
+                                        "count_deliveries": {
+                                            "description": "Количество поездок",
+                                            "type": "string"
+                                        },
+                                        "sum_delivery_distance": {
+                                            "description": "Общая дистанция доставок, в метрах",
+                                            "type": "string"
+                                        },
+                                        "sum_return_distance": {
+                                            "description": "Общая дистанция обратно на кухню, в метрах",
+                                            "type": "string"
+                                        },
+                                        "orders_within_city": {
+                                            "description": "Количество доставок в пределах города",
+                                            "type": "string"
+                                        },
+                                        "orders_outside_city": {
+                                            "description": "Количество доставок за пределы города",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "user_id": 18,
+                                                "courier_iiko_id": "b200c40e-8acf-4ba5-b820-58360a855553",
+                                                "first_name": "Василий",
+                                                "last_name": "Пупкин",
+                                                "count_deliveries": 3,
+                                                "sum_delivery_distance": 10596,
+                                                "sum_return_distance": 10596,
+                                                "orders_within_city": 3,
+                                                "orders_outside_city": 1
+                                            }
+                                        ]
+                                    }
                                 }
                             }
                         }
