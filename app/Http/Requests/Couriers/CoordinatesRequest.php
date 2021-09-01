@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Couriers;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CoordinatesRequest extends FormRequest
 {
@@ -13,8 +14,7 @@ class CoordinatesRequest extends FormRequest
      */
     public function authorize()
     {
-        //TODO: добавить пользователя для внешних сервисов, котоыре будут к нам ходить
-        return false;
+        return Auth::user()->hasPermissionTo('api_access');
     }
 
     /**
