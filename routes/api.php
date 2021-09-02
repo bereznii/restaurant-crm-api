@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\OrderController as CrmOrderController;
 use App\Http\Controllers\Api\Mobile\DeliveryController;
 use App\Http\Controllers\Api\Mobile\MeController;
 use App\Http\Controllers\Api\Olap\DeliveriesOlapController;
-use App\Http\Controllers\Api\OlapController;
+use App\Http\Controllers\Api\KitchenController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
@@ -39,6 +39,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('locations', LocationController::class)->only(['index',]);
 
     Route::apiResource('cities', CityController::class)->only(['index',]);
+
+    Route::apiResource('kitchens', KitchenController::class)->only(['index',]);
 
     Route::apiResource('users', UserController::class)->except(['destroy',]);
 

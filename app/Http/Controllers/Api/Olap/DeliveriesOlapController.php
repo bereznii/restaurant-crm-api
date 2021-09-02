@@ -40,6 +40,15 @@ class DeliveriesOlapController extends Controller
      *             type="string"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         name="kitchen_code",
+     *         in="query",
+     *         description="Код кухни",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="OK",
@@ -56,6 +65,11 @@ class DeliveriesOlapController extends Controller
      *                         property="courier_iiko_id",
      *                         type="string",
      *                         description="ID курьера из iiko в формате UUID"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="kitchen_title",
+     *                         type="string",
+     *                         description="Название кухни"
      *                      ),
      *                      @OA\Property(
      *                         property="first_name",
@@ -96,6 +110,7 @@ class DeliveriesOlapController extends Controller
      *                      {{
      *                          "user_id": 18,
      *                          "courier_iiko_id": "b200c40e-8acf-4ba5-b820-58360a855553",
+     *                          "kitchen_title": "Кульпарковская",
      *                          "first_name": "Василий",
      *                          "last_name": "Пупкин",
      *                          "count_deliveries": 3,

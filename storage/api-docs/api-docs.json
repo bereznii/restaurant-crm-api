@@ -288,6 +288,64 @@
                 ]
             }
         },
+        "/kitchens": {
+            "get": {
+                "tags": [
+                    "Kitchens"
+                ],
+                "operationId": "590fcd2884cb95c75b349a0d9cb231a7",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "string"
+                                        },
+                                        "code": {
+                                            "description": "Текстовый идентификатор кухни",
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "description": "Название кухни",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего редактирования",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "id": 1,
+                                                "code": "kulparkivska",
+                                                "title": "Кульпарківська",
+                                                "created_at": "2021-09-02T13:13:03.000000Z",
+                                                "updated_at": "2021-09-02T13:13:03.000000Z"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/locations": {
             "get": {
                 "tags": [
@@ -823,6 +881,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "kitchen_code",
+                        "in": "query",
+                        "description": "Код кухни",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -838,6 +905,10 @@
                                         },
                                         "courier_iiko_id": {
                                             "description": "ID курьера из iiko в формате UUID",
+                                            "type": "string"
+                                        },
+                                        "kitchen_title": {
+                                            "description": "Название кухни",
                                             "type": "string"
                                         },
                                         "first_name": {
@@ -875,6 +946,7 @@
                                             {
                                                 "user_id": 18,
                                                 "courier_iiko_id": "b200c40e-8acf-4ba5-b820-58360a855553",
+                                                "kitchen_title": "Кульпарковская",
                                                 "first_name": "Василий",
                                                 "last_name": "Пупкин",
                                                 "count_deliveries": 3,

@@ -38,9 +38,10 @@ class DeliveriesOlapRepository extends AbstractRepository
             ])
             ->groupBy('delivery_id');
 
-        return User::select([
+        $query = User::select([
                 'users.id AS user_id',
                 'courier_iiko.iiko_id AS courier_iiko_id',
+                'kitchens.title AS kitchen_title',
                 'users.first_name',
                 'users.last_name',
                 DB::raw('COUNT(d.id) count_deliveries'),
@@ -51,10 +52,14 @@ class DeliveriesOlapRepository extends AbstractRepository
                 DB::raw('SUM(do_outside.count) orders_outside_city'),
             ])
             ->join('courier_iiko', 'users.id', '=', 'courier_iiko.user_id')
+            ->leftJoin('kitchens', 'users.kitchen_code', '=', 'kitchens.code')
             ->leftJoinSub($deliveries, 'd', 'users.id', '=', 'd.user_id')
             ->leftJoinSub($doWithin, 'do_within', 'do_within.delivery_id', '=', 'd.id')
-            ->leftJoinSub($doOutside, 'do_outside', 'do_outside.delivery_id', '=', 'd.id')
-            ->groupBy('courier_iiko.iiko_id')->get();
+            ->leftJoinSub($doOutside, 'do_outside', 'do_outside.delivery_id', '=', 'd.id');
+
+        $query = $this->filterByKitchen($query, $validated);
+
+        return $query->groupBy('courier_iiko.iiko_id')->get();
     }
 
     /**
@@ -71,6 +76,20 @@ class DeliveriesOlapRepository extends AbstractRepository
 
         if (isset($validated['date_to'])) {
             $query->whereDate('created_at', '<=', $validated['date_to']);
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $validated
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function filterByKitchen(\Illuminate\Database\Eloquent\Builder $query, array $validated): \Illuminate\Database\Eloquent\Builder
+    {
+        if (isset($validated['kitchen_code'])) {
+            $query->where('kitchen_code', '=', $validated['kitchen_code']);
         }
 
         return $query;

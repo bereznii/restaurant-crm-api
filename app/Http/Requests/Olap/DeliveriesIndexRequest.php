@@ -25,7 +25,8 @@ class DeliveriesIndexRequest extends FormRequest
     {
         return [
             'date_from' => 'filled|date|date_format:Y-m-d',
-            'date_to' => 'filled|date|date_format:Y-m-d|after_or_equal:date_from'
+            'date_to' => 'filled|date|date_format:Y-m-d|after_or_equal:date_from',
+            'kitchen_code' => 'filled|string|exists:kitchens,code',
         ];
     }
 }

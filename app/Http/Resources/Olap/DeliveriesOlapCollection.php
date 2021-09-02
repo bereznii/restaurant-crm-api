@@ -19,6 +19,7 @@ class DeliveriesOlapCollection extends ResourceCollection
                 return [
                     'user_id' => $item->user_id,
                     'courier_iiko_id' => $item->courier_iiko_id,
+                    'kitchen_title' => $item->kitchen_title,
                     'first_name' => $item->first_name,
                     'last_name' => $item->last_name,
                     'count_deliveries' => (int) ($item->count_deliveries ?? 0),
