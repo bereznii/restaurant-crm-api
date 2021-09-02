@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Olap;
 
+use App\Models\Delivery;
 use App\Models\DeliveryOrder;
 use App\Models\User;
 use App\Repositories\AbstractRepository;
@@ -55,7 +56,8 @@ class DeliveriesOlapRepository extends AbstractRepository
             ->leftJoin('kitchens', 'users.kitchen_code', '=', 'kitchens.code')
             ->leftJoinSub($deliveries, 'd', 'users.id', '=', 'd.user_id')
             ->leftJoinSub($doWithin, 'do_within', 'do_within.delivery_id', '=', 'd.id')
-            ->leftJoinSub($doOutside, 'do_outside', 'do_outside.delivery_id', '=', 'd.id');
+            ->leftJoinSub($doOutside, 'do_outside', 'do_outside.delivery_id', '=', 'd.id')
+            ->where('d.status', '=', Delivery::STATUS_DELIVERED);
 
         $query = $this->filterByKitchen($query, $validated);
 
