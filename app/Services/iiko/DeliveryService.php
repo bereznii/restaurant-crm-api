@@ -59,9 +59,7 @@ class DeliveryService
                     'restaurant' => $order['restaurant'],
                     'iiko_order_id' => $order['order_uuid'],
                     'address' => $this->formatAddress($order['address']),
-                    'range_type' => in_array($order['address']['city'], City::CITIES_UA)
-                        ? Delivery::RANGE_TYPE_WITHIN_CITY
-                        : Delivery::RANGE_TYPE_OUTSIDE_CITY,
+                    'range_type' => $this->getRangeType($order['address']),
                 ];
             }, $validated['orders']));
     }
@@ -79,6 +77,26 @@ class DeliveryService
         $formattedAddressString .= "{$address['home']}";
 
         return $formattedAddressString;
+    }
+
+    /**
+     * @param array $address
+     * @return string
+     */
+    private function getRangeType(array $address): string
+    {
+        $inCity = false;
+        $lowCaseCity = mb_strtolower($address['city']);
+
+        foreach (City::CITIES_UA as $city) {
+            if (mb_strpos($lowCaseCity, $city) !== false) {
+                $inCity = true;
+            }
+        }
+
+        return $inCity
+            ? Delivery::RANGE_TYPE_WITHIN_CITY
+            : Delivery::RANGE_TYPE_OUTSIDE_CITY;
     }
 
     /**
