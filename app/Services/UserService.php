@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Location;
 use App\Models\User;
 use App\Models\UserLocation;
 use Illuminate\Support\Facades\DB;
@@ -34,18 +35,17 @@ class UserService
                 $this->courierService->storeIikoData($user->id, $validated['iiko_id']);
             }
 
-            if (isset($validated['locations'])) {
-                $this->createRelatedUserLocations($user, $validated);
-            }
+            $this->createRelatedUserLocations($user, $validated);
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
+            throw new \RuntimeException($e->getMessage());
         }
 
         /** @var $user User|null */
-        return User::with('roles', 'iiko', 'locations')->findOrFail($user->id);
+        return User::with('roles', 'iiko', 'locations', 'kitchen')->findOrFail($user->id);
     }
 
     /**
@@ -56,7 +56,7 @@ class UserService
     public function update(int $id, array $validated): ?User
     {
         /** @var $user User|null */
-        $user = User::with('roles', 'iiko', 'locations')->findOrFail($id);
+        $user = User::with('roles', 'iiko', 'locations', 'kitchen')->findOrFail($id);
 
         DB::beginTransaction();
         try {
@@ -74,7 +74,7 @@ class UserService
 
             $user->update($validated);
 
-            if (isset($validated['locations'])) {
+            if (isset($validated['kitchen_code'])) {
                 UserLocation::where('user_id', $user->id)->delete();
                 $this->createRelatedUserLocations($user, $validated);
                 $user->refresh();
@@ -98,9 +98,11 @@ class UserService
         return User::create([
             'first_name' => $attributes['first_name'],
             'last_name' => $attributes['last_name'],
-            'position' => $attributes['position'],
+            'position' => $attributes['position'] ?? null,
             'phone' => $attributes['phone'],
-            'email' => $attributes['email'],
+            'kitchen_code' => $attributes['kitchen_code'],
+            'status' => $attributes['status'] ?? User::STATUS_DISABLED,
+            'email' => $attributes['email'] ?? null,
             'password' => Hash::make($attributes['password']),
         ]);
     }
@@ -111,9 +113,11 @@ class UserService
      */
     private function createRelatedUserLocations(User $user, array $validated): void
     {
+        $locations = Location::where('kitchen_code', $validated['kitchen_code'])->pluck('id')->toArray();
+
         $user->locationsIds()
             ->createMany(array_map(function ($locationId) {
                 return ['location_id' => $locationId];
-            }, $validated['locations']));
+            }, $locations));
     }
 }

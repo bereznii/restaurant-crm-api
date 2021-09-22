@@ -116,6 +116,16 @@ class UserController extends Controller
      *                             type="object"
      *                         ),
      *                     ),
+     *                      @OA\Property(
+     *                         property="kitchen_code",
+     *                         type="string",
+     *                         description="Идентификатор физической кухни"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="kitchen_name",
+     *                         type="string",
+     *                         description="Название физической кухни"
+     *                      ),
      *                     @OA\Property(
      *                         property="iiko",
      *                         type="array",
@@ -164,6 +174,8 @@ class UserController extends Controller
      *                              "created_at": "2021-08-25T20:36:13.000000Z",
      *                              "updated_at": "2021-08-25T20:36:13.000000Z"
      *                          },
+     *                          "kitchen_code": "sumy",
+     *                          "kitchen_name": "Суми",
      *                          "created_at": "2021-07-24T12:47:09.000000Z",
      *                          "updated_at": "2021-07-24T12:47:09.000000Z",
      *                      }},
@@ -195,7 +207,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         return new UserCollection(
-            User::with('roles', 'iiko', 'locations')
+            User::with('roles', 'iiko', 'locations', 'kitchen')
                 ->orderBy('created_at', 'desc')
                 ->paginate((int) $request->get('per_page', 20))
         );
@@ -211,7 +223,7 @@ class UserController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *               required={"first_name","last_name","email","password","phone","position", "role_name"},
+     *               required={"first_name","last_name","password","phone","kitchen_code","role_name"},
      *               @OA\Property(
      *                  property="first_name",
      *                  type="string",
@@ -246,6 +258,11 @@ class UserController extends Controller
      *                  property="role_name",
      *                  type="string",
      *                  description="Идентификатор роли"
+     *               ),
+     *               @OA\Property(
+     *                  property="kitchen_code",
+     *                  type="string",
+     *                  description="Идентификатор физической кухни"
      *               ),
      *               @OA\Property(
      *                  property="iiko_id",
@@ -311,6 +328,16 @@ class UserController extends Controller
      *                         description="Развание роли"
      *                      ),
      *                      @OA\Property(
+     *                         property="kitchen_code",
+     *                         type="string",
+     *                         description="Идентификатор физической кухни"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="kitchen_name",
+     *                         type="string",
+     *                         description="Название физической кухни"
+     *                      ),
+     *                      @OA\Property(
      *                          property="locations",
      *                          type="array",
      *                          description="Массив сущностей локаций, к которым привязан пользователь",
@@ -364,6 +391,8 @@ class UserController extends Controller
      *                                   "created_at": "2021-08-25T20:36:13.000000Z",
      *                                   "updated_at": "2021-08-25T20:36:13.000000Z"
      *                               },
+     *                               "kitchen_code": "sumy",
+     *                               "kitchen_name": "Суми",
      *                               "updated_at": "2021-07-28T12:47:01.000000Z",
      *                               "created_at": "2021-07-28T12:47:01.000000Z"
      *                           }
@@ -468,6 +497,16 @@ class UserController extends Controller
      *                             type="object"
      *                         ),
      *                     ),
+     *                      @OA\Property(
+     *                         property="kitchen_code",
+     *                         type="string",
+     *                         description="Идентификатор физической кухни"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="kitchen_name",
+     *                         type="string",
+     *                         description="Название физической кухни"
+     *                      ),
      *                     @OA\Property(
      *                         property="created_at",
      *                         type="string",
@@ -507,6 +546,8 @@ class UserController extends Controller
      *                          "created_at": "2021-08-25T20:36:13.000000Z",
      *                          "updated_at": "2021-08-25T20:36:13.000000Z"
      *                      },
+     *                      "kitchen_code": "sumy",
+     *                      "kitchen_name": "Суми",
      *                      "created_at": "2021-07-24T12:47:09.000000Z",
      *                      "updated_at": "2021-07-24T12:47:09.000000Z",
      *                     }}
@@ -522,7 +563,7 @@ class UserController extends Controller
     public function show($id)
     {
         return new UserResource(
-            User::with('roles', 'iiko', 'locations')->findOrFail($id)
+            User::with('roles', 'iiko', 'locations', 'kitchen')->findOrFail($id)
         );
     }
 
@@ -581,6 +622,11 @@ class UserController extends Controller
      *                  property="iiko_id",
      *                  type="string",
      *                  description="ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)"
+     *               ),
+     *               @OA\Property(
+     *                  property="kitchen_code",
+     *                  type="string",
+     *                  description="Идентификатор физической кухни"
      *               ),
      *               @OA\Property(
      *                  property="locations",
@@ -657,6 +703,16 @@ class UserController extends Controller
      *                          ),
      *                      ),
      *                      @OA\Property(
+     *                         property="kitchen_code",
+     *                         type="string",
+     *                         description="Идентификатор физической кухни"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="kitchen_name",
+     *                         type="string",
+     *                         description="Название физической кухни"
+     *                      ),
+     *                      @OA\Property(
      *                         property="updated_at",
      *                         type="string",
      *                         description="Дата последнего редактирования"
@@ -694,6 +750,8 @@ class UserController extends Controller
      *                                   "created_at": "2021-08-25T20:36:13.000000Z",
      *                                   "updated_at": "2021-08-25T20:36:13.000000Z"
      *                               },
+     *                               "kitchen_code": "sumy",
+     *                               "kitchen_name": "Суми",
      *                               "updated_at": "2021-07-28T12:47:01.000000Z",
      *                               "created_at": "2021-07-28T12:47:01.000000Z"
      *                           }

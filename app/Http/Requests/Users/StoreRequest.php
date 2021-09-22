@@ -26,13 +26,14 @@ class StoreRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'filled|string|email|max:255|unique:users',
             'phone' => 'required|numeric|digits:12|unique:users',
-            'position' => 'required|string|max:255',
+            'position' => 'filled|string|max:255',
             'password' => 'required|string|min:8',
             'role_name' => 'required|string|exists:rbac_roles,name',
             'iiko_id' => 'required_if:role_name,courier|uuid|unique:courier_iiko',
-            'locations.*' => 'required|integer|exists:locations,id',
+            'kitchen_code' => 'required|string|exists:kitchens,code',
+            'status' => 'filled|string|in:active,disabled',
         ];
     }
 }

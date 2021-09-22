@@ -32,7 +32,9 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'position',
+        'kitchen_code',
         'phone',
+        'status',
         'email',
         'password',
     ];
@@ -77,6 +79,14 @@ class User extends Authenticatable
     public function locationsIds()
     {
         return $this->hasMany(UserLocation::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function kitchen()
+    {
+        return $this->hasOne(Kitchen::class, 'code', 'kitchen_code');
     }
 
     /**

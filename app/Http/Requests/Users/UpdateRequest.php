@@ -32,8 +32,8 @@ class UpdateRequest extends FormRequest
             'password' => 'filled|string|min:8',
             'role_name' => 'filled|string|exists:rbac_roles,name',
             'iiko_id' => 'required_if:role_name,courier|uuid',
-            'restaurant' => 'required_if:role_name,courier|string|in:go,smaki',
-            'locations.*' => 'required|integer|exists:locations,id',
+            'kitchen_code' => 'required|string|exists:kitchens,code',
+            'status' => 'filled|string|in:active,disabled',
         ];
     }
 }
