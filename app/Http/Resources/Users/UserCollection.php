@@ -30,6 +30,13 @@ class UserCollection extends ResourceCollection
                     'role_title' => $item->roles[0]->title,
                     'email_verified_at' => $item->email_verified_at,
                     'locations' => $item->locations,
+                    'iiko' => isset($item->iiko)
+                        ? [
+                            'iiko_id' => $item->iiko->iiko_id,
+                            'created_at' => $item->iiko->created_at,
+                            'updated_at' => $item->iiko->updated_at,
+                        ]
+                        : null,
                     'created_at' => $item->created_at,
                     'updated_at' => $item->updated_at,
                 ];
