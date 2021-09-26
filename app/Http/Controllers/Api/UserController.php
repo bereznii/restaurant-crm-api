@@ -14,9 +14,10 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-//TODO: учесть kitchen_code
 class UserController extends Controller
 {
     /**

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Users;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -26,8 +28,8 @@ class UpdateRequest extends FormRequest
         return [
             'first_name' => 'filled|string|max:255',
             'last_name' => 'filled|string|max:255',
-            'email' => 'filled|string|email|max:255|unique:users',
-            'phone' => 'filled|numeric|digits:12|unique:users',
+            'email' => ['filled','string','email','max:255', Rule::unique('users')->ignore($this->getRequestedUser())],
+            'phone' => ['filled','numeric','digits:12', Rule::unique('users')->ignore($this->getRequestedUser())],
             'position' => 'filled|string|max:255',
             'password' => 'filled|string|min:8',
             'role_name' => 'filled|string|exists:rbac_roles,name',
@@ -35,5 +37,13 @@ class UpdateRequest extends FormRequest
             'kitchen_code' => 'required|string|exists:kitchens,code',
             'status' => 'filled|string|in:active,disabled',
         ];
+    }
+
+    /**
+     * @return User
+     */
+    private function getRequestedUser(): User
+    {
+        return User::findOrFail($this->route('user'));
     }
 }
