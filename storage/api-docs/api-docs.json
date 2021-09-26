@@ -1018,6 +1018,122 @@
                 ]
             }
         },
+        "/product-categories": {
+            "get": {
+                "tags": [
+                    "Product.Categories"
+                ],
+                "operationId": "2ec462b188bb644796350369cd45d0b6",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "string"
+                                        },
+                                        "sync_id": {
+                                            "description": "Текстовый идентификатор",
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "description": "Название категории",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего редактирования",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "id": 1,
+                                                "sync_id": "sushi",
+                                                "name": "Суши",
+                                                "created_at": "2021-07-28T11:08:01.000000Z",
+                                                "updated_at": "2021-07-28T11:08:01.000000Z"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/product-types": {
+            "get": {
+                "tags": [
+                    "Product.Types"
+                ],
+                "operationId": "911e5b6b384ba8640233bebf62a13994",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "string"
+                                        },
+                                        "sync_id": {
+                                            "description": "Текстовый идентификатор",
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "description": "Название типа товара",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего редактирования",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "id": 1,
+                                                "sync_id": "sushi",
+                                                "name": "Суши",
+                                                "created_at": "2021-07-28T11:08:01.000000Z",
+                                                "updated_at": "2021-07-28T11:08:01.000000Z"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/products": {
             "get": {
                 "tags": [
