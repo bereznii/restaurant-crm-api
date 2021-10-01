@@ -24,11 +24,14 @@ class MassStoreRequest extends FormRequest
     public function rules()
     {
         return [
+            '*.product_uuid' => 'required|uuid',
             '*.title_ua' => 'required|string|max:255',
             '*.article' => 'required|string|max:255',
             '*.weight' => 'required|numeric',
             '*.weight_type' => 'required|string|max:20',
-            '*.prices.*.city' => 'required|exists:cities,sync_id',
+
+            //TODO: если прийдёт новый город, синхронка отпадёт - исправить
+            '*.prices.*.city_uuid' => 'required|uuid|exists:cities,uuid',
             '*.prices.*.price' => 'required|numeric',
         ];
     }

@@ -209,6 +209,7 @@ class UserController extends Controller
     {
         return new UserCollection(
             User::with('roles', 'iiko', 'locations', 'kitchen')
+                ->whereNotIn('phone', [env('PRODUCTS_SYNC_LOGIN'), env('MOBILE_APP_LOGIN')])
                 ->orderBy('created_at', 'desc')
                 ->paginate((int) $request->get('per_page', 20))
         );

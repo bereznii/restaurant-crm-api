@@ -12,6 +12,13 @@ class Product extends Model
 {
     use HasFactory;
 
+    /** @var string  */
+    protected $primaryKey = 'id';
+    /** @var string  */
+    protected $keyType = 'string';
+    /** @var bool  */
+    public $incrementing = false;
+
     /** @var string[] */
     protected $fillable = [
         'price_old'
@@ -31,6 +38,14 @@ class Product extends Model
     public function type(): HasOne
     {
         return $this->hasOne(ProductTypes::class, 'sync_id', 'type_sync_id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function category(): HasOne
+    {
+        return $this->hasOne(ProductCategories::class, 'sync_id', 'category_sync_id');
     }
 
     /**
