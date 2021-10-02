@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 class IikoServiceParser
 {
     private const PAYMENTS_TO_SHOW = ['CASH', 'VISA'];
+    private const PAYMENT_CODE_CASH = 'CASH';
 
     /**
      * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=id.xsy1q2yg3v46
@@ -47,7 +48,10 @@ class IikoServiceParser
             $parsedPayment = $this->parsePayments($orderInfo['payments']);
             if (isset($parsedPayment)) {
                 $parsed[$key]['payment']['title'] = $parsedPayment['title'];
+                $parsed[$key]['payment']['code'] = $parsedPayment['code'];
                 $parsed[$key]['payment']['sum'] = $parsedPayment['sum'];
+                $parsed[$key]['payment']['prepareChangeFrom'] = null;
+                $this->parseChange($parsed[$key]['payment'], $parsedPayment, $orderInfo);
             } else {
                 $parsed[$key]['payment'] = null;
             }
@@ -68,6 +72,8 @@ class IikoServiceParser
             $parsed[$key]['address']['entrance'] = $orderInfo['address']['entrance'];
             $parsed[$key]['address']['floor'] = $orderInfo['address']['floor'];
             $parsed[$key]['address']['comment'] = $orderInfo['address']['comment'];
+
+            $parsed[$key]['items'] = $this->prepareItems($orderInfo['items']);
         }
 
         return $parsed;
@@ -88,6 +94,7 @@ class IikoServiceParser
 
         if (isset($mainPayment)) {
             $parsedPayment['title'] = $mainPayment['paymentType']['name'];
+            $parsedPayment['code'] = $mainPayment['paymentType']['code'];
             $parsedPayment['sum'] = $mainPayment['sum'];
         }
 
@@ -110,5 +117,46 @@ class IikoServiceParser
         }
 
         return $status;
+    }
+
+    /**
+     * @param array $paymentType
+     * @param array $preParsedPayment
+     * @param array $orderInfo
+     * @return void|null
+     */
+    private function parseChange(array &$paymentType, array $preParsedPayment, array $orderInfo)
+    {
+        if ($preParsedPayment['code'] !== self::PAYMENT_CODE_CASH || !($preParsedPayment['sum'] > $orderInfo['sum'])) {
+            return null;
+        }
+
+        $paymentType['sum'] = $orderInfo['sum'];
+
+        if (str_contains($orderInfo['comment'], 'Подготовить сдачу с:')) {
+            preg_match('/Подготовить сдачу с:(.*?);/', $orderInfo['comment'], $match);
+            $paymentType['prepareChangeFrom'] = (float) $match[1];
+        } elseif (str_contains($orderInfo['comment'], 'Підготувати решту з:')) {
+            preg_match('/Підготувати решту з:(.*?);/', $orderInfo['comment'], $match);
+            $paymentType['prepareChangeFrom'] = (float) $match[1];
+        } else {
+            $paymentType['prepareChangeFrom'] = (float) $preParsedPayment['sum'];
+        }
+    }
+
+    /**
+     * @param array $unpreparedItem
+     * @return array|null
+     */
+    private function prepareItems(array $unpreparedItem): ?array
+    {
+        return array_map(function ($item) {
+            return [
+                'name' => $item['name'] ?? null,
+                'amount' => $item['amount'] ?? null,
+                'sum' => $item['sum'] ?? null,
+                'comment' => $item['comment'] ?? null,
+            ];
+        }, $unpreparedItem);
     }
 }

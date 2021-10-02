@@ -685,6 +685,10 @@
                                                 "sum": {
                                                     "description": "Сумма к оплате",
                                                     "type": "integer"
+                                                },
+                                                "prepareChangeFrom": {
+                                                    "description": "Сдача с",
+                                                    "type": "integer"
                                                 }
                                             },
                                             "type": "object"
@@ -701,6 +705,30 @@
                                                 }
                                             },
                                             "type": "object"
+                                        },
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "name": {
+                                                        "description": "Название позиции",
+                                                        "type": "string"
+                                                    },
+                                                    "amount": {
+                                                        "description": "Количество",
+                                                        "type": "integer"
+                                                    },
+                                                    "sum": {
+                                                        "description": "Сумма",
+                                                        "type": "integer"
+                                                    },
+                                                    "comment": {
+                                                        "description": "Комментарий",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
                                         },
                                         "address": {
                                             "properties": {
@@ -755,7 +783,8 @@
                                                 "order_id": 83112,
                                                 "payment": {
                                                     "title": "Наличные",
-                                                    "sum": 609
+                                                    "sum": 609,
+                                                    "prepareChangeFrom": 700
                                                 },
                                                 "comment": "Доставка за 29хв; | Замовлення онлайн | Підготувати решту з: готівка;",
                                                 "expected_delivery_at": "2021-08-27 20:15:18",
@@ -763,6 +792,14 @@
                                                     "name": "Юлія Кухар",
                                                     "phone": "+380974747560"
                                                 },
+                                                "items": [
+                                                    {
+                                                        "name": "Преміум Кілограм",
+                                                        "amount": 1,
+                                                        "sum": 609,
+                                                        "comment": null
+                                                    }
+                                                ],
                                                 "address": {
                                                     "city": "Львів",
                                                     "street": "Чернівецька вул.",

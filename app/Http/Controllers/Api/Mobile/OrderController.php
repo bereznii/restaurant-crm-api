@@ -83,6 +83,11 @@ class OrderController extends Controller
      *                            type="integer",
      *                            description="Сумма к оплате"
      *                        ),
+     *                        @OA\Property(
+     *                            property="prepareChangeFrom",
+     *                            type="integer",
+     *                            description="Сдача с"
+     *                        ),
      *                     ),
      *                     @OA\Property(
      *                        property="customer",
@@ -96,6 +101,32 @@ class OrderController extends Controller
      *                           property="phone",
      *                           type="string",
      *                           description="Телефон клиента доставки"
+     *                        ),
+     *                     ),
+     *                     @OA\Property(
+     *                        property="items",
+     *                        type="array",
+     *                            @OA\Items(
+     *                              @OA\Property(
+     *                                 property="name",
+     *                                 type="string",
+     *                                 description="Название позиции"
+     *                              ),
+     *                              @OA\Property(
+     *                                 property="amount",
+     *                                 type="integer",
+     *                                 description="Количество"
+     *                              ),
+     *                              @OA\Property(
+     *                                 property="sum",
+     *                                 type="integer",
+     *                                 description="Сумма"
+     *                              ),
+     *                              @OA\Property(
+     *                                 property="comment",
+     *                                 type="string",
+     *                                 description="Комментарий"
+     *                              ),
      *                        ),
      *                     ),
      *                     @OA\Property(
@@ -157,6 +188,7 @@ class OrderController extends Controller
      *                          "payment": {
      *                              "title": "Наличные",
      *                              "sum": 609,
+     *                              "prepareChangeFrom": 700,
      *                          },
      *                          "comment": "Доставка за 29хв; | Замовлення онлайн | Підготувати решту з: готівка;",
      *                          "expected_delivery_at": "2021-08-27 20:15:18",
@@ -164,6 +196,12 @@ class OrderController extends Controller
      *                              "name": "Юлія Кухар",
      *                              "phone": "+380974747560"
      *                          },
+     *                          "items": {{
+     *                              "name": "Преміум Кілограм",
+     *                              "amount": 1,
+     *                              "sum": 609,
+     *                              "comment": null,
+     *                          }},
      *                          "address": {
      *                              "city": "Львів",
      *                              "street": "Чернівецька вул.",
