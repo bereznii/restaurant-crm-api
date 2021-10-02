@@ -74,6 +74,11 @@ class OrderController extends Controller
      *                        property="payment",
      *                        type="object",
      *                        @OA\Property(
+     *                            property="code",
+     *                            type="string",
+     *                            description="Тип оплаты"
+     *                        ),
+     *                        @OA\Property(
      *                            property="title",
      *                            type="string",
      *                            description="Название типа оплаты"
@@ -186,6 +191,7 @@ class OrderController extends Controller
      *                          "order_uuid": "257fd1c0-3015-dc6c-f751-d78dd06b4ef5",
      *                          "order_id": 83112,
      *                          "payment": {
+     *                              "code": "CASH",
      *                              "title": "Наличные",
      *                              "sum": 609,
      *                              "prepareChangeFrom": 700,

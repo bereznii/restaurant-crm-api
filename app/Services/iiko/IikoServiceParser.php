@@ -131,17 +131,8 @@ class IikoServiceParser
             return null;
         }
 
-        $paymentType['sum'] = $orderInfo['sum'];
-
-        if (str_contains($orderInfo['comment'], 'Подготовить сдачу с:')) {
-            preg_match('/Подготовить сдачу с:(.*?);/', $orderInfo['comment'], $match);
-            $paymentType['prepareChangeFrom'] = (float) $match[1];
-        } elseif (str_contains($orderInfo['comment'], 'Підготувати решту з:')) {
-            preg_match('/Підготувати решту з:(.*?);/', $orderInfo['comment'], $match);
-            $paymentType['prepareChangeFrom'] = (float) $match[1];
-        } else {
-            $paymentType['prepareChangeFrom'] = (float) $preParsedPayment['sum'];
-        }
+        $paymentType['sum'] = (float) $orderInfo['sum'];
+        $paymentType['prepareChangeFrom'] = (float) $preParsedPayment['sum'];
     }
 
     /**

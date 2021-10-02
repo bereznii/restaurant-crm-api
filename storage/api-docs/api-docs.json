@@ -678,6 +678,10 @@
                                         },
                                         "payment": {
                                             "properties": {
+                                                "code": {
+                                                    "description": "Тип оплаты",
+                                                    "type": "string"
+                                                },
                                                 "title": {
                                                     "description": "Название типа оплаты",
                                                     "type": "string"
@@ -782,6 +786,7 @@
                                                 "order_uuid": "257fd1c0-3015-dc6c-f751-d78dd06b4ef5",
                                                 "order_id": 83112,
                                                 "payment": {
+                                                    "code": "CASH",
                                                     "title": "Наличные",
                                                     "sum": 609,
                                                     "prepareChangeFrom": 700
