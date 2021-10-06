@@ -24,9 +24,10 @@ class IndexRequest extends FormRequest
     public function rules()
     {
         return [
-            'city_sync_id' => 'filled|exists:cities,sync_id',
+//            'city_sync_id' => 'filled|exists:cities,sync_id',
             'restaurant' => 'filled|in:go,smaki',
             'type_sync_id' => 'filled|in:pizza,sushi,soup,other',
+            'category_sync_id' => 'filled|in:sushi,sets,pizza,drinks,additions,deserts,salads,other',
             'per_page' => 'filled|numeric|max:500',
             'page' => 'filled|numeric',
         ];

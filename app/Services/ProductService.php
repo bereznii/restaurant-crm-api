@@ -2,12 +2,25 @@
 
 namespace App\Services;
 
+use App\Models\City;
 use App\Models\Product;
 use App\Models\ProductPrice;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
+    /** @var array  */
+    private array $citiesIndexedByUuids = [];
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->citiesIndexedByUuids = City::all()->pluck('sync_id', 'uuid')->toArray();
+    }
+
     /**
      * @param Product $product
      * @param array $attributes
@@ -47,7 +60,7 @@ class ProductService
         $existingProducts = Product::where('restaurant', '=', $restaurant)->get();
 
         foreach ($receivedProducts as $receivedProduct) {
-            $correspondentExistingProduct = $existingProducts->firstWhere('article', $receivedProduct['article']);
+            $correspondentExistingProduct = $existingProducts->firstWhere('id', $receivedProduct['product_uuid']);
 
             if (isset($correspondentExistingProduct)) {
                 $this->updateExistingProduct($receivedProduct, $correspondentExistingProduct);
@@ -73,7 +86,7 @@ class ProductService
             foreach ($receivedProduct['prices'] as $receivedProductPrice) {
                 ProductPrice::where([
                     ['product_id', '=', $correspondentExistingProduct->id],
-                    ['city_sync_id', '=', $receivedProductPrice['city']],
+                    ['city_sync_id', '=', $this->citiesIndexedByUuids[$receivedProductPrice['city_uuid']]],
                 ])->update([
                     'price' => $receivedProductPrice['price']
                 ]);
@@ -87,27 +100,37 @@ class ProductService
      */
     private function createNewProduct(array $receivedProduct, string $restaurant)
     {
-        $product = new Product();
-        $product->restaurant = $restaurant;
-        $product->title_ua = $receivedProduct['title_ua'];
-        $product->title_ru = $receivedProduct['title_ua'];
-        $product->article = $receivedProduct['article'];
-        $product->is_active = 0;
-        $product->weight = $receivedProduct['weight'];
-        $product->weight_type = $receivedProduct['weight_type'];
-        $product->save();
+        DB::beginTransaction();
 
-        if (isset($receivedProduct['prices']) && is_array($receivedProduct['prices'])) {
-            $date = date('Y-m-d H:i:s');
-            foreach ($receivedProduct['prices'] as $receivedProductPrice) {
-                DB::table('product_prices')->insert([
-                    'product_id' => $product->id,
-                    'city_sync_id' => $receivedProductPrice['city'],
-                    'price' => $receivedProductPrice['price'],
-                    'created_at' => $date,
-                    'updated_at' => $date,
-                ]);
+        try {
+            $product = new Product();
+            $product->id = $receivedProduct['product_uuid'];
+            $product->restaurant = $restaurant;
+            $product->title_ua = $receivedProduct['title_ua'];
+            $product->title_ru = $receivedProduct['title_ua'];
+            $product->article = $receivedProduct['article'];
+            $product->weight = $receivedProduct['weight'];
+            $product->weight_type = $receivedProduct['weight_type'];
+            $product->save();
+
+            if (isset($receivedProduct['prices']) && is_array($receivedProduct['prices'])) {
+                $date = date('Y-m-d H:i:s');
+                foreach ($receivedProduct['prices'] as $receivedProductPrice) {
+                    DB::table('product_prices')->insert([
+                        'product_id' => $product->id,
+                        'city_sync_id' => $this->citiesIndexedByUuids[$receivedProductPrice['city_uuid']],
+                        'price' => $receivedProductPrice['price'],
+                        'created_at' => $date,
+                        'updated_at' => $date,
+                    ]);
+                }
             }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            throw new \RuntimeException($e->getMessage());
         }
     }
 }

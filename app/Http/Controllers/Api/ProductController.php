@@ -59,15 +59,6 @@ class ProductController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="city_sync_id",
-     *         in="query",
-     *         description="Идентификатор города",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
      *         name="type_sync_id",
      *         in="query",
      *         description="Тип товара",
@@ -75,6 +66,16 @@ class ProductController extends Controller
      *         @OA\Schema(
      *             type="string",
      *             enum={"pizza","sushi","soup","other"},
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="category_sync_id",
+     *         in="query",
+     *         description="Категория товара",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string",
+     *             enum={"sushi","sets","pizza","drinks","additions","deserts","salads","other"},
      *         )
      *     ),
      *     @OA\Response(
@@ -87,7 +88,7 @@ class ProductController extends Controller
      *                     @OA\Property(
      *                         property="id",
      *                         type="integer",
-     *                         description="ID"
+     *                         description="ID в формате UUID"
      *                     ),
      *                     @OA\Property(
      *                         property="restaurant",
@@ -125,6 +126,11 @@ class ProductController extends Controller
      *                         description="Единица измерения веса"
      *                     ),
      *                     @OA\Property(
+     *                         property="category_sync_id",
+     *                         type="string",
+     *                         description="Идентификатор категории товара"
+     *                     ),
+     *                     @OA\Property(
      *                         property="type_sync_id",
      *                         type="string",
      *                         description="Идентификатор типа товара"
@@ -156,7 +162,7 @@ class ProductController extends Controller
      *                     ),
      *                     example={"data":{
      *                      {
-     *                          "id": 1,
+     *                          "id": "5524e4ca-8655-41b8-9d79-b9fdbc7d39f4",
      *                          "restaurant": "smaki",
      *                          "article": "art-93993",
      *                          "title_ua": "Пицца 4 Сыра",
@@ -164,6 +170,7 @@ class ProductController extends Controller
      *                          "is_active": 0,
      *                          "weight": 250,
      *                          "weight_type": "г",
+     *                          "category_sync_id": "pizza",
      *                          "type_sync_id": "pizza",
      *                          "description_ua": "Lorem ipsum dolor sit amet.",
      *                          "description_ru": "Lorem ipsum dolor sit amet.",
@@ -171,19 +178,23 @@ class ProductController extends Controller
      *                          "updated_at": "2021-07-30T15:29:31.000000Z",
      *                          "prices": {
      *                              {
-     *                                  "product_id": 1,
+     *                                  "product_id": "5524e4ca-8655-41b8-9d79-b9fdbc7d39f4",
      *                                  "city_sync_id": "lviv",
      *                                  "price": 120,
      *                                  "price_old": 114
      *                              },
      *                              {
-     *                                  "product_id": 1,
+     *                                  "product_id": "5524e4ca-8655-41b8-9d79-b9fdbc7d39f4",
      *                                  "city_sync_id": "mykolaiv",
      *                                  "price": 125,
      *                                  "price_old": 119
      *                              },
      *                          },
      *                          "type": {
+     *                              "sync_id": "pizza",
+     *                              "name": "Пицца"
+     *                          },
+     *                          "category": {
      *                              "sync_id": "pizza",
      *                              "name": "Пицца"
      *                          },
@@ -239,6 +250,11 @@ class ProductController extends Controller
      *              type="array",
      *                @OA\Items(
      *                     @OA\Property(
+     *                         property="product_uuid",
+     *                         type="integer",
+     *                         description="ID в формате UUID"
+     *                     ),
+     *                     @OA\Property(
      *                         property="article",
      *                         type="string",
      *                         description="Артикул"
@@ -263,9 +279,9 @@ class ProductController extends Controller
      *                         type="array",
      *                          @OA\Items(
      *                              @OA\Property(
-     *                                 property="city_sync_id",
+     *                                 property="city_uuid",
      *                                 type="string",
-     *                                 description="Идентификатор города для которого редактируется цена"
+     *                                 description="Идентификатор города в формате UUID"
      *                              ),
      *                              @OA\Property(
      *                                 property="price",
@@ -277,37 +293,39 @@ class ProductController extends Controller
      *                ),
      *                example={
      *                  {
+     *                     "product_uuid": "ff7d0b98-e818-4813-ae90-e11791dc35f7",
      *                     "article": "art-1",
      *                     "title_ua": "Калифорния",
      *                     "weight": 250,
      *                     "weight_type": "г",
      *                     "prices": {
      *                          {
-     *                              "city": "lviv",
+     *                              "city_uuid": "cbc41f7d-823c-411a-b6d2-9af963c6ed99",
      *                              "price": 190,
      *                          },
      *                          {
-     *                              "city": "sumy",
+     *                              "city_uuid": "914e5cea-d605-4bc3-ab82-3bccb83329c5",
      *                              "price": 180,
      *                          }
      *                      }
      *                  },
      *                  {
+     *                     "product_uuid": "ff7d0b98-e818-4813-ae90-e11791dc35f7",
      *                     "article": "art-2",
      *                     "title_ua": "Филадельфия",
      *                     "weight": 260,
      *                     "weight_type": "г",
      *                     "prices": {
      *                          {
-     *                              "city": "lviv",
+     *                              "city_uuid": "cbc41f7d-823c-411a-b6d2-9af963c6ed99",
      *                              "price": 210,
      *                          },
      *                          {
-     *                              "city": "sumy",
+     *                              "city_uuid": "914e5cea-d605-4bc3-ab82-3bccb83329c5",
      *                              "price": 200,
      *                          },
      *                          {
-     *                              "city": "vinnytsia",
+     *                              "city_uuid": "b8b978d8-f6f2-47b8-b67f-f77b5c2cf92b",
      *                              "price": 200,
      *                          }
      *                      }
@@ -413,6 +431,11 @@ class ProductController extends Controller
      *                         description="Идентификатор типа товара"
      *                     ),
      *                     @OA\Property(
+     *                         property="category_sync_id",
+     *                         type="string",
+     *                         description="Категория товара"
+     *                     ),
+     *                     @OA\Property(
      *                         property="description_ua",
      *                         type="string",
      *                         description="Описание на украинском"
@@ -438,7 +461,7 @@ class ProductController extends Controller
      *                         description="Сущность типа товара"
      *                     ),
      *                     example={"data":{
-     *                          "id": 1,
+     *                          "id": "c00efd9f-cd30-4452-82d3-52ac9c0af9b6",
      *                          "restaurant": "smaki",
      *                          "city_sync_id": "lviv",
      *                          "article": "art-93993",
@@ -450,25 +473,30 @@ class ProductController extends Controller
      *                          "weight": 250,
      *                          "weight_type": "г",
      *                          "type_sync_id": "pizza",
+     *                          "category_sync_id": "pizza",
      *                          "description_ua": "Lorem ipsum dolor sit amet.",
      *                          "description_ru": "Lorem ipsum dolor sit amet.",
      *                          "created_at": "2021-07-30T15:29:31.000000Z",
      *                          "updated_at": "2021-07-30T15:29:31.000000Z",
      *                          "prices": {
      *                              {
-     *                                  "product_id": 1,
+     *                                  "product_id": "c00efd9f-cd30-4452-82d3-52ac9c0af9b6",
      *                                  "city_sync_id": "lviv",
      *                                  "price": 120,
      *                                  "price_old": 114
      *                              },
      *                              {
-     *                                  "product_id": 1,
+     *                                  "product_id": "c00efd9f-cd30-4452-82d3-52ac9c0af9b6",
      *                                  "city_sync_id": "mykolaiv",
      *                                  "price": 125,
      *                                  "price_old": 119
      *                              },
      *                          },
      *                          "type": {
+     *                              "sync_id": "pizza",
+     *                              "name": "Пицца"
+     *                          },
+     *                          "category": {
      *                              "sync_id": "pizza",
      *                              "name": "Пицца"
      *                          },

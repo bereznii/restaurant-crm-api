@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProductsSeeder extends Seeder
 {
@@ -20,102 +21,119 @@ class ProductsSeeder extends Seeder
                 'price' => 70,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Саке макі',
                 'price' => 75,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Кіото макі',
                 'price' => 85,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Каппа макі',
                 'price' => 92,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Міядзакі макі',
                 'price' => 79,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Каліфорнія з тунцем',
                 'price' => 165,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Каліфорнія з вугрем',
                 'price' => 170,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Каліфорнія з лососем',
                 'price' => 180,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Саб-зіро макі',
                 'price' => 95,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Дакота макі',
                 'price' => 110,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Ясай макі',
                 'price' => 105,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Ітабасі макі',
                 'price' => 104,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Авокадо макі',
                 'price' => 98,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Каліфорнія тобіко макі',
                 'price' => 98,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Унагі макі',
                 'price' => 85,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Хотатегай нігірі',
                 'price' => 40,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Саке гурме нігірі',
                 'price' => 37,
                 'weight_type' => 'г',
                 'type_sync_id' => 'sushi',
+                'category_sync_id' => 'other',
             ],
             [
                 'name' => 'Пицца Маргарита',
@@ -280,13 +298,13 @@ class ProductsSeeder extends Seeder
         $i = 1;
         foreach ($restaurants as $restaurant) {
             foreach ($productPrototypes as $productPrototype) {
+                $productIdentifier = Str::uuid()->toString();
                 $productsToInsert[] = [
-                    'id' => $i,
+                    'id' => $productIdentifier,
                     'restaurant' => $restaurant,
                     'article' => "art-{$i}",
                     'title_ua' => $productPrototype['name'],
                     'title_ru' => $productPrototype['name'],
-                    'is_active' => (bool) rand(1, 0),
                     'weight' => 250,
                     'weight_type' => $productPrototype['weight_type'],
                     'type_sync_id' => $productPrototype['type_sync_id'],
@@ -298,10 +316,11 @@ class ProductsSeeder extends Seeder
 
                 foreach ($cities as $city) {
                     $productPricesToInsert[] = [
-                        'product_id' => $i,
+                        'product_id' => $productIdentifier,
                         'city_sync_id' => $city,
                         'price' => $productPrototype['price'],
                         'price_old' => $productPrototype['price'] * 0.95,
+                        'is_active' => (bool) rand(1, 0),
                         'created_at' => $date,
                         'updated_at' => $date,
                     ];
