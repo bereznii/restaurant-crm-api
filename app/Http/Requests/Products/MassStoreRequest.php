@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Products;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class MassStoreRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class MassStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::user()->hasPermissionTo('api_access');
     }
 
     /**
