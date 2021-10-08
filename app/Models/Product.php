@@ -21,6 +21,11 @@ class Product extends Model implements HasMedia
     /** @var bool  */
     public $incrementing = false;
 
+    /** @var string[]  */
+    protected $appends = [
+        'image'
+    ];
+
     /** @var string[] */
     protected $fillable = [
         'price_old'
@@ -48,6 +53,18 @@ class Product extends Model implements HasMedia
     public function category(): HasOne
     {
         return $this->hasOne(ProductCategories::class, 'sync_id', 'category_sync_id');
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getImageAttribute(): ?string
+    {
+        $image = $this->getFirstMedia();
+
+        return isset($image)
+            ? $image->getFullUrl()
+            : null;
     }
 
     /**

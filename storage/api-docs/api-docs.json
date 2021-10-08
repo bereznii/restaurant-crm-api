@@ -1122,6 +1122,179 @@
                 ]
             }
         },
+        "/products/{id}/main-image": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "operationId": "9fd7db31029ede8c97314e4adc5a6c1e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID товара",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "product_id": {
+                                            "description": "ID в формате UUID",
+                                            "type": "string"
+                                        },
+                                        "file_name": {
+                                            "description": "Полное название файла",
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "description": "Название файла",
+                                            "type": "string"
+                                        },
+                                        "mime_type": {
+                                            "description": "Mime-Type",
+                                            "type": "string"
+                                        },
+                                        "size": {
+                                            "description": "Размер в байтах",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего редактирования",
+                                            "type": "string"
+                                        },
+                                        "url": {
+                                            "description": "Ссылка на фото",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": {
+                                            "product_id": "5524e4ca-8655-41b8-9d79-b9fdbc7d39f4",
+                                            "file_name": "gopher.png",
+                                            "name": "gopher",
+                                            "mime_type": "image/png",
+                                            "size": "38456",
+                                            "created_at": "2021-07-30T15:29:31.000000Z",
+                                            "updated_at": "2021-07-30T15:29:31.000000Z",
+                                            "url": "http://smaki.local/storage/29/goku.jpg"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "operationId": "b98733aeed23d31b4b1e40f43638b2e8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID товара",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "Форматы: jpg, jpeg, png. Размер до 5МБ",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "product_id": {
+                                            "description": "ID в формате UUID",
+                                            "type": "string"
+                                        },
+                                        "file_name": {
+                                            "description": "Полное название файла",
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "description": "Название файла",
+                                            "type": "string"
+                                        },
+                                        "mime_type": {
+                                            "description": "Mime-Type",
+                                            "type": "string"
+                                        },
+                                        "size": {
+                                            "description": "Размер в байтах",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего редактирования",
+                                            "type": "string"
+                                        },
+                                        "url": {
+                                            "description": "Ссылка на фото",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": {
+                                            "product_id": "5524e4ca-8655-41b8-9d79-b9fdbc7d39f4",
+                                            "file_name": "gopher.png",
+                                            "name": "gopher",
+                                            "mime_type": "image/png",
+                                            "size": "38456",
+                                            "created_at": "2021-07-30T15:29:31.000000Z",
+                                            "updated_at": "2021-07-30T15:29:31.000000Z",
+                                            "url": "http://smaki.local/storage/29/goku.jpg"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/products": {
             "get": {
                 "tags": [
@@ -1202,7 +1375,7 @@
                                     "properties": {
                                         "id": {
                                             "description": "ID в формате UUID",
-                                            "type": "integer"
+                                            "type": "string"
                                         },
                                         "restaurant": {
                                             "description": "Идентификатор ресторана",
@@ -1252,6 +1425,10 @@
                                             "description": "Дата последнего редактирования",
                                             "type": "string"
                                         },
+                                        "image": {
+                                            "description": "Ссылка на фото",
+                                            "type": "string"
+                                        },
                                         "prices": {
                                             "description": "Массив сущностей цены товара для каждого города",
                                             "type": "string"
@@ -1279,6 +1456,7 @@
                                                 "description_ru": "Lorem ipsum dolor sit amet.",
                                                 "created_at": "2021-07-30T15:29:31.000000Z",
                                                 "updated_at": "2021-07-30T15:29:31.000000Z",
+                                                "image": "http://smaki.local/storage/29/goku.jpg",
                                                 "prices": [
                                                     {
                                                         "product_id": "5524e4ca-8655-41b8-9d79-b9fdbc7d39f4",
@@ -1490,7 +1668,7 @@
                                     "properties": {
                                         "id": {
                                             "description": "ID",
-                                            "type": "integer"
+                                            "type": "string"
                                         },
                                         "restaurant": {
                                             "description": "Идентификатор ресторана",
@@ -1540,6 +1718,10 @@
                                             "description": "Дата последнего редактирования",
                                             "type": "string"
                                         },
+                                        "image": {
+                                            "description": "Ссылка на фото",
+                                            "type": "string"
+                                        },
                                         "prices": {
                                             "description": "Массив сущностей цены товара для каждого города",
                                             "type": "string"
@@ -1569,6 +1751,7 @@
                                             "description_ru": "Lorem ipsum dolor sit amet.",
                                             "created_at": "2021-07-30T15:29:31.000000Z",
                                             "updated_at": "2021-07-30T15:29:31.000000Z",
+                                            "image": "http://smaki.local/storage/29/goku.jpg",
                                             "prices": [
                                                 {
                                                     "product_id": "c00efd9f-cd30-4452-82d3-52ac9c0af9b6",
@@ -1714,7 +1897,7 @@
                                     "properties": {
                                         "id": {
                                             "description": "ID",
-                                            "type": "integer"
+                                            "type": "string"
                                         },
                                         "restaurant": {
                                             "description": "Идентификатор ресторана",
@@ -1764,6 +1947,10 @@
                                             "description": "Дата создания товара",
                                             "type": "string"
                                         },
+                                        "image": {
+                                            "description": "Ссылка на фото",
+                                            "type": "string"
+                                        },
                                         "prices": {
                                             "description": "Массив сущностей цены товара для каждого города",
                                             "type": "string"
@@ -1791,6 +1978,7 @@
                                             "description_ru": "Lorem ipsum dolor sit amet.",
                                             "created_at": "2021-07-30T15:29:31.000000Z",
                                             "updated_at": "2021-07-30T15:29:31.000000Z",
+                                            "image": "http://smaki.local/storage/29/goku.jpg",
                                             "prices": [
                                                 {
                                                     "product_id": "4d619e0a-b3cd-4cc7-aa05-3e0a70fa0c52",

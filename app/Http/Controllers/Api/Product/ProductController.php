@@ -87,7 +87,7 @@ class ProductController extends Controller
      *                 @OA\Schema(
      *                     @OA\Property(
      *                         property="id",
-     *                         type="integer",
+     *                         type="string",
      *                         description="ID в формате UUID"
      *                     ),
      *                     @OA\Property(
@@ -151,6 +151,11 @@ class ProductController extends Controller
      *                         description="Дата последнего редактирования"
      *                     ),
      *                     @OA\Property(
+     *                         property="image",
+     *                         type="string",
+     *                         description="Ссылка на фото"
+     *                     ),
+     *                     @OA\Property(
      *                         property="prices",
      *                         type="string",
      *                         description="Массив сущностей цены товара для каждого города"
@@ -176,6 +181,7 @@ class ProductController extends Controller
      *                          "description_ru": "Lorem ipsum dolor sit amet.",
      *                          "created_at": "2021-07-30T15:29:31.000000Z",
      *                          "updated_at": "2021-07-30T15:29:31.000000Z",
+     *                          "image": "http://smaki.local/storage/29/goku.jpg",
      *                          "prices": {
      *                              {
      *                                  "product_id": "5524e4ca-8655-41b8-9d79-b9fdbc7d39f4",
@@ -387,7 +393,7 @@ class ProductController extends Controller
      *                 @OA\Schema(
      *                     @OA\Property(
      *                         property="id",
-     *                         type="integer",
+     *                         type="string",
      *                         description="ID"
      *                     ),
      *                     @OA\Property(
@@ -451,6 +457,11 @@ class ProductController extends Controller
      *                         description="Дата последнего редактирования"
      *                     ),
      *                     @OA\Property(
+     *                         property="image",
+     *                         type="string",
+     *                         description="Ссылка на фото"
+     *                     ),
+     *                     @OA\Property(
      *                         property="prices",
      *                         type="string",
      *                         description="Массив сущностей цены товара для каждого города"
@@ -478,6 +489,7 @@ class ProductController extends Controller
      *                          "description_ru": "Lorem ipsum dolor sit amet.",
      *                          "created_at": "2021-07-30T15:29:31.000000Z",
      *                          "updated_at": "2021-07-30T15:29:31.000000Z",
+     *                          "image": "http://smaki.local/storage/29/goku.jpg",
      *                          "prices": {
      *                              {
      *                                  "product_id": "c00efd9f-cd30-4452-82d3-52ac9c0af9b6",
@@ -626,7 +638,7 @@ class ProductController extends Controller
      *                 @OA\Schema(
      *                     @OA\Property(
      *                         property="id",
-     *                         type="integer",
+     *                         type="string",
      *                         description="ID"
      *                     ),
      *                     @OA\Property(
@@ -690,6 +702,11 @@ class ProductController extends Controller
      *                         description="Дата создания товара"
      *                     ),
      *                     @OA\Property(
+     *                         property="image",
+     *                         type="string",
+     *                         description="Ссылка на фото"
+     *                     ),
+     *                     @OA\Property(
      *                         property="prices",
      *                         type="string",
      *                         description="Массив сущностей цены товара для каждого города"
@@ -715,6 +732,7 @@ class ProductController extends Controller
      *                          "description_ru": "Lorem ipsum dolor sit amet.",
      *                          "created_at": "2021-07-30T15:29:31.000000Z",
      *                          "updated_at": "2021-07-30T15:29:31.000000Z",
+     *                          "image": "http://smaki.local/storage/29/goku.jpg",
      *                          "prices": {
      *                              {
      *                                  "product_id": "4d619e0a-b3cd-4cc7-aa05-3e0a70fa0c52",
