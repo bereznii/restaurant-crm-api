@@ -24,14 +24,15 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title_ua' => 'filled|string|max:255',
-            'title_ru' => 'filled|string|max:255',
+            'title_ua' => 'required|string|max:255',
+            'title_ru' => 'required|string|max:255',
             'prices.*.city_sync_id' => 'required|string|exists:cities,sync_id',
             'prices.*.price_old' => 'required|numeric',
-            'is_active' => 'filled|in:0,1',
-            'type_sync_id' => 'filled|in:pizza,sushi,soup,other',
-            'description_ua' => 'filled|string|max:65000',
-            'description_ru' => 'filled|string|max:65000',
+            'prices.*.is_active' => 'required|in:0,1',
+            'description_ua' => 'required|string|max:65000',
+            'description_ru' => 'required|string|max:65000',
+            'type_sync_id' => 'required|exists:product_types,sync_id',
+            'category_sync_id' => 'required|exists:product_categories,sync_id',
         ];
     }
 }

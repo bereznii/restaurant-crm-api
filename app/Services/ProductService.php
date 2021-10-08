@@ -28,26 +28,39 @@ class ProductService
      */
     public function update(Product $product, array $attributes): Product
     {
-        $product->title_ua = $attributes['title_ua'] ?? $product->title_ua;
-        $product->title_ru = $attributes['title_ru'] ?? $product->title_ru;
-        $product->is_active = (int) ($attributes['is_active'] ?? $product->is_active);
-        $product->type_sync_id = $attributes['type_sync_id'] ?? $product->type_sync_id;
-        $product->description_ua = $attributes['description_ua'] ?? $product->description_ua;
-        $product->description_ru = $attributes['description_ru'] ?? $product->description_ru;
-        $product->save();
+        DB::beginTransaction();
 
-        if (isset($attributes['prices']) && is_array($attributes['prices'])) {
-            foreach ($attributes['prices'] as $priceToSave) {
-                ProductPrice::where([
-                    ['city_sync_id', '=', $priceToSave['city_sync_id']],
-                    ['product_id', '=', $product->id]
-                ])->update([
-                    'price_old' => $priceToSave['price_old']
-                ]);
+        try {
+            $product->title_ua = $attributes['title_ua'];
+            $product->title_ru = $attributes['title_ru'];
+            $product->type_sync_id = $attributes['type_sync_id'];
+            $product->category_sync_id = $attributes['category_sync_id'];
+            $product->description_ua = $attributes['description_ua'];
+            $product->description_ru = $attributes['description_ru'];
+            $product->save();
+
+            if (isset($attributes['prices']) && is_array($attributes['prices'])) {
+                foreach ($attributes['prices'] as $priceToSave) {
+                    ProductPrice::where([
+                        ['city_sync_id', '=', $priceToSave['city_sync_id']],
+                        ['product_id', '=', $product->id]
+                    ])->update([
+                        'price_old' => $priceToSave['price_old'],
+                        'is_active' => $priceToSave['is_active'],
+                    ]);
+                }
             }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            throw new \RuntimeException($e->getMessage());
         }
 
-        return Product::where('id', $product->id)->with('prices:product_id,city_sync_id,price,price_old', 'type')->first();
+        return Product::where('id', $product->id)
+            ->with('prices:product_id,city_sync_id,price,price_old,is_active','type:sync_id,name','category:sync_id,name')
+            ->first();
     }
 
     /**

@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\Olap\DeliveriesOlapController;
 use App\Http\Controllers\Api\KitchenController;
 use App\Http\Controllers\Api\Product\CategoriesController;
 use App\Http\Controllers\Api\Product\TypesController;
-use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\Product\ProductController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
