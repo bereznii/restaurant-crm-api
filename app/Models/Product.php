@@ -64,7 +64,7 @@ class Product extends Model implements HasMedia
 
         return isset($image)
             ? $image->getFullUrl()
-            : null;
+            : url('/images/default.jpg');
     }
 
     /**
