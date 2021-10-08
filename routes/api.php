@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Mobile\MeController;
 use App\Http\Controllers\Api\Olap\DeliveriesOlapController;
 use App\Http\Controllers\Api\KitchenController;
 use App\Http\Controllers\Api\Product\CategoriesController;
+use App\Http\Controllers\Api\Product\ImageController;
 use App\Http\Controllers\Api\Product\TypesController;
 use App\Http\Controllers\Api\Product\ProductController;
 use App\Http\Controllers\Api\RoleController;
@@ -51,6 +52,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/products/search', [ProductController::class, 'search']);
     Route::apiResource('products', ProductController::class)->only(['index','update','show']);
     Route::post('/{restaurant}/products', [ProductController::class, 'massStore']);
+
+    Route::resource('products.image', ImageController::class);
 
     Route::apiResource('product-categories', CategoriesController::class)->only(['index',]);
     Route::apiResource('product-types', TypesController::class)->only(['index',]);
