@@ -54,10 +54,11 @@ class DeliveryOrderService
             // Отмечаем поездку завершенной, считаем расстояния
             $delivery->status = Delivery::STATUS_DELIVERED;
 
-            $distances = (new GoogleClient())->getDistances($remainingOrdersToDeliver, $delivery->location);
+//            $distances = (new GoogleClient())->getDistances($remainingOrdersToDeliver, $delivery->location);
+            $distancesFromDirections = (new GoogleClient())->getDistancesFromDirections($remainingOrdersToDeliver, $delivery->location);
 
-            $delivery->delivery_distance = $distances['deliveryDistance'];
-            $delivery->return_distance = $distances['returnDistance'];
+            $delivery->delivery_distance = $distancesFromDirections['deliveryDistance'];
+            $delivery->return_distance = $distancesFromDirections['returnDistance'];
             $delivery->save();
         }
     }

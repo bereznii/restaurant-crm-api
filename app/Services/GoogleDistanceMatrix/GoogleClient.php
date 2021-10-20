@@ -13,11 +13,16 @@ class GoogleClient
     private const API_URL = 'https://maps.googleapis.com/maps/api/distancematrix/json';
     private const API_UNITS = 'metric';
 
+    private const DIRECTIONS_API_URL = 'https://maps.googleapis.com/maps/api/directions/json';
+
     /** @var string */
     private $token;
 
     /** @var MatrixService */
     private $matrixService;
+
+    /** @var DirectionsService */
+    private $directionsService;
 
     /**
      *
@@ -26,6 +31,7 @@ class GoogleClient
     {
         $this->token = config('google.distance-matrix.token');
         $this->matrixService = new MatrixService();
+        $this->directionsService = new DirectionsService();
     }
 
     /**
@@ -82,5 +88,39 @@ class GoogleClient
     private function parseResponse(array $response): array
     {
         return $this->matrixService->calculateDistances($response['rows']);
+    }
+
+    // DIRECTIONS
+
+    /**
+     * @param Collection $deliveredOrders
+     * @param Location $location
+     * @return array
+     */
+    public function getDistancesFromDirections(Collection $deliveredOrders, Location $location): array
+    {
+        $waypoints = implode('|', array_map(fn ($item) => "{$item['latitude']},{$item['longitude']}", $deliveredOrders->toArray()));
+
+        $response = Http::get(self::DIRECTIONS_API_URL, [
+            'origin' => $location->address,
+            'destination' => $location->address,
+            'waypoints' => $waypoints,
+            'units' => self::API_UNITS,
+            'key' => $this->token,
+        ]);
+
+        Log::channel('outgoing')->info(Auth::id() . ' | ' . self::API_URL . ' Request: ' . json_encode(['origin' => $location->address, 'destination' => $location->address, 'waypoints' => $waypoints,],JSON_UNESCAPED_UNICODE));
+        Log::channel('outgoing')->info(Auth::id() . ' | ' . self::API_URL . ' Response: successfull? ' . $response->successful());
+
+        return $this->parseResponseFromDirections($response->json());
+    }
+
+    /**
+     * @param array $response
+     * @return array
+     */
+    private function parseResponseFromDirections(array $response): array
+    {
+        return $this->directionsService->calculateDistances($response);
     }
 }
