@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\ProductMainImageStoreRequest;
 use App\Http\Resources\Products\DefaultMediaResource;
-use App\Models\Product;
+use App\Models\Product\Product;
 use App\Services\ProductImageService;
 use Illuminate\Http\Request;
 

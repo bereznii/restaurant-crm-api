@@ -9,7 +9,7 @@ use App\Http\Requests\Products\SearchRequest;
 use App\Http\Requests\Products\UpdateRequest;
 use App\Http\Resources\Products\ProductResource;
 use App\Http\Resources\Products\ProductsCollection;
-use App\Models\Product;
+use App\Models\Product\Product;
 use App\Repositories\ProductRepository;
 use App\Services\ProductService;
 

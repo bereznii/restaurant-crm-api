@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\IndexRequest;
 use App\Http\Requests\Users\StoreRequest;
 use App\Http\Requests\Users\UpdateRequest;
 use App\Http\Resources\Users\UserCollection;
@@ -32,6 +33,24 @@ class UserController extends Controller
      *     path="/users",
      *     tags={"Users"},
      *     security={{"Bearer":{}}},
+     *     @OA\Parameter(
+     *         name="role_name",
+     *         in="query",
+     *         description="Идентификатор роли",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="kitchen_code",
+     *         in="query",
+     *         description="Идентификатор кухни",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Parameter(
      *         name="per_page",
      *         in="query",
@@ -205,11 +224,13 @@ class UserController extends Controller
      *
      * @return UserCollection
      */
-    public function index(Request $request)
+    public function index(IndexRequest $request)
     {
         return new UserCollection(
             User::with('roles', 'iiko', 'locations', 'kitchen')
                 ->whereNotIn('phone', [env('PRODUCTS_SYNC_LOGIN'), env('MOBILE_APP_LOGIN')])
+                ->filterWhereRelation('roles', 'name', '=', $request->validated()['role_name'] ?? null)
+                ->filterWhere('kitchen_code', '=', $request->validated()['kitchen_code'] ?? null)
                 ->orderBy('created_at', 'desc')
                 ->paginate((int) $request->get('per_page', 20))
         );

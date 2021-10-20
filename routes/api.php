@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\Client\ClientController;
+use App\Http\Controllers\Api\Client\SourceController;
+use App\Http\Controllers\Api\Order\OrderPaymentTypesController;
+use App\Http\Controllers\Api\Order\OrderStatusesController;
 use App\Http\Controllers\Api\OrderController as CrmOrderController;
 use App\Http\Controllers\Api\Mobile\DeliveryController;
 use App\Http\Controllers\Api\Mobile\MeController;
@@ -16,7 +20,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\Order\OrderController as BaseOrderController;
 use App\Http\Controllers\Api\Mobile\OrderController;
+use App\Http\Controllers\Api\Order\OrderTypesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +48,14 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('locations', LocationController::class)->only(['index',]);
 
     Route::apiResource('cities', CityController::class)->only(['index',]);
+
+    Route::apiResource('clients', ClientController::class)->only(['index',]);
+    Route::get('/sources', [SourceController::class, 'index']);
+
+    Route::apiResource('orders', BaseOrderController::class)->only(['index',]);
+    Route::get('/order-types', [OrderTypesController::class, 'index']);
+    Route::get('/order-statuses', [OrderStatusesController::class, 'index']);
+    Route::get('/order-payment-types', [OrderPaymentTypesController::class, 'index']);
 
     Route::apiResource('kitchens', KitchenController::class)->only(['index',]);
 

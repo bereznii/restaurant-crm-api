@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Product;
+use App\Models\Product\Product;
 use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 

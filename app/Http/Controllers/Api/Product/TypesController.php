@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DefaultCollection;
-use App\Models\ProductTypes;
+use App\Models\Product\ProductTypes;
 use Illuminate\Http\Request;
 
 class TypesController extends Controller

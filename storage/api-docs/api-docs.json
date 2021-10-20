@@ -292,6 +292,128 @@
                 ]
             }
         },
+        "/clients": {
+            "get": {
+                "tags": [
+                    "Clients"
+                ],
+                "operationId": "ac511655a19a0f6951735d8aeb4632db",
+                "parameters": [
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "description": "Первые цифры номера телефона",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "description": "Имя клиента",
+                                            "type": "string"
+                                        },
+                                        "phone": {
+                                            "description": "Номер телефона клиента",
+                                            "type": "integer"
+                                        },
+                                        "source": {
+                                            "description": "Источник",
+                                            "type": "string"
+                                        },
+                                        "is_regular": {
+                                            "description": "Постоянный клиент или нет",
+                                            "type": "integer"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего редактирования",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "id": 1,
+                                                "name": "Василий Пупкин",
+                                                "phone": 380994445566,
+                                                "source": "website",
+                                                "is_regular": 1,
+                                                "created_at": "2021-09-02T13:13:03.000000Z",
+                                                "updated_at": "2021-09-02T13:13:03.000000Z"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/sources": {
+            "get": {
+                "tags": [
+                    "Clients"
+                ],
+                "operationId": "ea17a2a60bfc72539fc99954ba0c2aaf",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "description": "Тип источника",
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "description": "Название источника",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "name": "website",
+                                                "title": "Сайт"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/kitchens": {
             "get": {
                 "tags": [
@@ -1000,6 +1122,135 @@
                                                 "sum_return_distance": 10596,
                                                 "orders_within_city": 3,
                                                 "orders_outside_city": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/order-payment-types": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "operationId": "87a148f2733dfb0930e466b80e45e0ec",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "description": "Тип оплаты",
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "description": "Название типа оплаты",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "name": "new",
+                                                "title": "Новый заказ"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/order-statuses": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "operationId": "5f3757dba1e5224ebe7c7e0190ec4bb6",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "description": "Статус",
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "description": "Название статуса",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "name": "new",
+                                                "title": "Новый заказ"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/order-types": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "operationId": "9bfe4618acd7393863e45580f5d018f3",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "description": "Тип алгоритма",
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "description": "Название алгоритма",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "name": "soon",
+                                                "title": "Ближайшее время"
                                             }
                                         ]
                                     }
@@ -2130,6 +2381,24 @@
                 ],
                 "operationId": "7208c29037df2b8bb02499ba39ed8a78",
                 "parameters": [
+                    {
+                        "name": "role_name",
+                        "in": "query",
+                        "description": "Идентификатор роли",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kitchen_code",
+                        "in": "query",
+                        "description": "Идентификатор кухни",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "per_page",
                         "in": "query",

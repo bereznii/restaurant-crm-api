@@ -1,14 +1,25 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Client;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductPrice extends Model
+class Client extends Model
 {
     use HasFactory;
+
+    public const CLIENT_SOURCES = [
+        [
+            'name' => 'website',
+            'title' => 'Сайт',
+        ],
+        [
+            'name' => 'mobile',
+            'title' => 'Мобилка',
+        ]
+    ];
 
     /**
      * @param Builder $query

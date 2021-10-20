@@ -113,4 +113,33 @@ class User extends Authenticatable
     {
         return $this->iiko?->iiko_id;
     }
+
+    /**
+     * @param Builder $query
+     * @param string $column
+     * @param string $operator
+     * @param $value
+     * @return Builder
+     */
+    public function scopeFilterWhere($query, string $column, string $operator, $value)
+    {
+        return isset($value)
+            ? $query->where($column, $operator, $value)
+            : $query;
+    }
+
+    /**
+     * @param Builder $query
+     * @param string $relation
+     * @param string $column
+     * @param string $operator
+     * @param $value
+     * @return Builder
+     */
+    public function scopeFilterWhereRelation($query, string $relation, string $column, string $operator, $value)
+    {
+        return isset($value)
+            ? $query->whereRelation($relation, $column, $operator, $value)
+            : $query;
+    }
 }
