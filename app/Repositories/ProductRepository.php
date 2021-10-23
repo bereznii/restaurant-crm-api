@@ -19,7 +19,7 @@ class ProductRepository extends AbstractRepository
     {
         /** @var Product $product */
         $product = $this->_getInstance()
-            ->with('prices:product_id,city_sync_id,price,price_old', 'type:sync_id,name', 'category:sync_id,name')
+            ->with('prices:product_id,city_sync_id,price,price_old,is_active', 'type:sync_id,name', 'category:sync_id,name')
             ->findOrFail($id);
 
         return $product;
@@ -37,7 +37,7 @@ class ProductRepository extends AbstractRepository
 //                    $query->filterWhere('city_sync_id', '=', $queryParams['city_sync_id'] ?? null)
 //                        ->select(['product_id', 'city_sync_id', 'price', 'price_old']);
 //                },
-                'prices:product_id,city_sync_id,price,price_old',
+                'prices:product_id,city_sync_id,price,price_old,is_active',
                 'type:sync_id,name',
                 'category:sync_id,name',
             ])

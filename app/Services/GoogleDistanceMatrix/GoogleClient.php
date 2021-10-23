@@ -109,8 +109,8 @@ class GoogleClient
             'key' => $this->token,
         ]);
 
-        Log::channel('outgoing')->info(Auth::id() . ' | ' . self::API_URL . ' Request: ' . json_encode(['origin' => $location->address, 'destination' => $location->address, 'waypoints' => $waypoints,],JSON_UNESCAPED_UNICODE));
-        Log::channel('outgoing')->info(Auth::id() . ' | ' . self::API_URL . ' Response: successfull? ' . $response->successful());
+        Log::channel('outgoing')->info(Auth::id() . ' | ' . self::DIRECTIONS_API_URL . ' Request: ' . json_encode(['origin' => $location->address, 'destination' => $location->address, 'waypoints' => $waypoints,],JSON_UNESCAPED_UNICODE));
+        Log::channel('outgoing')->info(Auth::id() . ' | ' . self::DIRECTIONS_API_URL . ' Response: successfull? ' . $response->successful());
 
         return $this->parseResponseFromDirections($response->json());
     }

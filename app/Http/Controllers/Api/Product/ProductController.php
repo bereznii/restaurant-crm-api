@@ -187,13 +187,15 @@ class ProductController extends Controller
      *                                  "product_id": "5524e4ca-8655-41b8-9d79-b9fdbc7d39f4",
      *                                  "city_sync_id": "lviv",
      *                                  "price": 120,
-     *                                  "price_old": 114
+     *                                  "price_old": 114,
+     *                                  "is_active": 0
      *                              },
      *                              {
      *                                  "product_id": "5524e4ca-8655-41b8-9d79-b9fdbc7d39f4",
      *                                  "city_sync_id": "mykolaiv",
      *                                  "price": 125,
-     *                                  "price_old": 119
+     *                                  "price_old": 119,
+     *                                  "is_active": 1
      *                              },
      *                          },
      *                          "type": {
@@ -495,12 +497,14 @@ class ProductController extends Controller
      *                                  "product_id": "c00efd9f-cd30-4452-82d3-52ac9c0af9b6",
      *                                  "city_sync_id": "lviv",
      *                                  "price": 120,
+     *                                  "is_active": 1,
      *                                  "price_old": 114
      *                              },
      *                              {
      *                                  "product_id": "c00efd9f-cd30-4452-82d3-52ac9c0af9b6",
      *                                  "city_sync_id": "mykolaiv",
      *                                  "price": 125,
+     *                                  "is_active": 0,
      *                                  "price_old": 119
      *                              },
      *                          },
