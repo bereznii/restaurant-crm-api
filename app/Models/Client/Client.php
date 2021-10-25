@@ -10,6 +10,9 @@ class Client extends Model
 {
     use HasFactory;
 
+    public const REGULAR = 1;
+    public const NOT_REGULAR = 0;
+
     public const CLIENT_SOURCES = [
         [
             'name' => 'website',

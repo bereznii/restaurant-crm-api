@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('clients', ClientController::class)->only(['index',]);
     Route::get('/sources', [SourceController::class, 'index']);
 
-    Route::apiResource('orders', BaseOrderController::class)->only(['index',]);
+    Route::apiResource('orders', BaseOrderController::class)->only(['index','store','update']);
     Route::get('/order-types', [OrderTypesController::class, 'index']);
     Route::get('/order-statuses', [OrderStatusesController::class, 'index']);
     Route::get('/order-payment-types', [OrderPaymentTypesController::class, 'index']);

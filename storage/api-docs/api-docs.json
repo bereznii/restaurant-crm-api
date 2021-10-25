@@ -1137,6 +1137,800 @@
                 ]
             }
         },
+        "/orders": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "operationId": "e90a654e8c917c36ded9379e8ec62165",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Количество результатов на странице",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "integer"
+                                        },
+                                        "restaurant": {
+                                            "description": "Идентификатор ресторана",
+                                            "type": "string"
+                                        },
+                                        "kitchen_code": {
+                                            "description": "Идентификатор кухни",
+                                            "type": "string"
+                                        },
+                                        "payment_type": {
+                                            "description": "Тип оплаты",
+                                            "type": "string",
+                                            "enum": [
+                                                "online",
+                                                "cash",
+                                                "card"
+                                            ]
+                                        },
+                                        "type": {
+                                            "description": "Тип заказа",
+                                            "type": "string",
+                                            "enum": [
+                                                "soon",
+                                                "requested_time"
+                                            ]
+                                        },
+                                        "status": {
+                                            "description": "Статус",
+                                            "type": "string"
+                                        },
+                                        "return_call": {
+                                            "description": "Перезванивать ли",
+                                            "type": "integer",
+                                            "enum": [
+                                                1,
+                                                0
+                                            ]
+                                        },
+                                        "client_id": {
+                                            "description": "ID клиента",
+                                            "type": "integer"
+                                        },
+                                        "courier_id": {
+                                            "description": "ID пользователя курьера",
+                                            "type": "integer"
+                                        },
+                                        "operator_id": {
+                                            "description": "ID оператора",
+                                            "type": "integer"
+                                        },
+                                        "client_comment": {
+                                            "description": "Комментарий клиента",
+                                            "type": "string"
+                                        },
+                                        "delivered_till": {
+                                            "description": "Доставить до",
+                                            "type": "string"
+                                        },
+                                        "client": {
+                                            "description": "Информация о клиенте",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "address": {
+                                            "description": "Адрес доставки",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "items": {
+                                            "description": "Позиции в заказе",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "id": 14,
+                                                "restaurant": "smaki",
+                                                "kitchen_code": "kulparkivska",
+                                                "payment_type": "cash",
+                                                "type": "soon",
+                                                "status": "new",
+                                                "return_call": 0,
+                                                "client_id": 5,
+                                                "courier_id": 22,
+                                                "operator_id": null,
+                                                "client_comment": "Без перца, постучать в дверь",
+                                                "delivered_till": null,
+                                                "created_at": "2021-10-25T15:10:59.000000Z",
+                                                "updated_at": "2021-10-25T15:10:59.000000Z",
+                                                "items": [
+                                                    {
+                                                        "id": 13,
+                                                        "order_id": 14,
+                                                        "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
+                                                        "quantity": 2,
+                                                        "sum": 220,
+                                                        "comment": "без перца",
+                                                        "created_at": "2021-10-25T15:10:59.000000Z",
+                                                        "updated_at": "2021-10-25T15:10:59.000000Z",
+                                                        "cook_id": null
+                                                    },
+                                                    {
+                                                        "id": 14,
+                                                        "order_id": 14,
+                                                        "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
+                                                        "quantity": 3,
+                                                        "sum": 111,
+                                                        "comment": "без перца",
+                                                        "created_at": "2021-10-25T15:10:59.000000Z",
+                                                        "updated_at": "2021-10-25T15:10:59.000000Z",
+                                                        "cook_id": null
+                                                    }
+                                                ],
+                                                "address": {
+                                                    "id": 12,
+                                                    "order_id": 14,
+                                                    "city_sync_id": "lviv",
+                                                    "street": "Кульпарківська",
+                                                    "house_number": "12",
+                                                    "entrance": "3",
+                                                    "floor": "2",
+                                                    "comment": null,
+                                                    "created_at": "2021-10-25T15:10:59.000000Z",
+                                                    "updated_at": "2021-10-25T15:10:59.000000Z"
+                                                },
+                                                "client": {
+                                                    "id": 5,
+                                                    "name": "Максим",
+                                                    "phone": 380997775544,
+                                                    "source": "website",
+                                                    "is_regular": 1,
+                                                    "created_at": "2021-10-23T13:09:16.000000Z",
+                                                    "updated_at": "2021-10-23T13:09:16.000000Z"
+                                                }
+                                            }
+                                        ],
+                                        "links": {
+                                            "first": "https://api.smaki.com.ua/api/orders?page=1",
+                                            "last": "https://api.smaki.com.ua/api/orders?page=1",
+                                            "prev": null,
+                                            "next": null
+                                        },
+                                        "meta": {
+                                            "current_page": 1,
+                                            "from": 1,
+                                            "last_page": 1,
+                                            "links": [],
+                                            "path": "https://api.smaki.com.ua/api/orders",
+                                            "per_page": 20,
+                                            "to": 11,
+                                            "total": 11
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "description": "Если клиент подобран из предикшена, в объекте client нужно передать id. Если не подобран, передать имя, номер телефона и источник, чтобы создать нового.",
+                "operationId": "675fa2d53c5816c05b3acae1be831490",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "restaurant",
+                                    "kitchen_code",
+                                    "payment_type",
+                                    "type",
+                                    "status",
+                                    "return_call",
+                                    "courier_id",
+                                    "client",
+                                    "address",
+                                    "items"
+                                ],
+                                "properties": {
+                                    "restaurant": {
+                                        "description": "Идентификатор ресторана",
+                                        "type": "string"
+                                    },
+                                    "kitchen_code": {
+                                        "description": "Идентификатор кухни",
+                                        "type": "string"
+                                    },
+                                    "payment_type": {
+                                        "description": "Тип оплаты",
+                                        "type": "string",
+                                        "enum": [
+                                            "online",
+                                            "cash",
+                                            "card"
+                                        ]
+                                    },
+                                    "type": {
+                                        "description": "Тип заказа",
+                                        "type": "string",
+                                        "enum": [
+                                            "soon",
+                                            "requested_time"
+                                        ]
+                                    },
+                                    "return_call": {
+                                        "description": "Перезванивать ли",
+                                        "type": "integer",
+                                        "enum": [
+                                            1,
+                                            0
+                                        ]
+                                    },
+                                    "courier_id": {
+                                        "description": "ID пользователя курьера",
+                                        "type": "integer"
+                                    },
+                                    "client_comment": {
+                                        "description": "Комментарий клиента",
+                                        "type": "string"
+                                    },
+                                    "delivered_till": {
+                                        "description": "Доставить до (обязательно если type со значением requested_time)",
+                                        "type": "string"
+                                    },
+                                    "client": {
+                                        "description": "Информация о клиенте",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "address": {
+                                        "description": "Адрес доставки",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "items": {
+                                        "description": "Позиции в заказе",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "restaurant": "smaki",
+                                    "kitchen_code": "kulparkivska",
+                                    "payment_type": "cash",
+                                    "type": "soon",
+                                    "status": "new",
+                                    "return_call": 0,
+                                    "courier_id": 22,
+                                    "client_comment": "Без перца, постучать в дверь",
+                                    "client": {
+                                        "id": 5,
+                                        "name": "Максим",
+                                        "phone": 380997775544,
+                                        "source": "website"
+                                    },
+                                    "address": {
+                                        "city_sync_id": "lviv",
+                                        "street": "Кульпарківська",
+                                        "house_number": "12",
+                                        "entrance": "3",
+                                        "floor": "2",
+                                        "comment": ""
+                                    },
+                                    "items": [
+                                        {
+                                            "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
+                                            "quantity": 2,
+                                            "comment": "без перца"
+                                        },
+                                        {
+                                            "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
+                                            "quantity": 3,
+                                            "comment": "без перца"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "integer"
+                                        },
+                                        "restaurant": {
+                                            "description": "Идентификатор ресторана",
+                                            "type": "string"
+                                        },
+                                        "kitchen_code": {
+                                            "description": "Идентификатор кухни",
+                                            "type": "string"
+                                        },
+                                        "payment_type": {
+                                            "description": "Тип оплаты",
+                                            "type": "string",
+                                            "enum": [
+                                                "online",
+                                                "cash",
+                                                "card"
+                                            ]
+                                        },
+                                        "type": {
+                                            "description": "Тип заказа",
+                                            "type": "string",
+                                            "enum": [
+                                                "soon",
+                                                "requested_time"
+                                            ]
+                                        },
+                                        "status": {
+                                            "description": "Статус",
+                                            "type": "string"
+                                        },
+                                        "return_call": {
+                                            "description": "Перезванивать ли",
+                                            "type": "integer",
+                                            "enum": [
+                                                1,
+                                                0
+                                            ]
+                                        },
+                                        "client_id": {
+                                            "description": "ID клиента",
+                                            "type": "integer"
+                                        },
+                                        "courier_id": {
+                                            "description": "ID пользователя курьера",
+                                            "type": "integer"
+                                        },
+                                        "operator_id": {
+                                            "description": "ID оператора",
+                                            "type": "integer"
+                                        },
+                                        "client_comment": {
+                                            "description": "Комментарий клиента",
+                                            "type": "string"
+                                        },
+                                        "delivered_till": {
+                                            "description": "Доставить до",
+                                            "type": "string"
+                                        },
+                                        "client": {
+                                            "description": "Информация о клиенте",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "address": {
+                                            "description": "Адрес доставки",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "items": {
+                                            "description": "Позиции в заказе",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": {
+                                            "id": 14,
+                                            "restaurant": "smaki",
+                                            "kitchen_code": "kulparkivska",
+                                            "payment_type": "cash",
+                                            "type": "soon",
+                                            "status": "new",
+                                            "return_call": 0,
+                                            "client_id": 5,
+                                            "courier_id": 22,
+                                            "operator_id": null,
+                                            "client_comment": "Без перца, постучать в дверь",
+                                            "delivered_till": null,
+                                            "created_at": "2021-10-25T15:10:59.000000Z",
+                                            "updated_at": "2021-10-25T15:10:59.000000Z",
+                                            "items": [
+                                                {
+                                                    "id": 13,
+                                                    "order_id": 14,
+                                                    "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
+                                                    "quantity": 2,
+                                                    "sum": 220,
+                                                    "comment": "без перца",
+                                                    "created_at": "2021-10-25T15:10:59.000000Z",
+                                                    "updated_at": "2021-10-25T15:10:59.000000Z",
+                                                    "cook_id": null
+                                                },
+                                                {
+                                                    "id": 14,
+                                                    "order_id": 14,
+                                                    "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
+                                                    "quantity": 3,
+                                                    "sum": 111,
+                                                    "comment": "без перца",
+                                                    "created_at": "2021-10-25T15:10:59.000000Z",
+                                                    "updated_at": "2021-10-25T15:10:59.000000Z",
+                                                    "cook_id": null
+                                                }
+                                            ],
+                                            "address": {
+                                                "id": 12,
+                                                "order_id": 14,
+                                                "city_sync_id": "lviv",
+                                                "street": "Кульпарківська",
+                                                "house_number": "12",
+                                                "entrance": "3",
+                                                "floor": "2",
+                                                "comment": null,
+                                                "created_at": "2021-10-25T15:10:59.000000Z",
+                                                "updated_at": "2021-10-25T15:10:59.000000Z"
+                                            },
+                                            "client": {
+                                                "id": 5,
+                                                "name": "Максим",
+                                                "phone": 380997775544,
+                                                "source": "website",
+                                                "is_regular": 1,
+                                                "created_at": "2021-10-23T13:09:16.000000Z",
+                                                "updated_at": "2021-10-23T13:09:16.000000Z"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/orders/{id}": {
+            "put": {
+                "tags": [
+                    "Order"
+                ],
+                "description": "Передавать нужно объект заказа целиком",
+                "operationId": "7b6b6576132218456929cbb5055124a0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "restaurant",
+                                    "kitchen_code",
+                                    "payment_type",
+                                    "type",
+                                    "status",
+                                    "return_call",
+                                    "courier_id",
+                                    "address",
+                                    "items"
+                                ],
+                                "properties": {
+                                    "restaurant": {
+                                        "description": "Идентификатор ресторана",
+                                        "type": "string"
+                                    },
+                                    "kitchen_code": {
+                                        "description": "Идентификатор кухни",
+                                        "type": "string"
+                                    },
+                                    "payment_type": {
+                                        "description": "Тип оплаты",
+                                        "type": "string",
+                                        "enum": [
+                                            "online",
+                                            "cash",
+                                            "card"
+                                        ]
+                                    },
+                                    "type": {
+                                        "description": "Тип заказа",
+                                        "type": "string",
+                                        "enum": [
+                                            "soon",
+                                            "requested_time"
+                                        ]
+                                    },
+                                    "return_call": {
+                                        "description": "Перезванивать ли",
+                                        "type": "integer",
+                                        "enum": [
+                                            1,
+                                            0
+                                        ]
+                                    },
+                                    "courier_id": {
+                                        "description": "ID пользователя курьера",
+                                        "type": "integer"
+                                    },
+                                    "client_comment": {
+                                        "description": "Комментарий клиента",
+                                        "type": "string"
+                                    },
+                                    "delivered_till": {
+                                        "description": "Доставить до (обязательно если type со значением requested_time)",
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "description": "Адрес доставки",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "items": {
+                                        "description": "Позиции в заказе",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "restaurant": "smaki",
+                                    "kitchen_code": "kulparkivska",
+                                    "payment_type": "cash",
+                                    "type": "soon",
+                                    "status": "closed",
+                                    "return_call": 0,
+                                    "courier_id": 22,
+                                    "client_comment": "Без перца, постучать в дверь",
+                                    "address": {
+                                        "city_sync_id": "lviv",
+                                        "street": "Кульпарківська",
+                                        "house_number": "12",
+                                        "entrance": "3",
+                                        "floor": "2",
+                                        "comment": ""
+                                    },
+                                    "items": [
+                                        {
+                                            "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
+                                            "quantity": 2,
+                                            "comment": "без перца"
+                                        },
+                                        {
+                                            "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
+                                            "quantity": 3,
+                                            "comment": "без перца"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "integer"
+                                        },
+                                        "restaurant": {
+                                            "description": "Идентификатор ресторана",
+                                            "type": "string"
+                                        },
+                                        "kitchen_code": {
+                                            "description": "Идентификатор кухни",
+                                            "type": "string"
+                                        },
+                                        "payment_type": {
+                                            "description": "Тип оплаты",
+                                            "type": "string",
+                                            "enum": [
+                                                "online",
+                                                "cash",
+                                                "card"
+                                            ]
+                                        },
+                                        "type": {
+                                            "description": "Тип заказа",
+                                            "type": "string",
+                                            "enum": [
+                                                "soon",
+                                                "requested_time"
+                                            ]
+                                        },
+                                        "status": {
+                                            "description": "Статус",
+                                            "type": "string"
+                                        },
+                                        "return_call": {
+                                            "description": "Перезванивать ли",
+                                            "type": "integer",
+                                            "enum": [
+                                                1,
+                                                0
+                                            ]
+                                        },
+                                        "client_id": {
+                                            "description": "ID клиента",
+                                            "type": "integer"
+                                        },
+                                        "courier_id": {
+                                            "description": "ID пользователя курьера",
+                                            "type": "integer"
+                                        },
+                                        "operator_id": {
+                                            "description": "ID оператора",
+                                            "type": "integer"
+                                        },
+                                        "client_comment": {
+                                            "description": "Комментарий клиента",
+                                            "type": "string"
+                                        },
+                                        "delivered_till": {
+                                            "description": "Доставить до",
+                                            "type": "string"
+                                        },
+                                        "client": {
+                                            "description": "Информация о клиенте",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "address": {
+                                            "description": "Адрес доставки",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "items": {
+                                            "description": "Позиции в заказе",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": {
+                                            "id": 14,
+                                            "restaurant": "smaki",
+                                            "kitchen_code": "kulparkivska",
+                                            "payment_type": "cash",
+                                            "type": "soon",
+                                            "status": "new",
+                                            "return_call": 0,
+                                            "client_id": 5,
+                                            "courier_id": 22,
+                                            "operator_id": null,
+                                            "client_comment": "Без перца, постучать в дверь",
+                                            "delivered_till": null,
+                                            "created_at": "2021-10-25T15:10:59.000000Z",
+                                            "updated_at": "2021-10-25T15:10:59.000000Z",
+                                            "items": [
+                                                {
+                                                    "id": 13,
+                                                    "order_id": 14,
+                                                    "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
+                                                    "quantity": 2,
+                                                    "sum": 220,
+                                                    "comment": "без перца",
+                                                    "created_at": "2021-10-25T15:10:59.000000Z",
+                                                    "updated_at": "2021-10-25T15:10:59.000000Z",
+                                                    "cook_id": null
+                                                },
+                                                {
+                                                    "id": 14,
+                                                    "order_id": 14,
+                                                    "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
+                                                    "quantity": 3,
+                                                    "sum": 111,
+                                                    "comment": "без перца",
+                                                    "created_at": "2021-10-25T15:10:59.000000Z",
+                                                    "updated_at": "2021-10-25T15:10:59.000000Z",
+                                                    "cook_id": null
+                                                }
+                                            ],
+                                            "address": {
+                                                "id": 12,
+                                                "order_id": 14,
+                                                "city_sync_id": "lviv",
+                                                "street": "Кульпарківська",
+                                                "house_number": "12",
+                                                "entrance": "3",
+                                                "floor": "2",
+                                                "comment": null,
+                                                "created_at": "2021-10-25T15:10:59.000000Z",
+                                                "updated_at": "2021-10-25T15:10:59.000000Z"
+                                            },
+                                            "client": {
+                                                "id": 5,
+                                                "name": "Максим",
+                                                "phone": 380997775544,
+                                                "source": "website",
+                                                "is_regular": 1,
+                                                "created_at": "2021-10-23T13:09:16.000000Z",
+                                                "updated_at": "2021-10-23T13:09:16.000000Z"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/order-payment-types": {
             "get": {
                 "tags": [

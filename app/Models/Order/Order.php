@@ -2,29 +2,21 @@
 
 namespace App\Models\Order;
 
+use App\Models\Client\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
 {
     use HasFactory;
 
+    public const STATUS_NEW = 'new';
     public const STATUSES = [
         [
             'name' => 'new',
             'title' => 'Новый заказ',
-        ],
-        [
-            'name' => 'processing',
-            'title' => 'Обрабатывается оператором',
-        ],
-        [
-            'name' => 'waiting',
-            'title' => 'В ожидании',
-        ],
-        [
-            'name' => 'for_kitchen',
-            'title' => 'Передан на кухню',
         ],
         [
             'name' => 'cooking',
@@ -32,7 +24,7 @@ class Order extends Model
         ],
         [
             'name' => 'preparing',
-            'title' => 'Формируется',
+            'title' => 'Пакуется',
         ],
         [
             'name' => 'for_delivery',
@@ -44,10 +36,11 @@ class Order extends Model
         ],
         [
             'name' => 'rejected',
-            'title' => 'Отказ',
+            'title' => 'Отменен',
         ],
     ];
 
+    public const TYPE_REQUESTED_TIME = 'requested_time';
     public const TYPES = [
         [
             'name' => 'soon',
@@ -73,4 +66,28 @@ class Order extends Model
             'title' => 'Картой',
         ],
     ];
+
+    /**
+     * @return HasMany
+     */
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function address()
+    {
+        return $this->hasOne(OrderAddress::class);
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function client()
+    {
+        return $this->hasOne(Client::class, 'id', 'client_id');
+    }
 }

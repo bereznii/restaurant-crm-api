@@ -38,6 +38,7 @@ class CreateOrdersTable extends Migration
             $table->uuid('product_id');
             $table->tinyInteger('quantity');
             $table->integer('sum')->comment('Стоимость');
+            $table->string('status')->comment('Статус приготовления позиции');
             $table->text('comment');
             $table->timestamps();
 
