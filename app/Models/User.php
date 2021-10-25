@@ -6,6 +6,7 @@ use App\Models\iiko\CourierIiko;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,6 +23,7 @@ class User extends Authenticatable
     public const STATUS_DISABLED = 'disabled';
 
     public const ROLE_COURIER = 'courier';
+    public const ROLE_COOK = 'cook';
 
     /**
      * The attributes that are mass assignable.
@@ -74,7 +76,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function locationsIds()
     {
@@ -87,6 +89,14 @@ class User extends Authenticatable
     public function kitchen()
     {
         return $this->hasOne(Kitchen::class, 'code', 'kitchen_code');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function productTypes()
+    {
+        return $this->hasMany(UserProductType::class);
     }
 
     /**

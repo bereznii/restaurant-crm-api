@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Orders;
+namespace App\Http\Requests\Orders\OrderItems;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class IndexRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class IndexRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::user()->hasPermissionTo('kitchen_section');
     }
 
     /**

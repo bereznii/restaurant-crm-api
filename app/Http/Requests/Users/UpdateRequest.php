@@ -35,6 +35,8 @@ class UpdateRequest extends FormRequest
             'role_name' => 'filled|string|exists:rbac_roles,name',
             'iiko_id' => 'required_if:role_name,courier|uuid',
             'kitchen_code' => 'required|string|exists:kitchens,code',
+            'product_types' => 'required_if:role_name,cook|array',
+            'product_types.*' => 'string|exists:product_types,sync_id',
             'status' => 'filled|string|in:active,disabled',
         ];
     }

@@ -293,6 +293,14 @@ class UserController extends Controller
      *                  description="ID курьера из iiko в формате UUID (обязательно при создании пользователя с ролью courier)"
      *               ),
      *               @OA\Property(
+     *                  property="product_types",
+     *                  type="array",
+     *                  description="Типы товаров для повара",
+     *                  @OA\Items(
+     *                      type="string",
+     *                  )
+     *               ),
+     *               @OA\Property(
      *                  property="locations",
      *                  type="array",
      *                  description="ID локаций, к которым будет привязан пользователь",
@@ -361,6 +369,14 @@ class UserController extends Controller
      *                         description="Название физической кухни"
      *                      ),
      *                      @OA\Property(
+     *                         property="product_types",
+     *                         type="array",
+     *                         description="Типы товаров для повара",
+     *                         @OA\Items(
+     *                             type="string",
+     *                         )
+     *                      ),
+     *                      @OA\Property(
      *                          property="locations",
      *                          type="array",
      *                          description="Массив сущностей локаций, к которым привязан пользователь",
@@ -416,6 +432,7 @@ class UserController extends Controller
      *                               },
      *                               "kitchen_code": "sumy",
      *                               "kitchen_name": "Суми",
+     *                               "product_types": {"pizza"},
      *                               "updated_at": "2021-07-28T12:47:01.000000Z",
      *                               "created_at": "2021-07-28T12:47:01.000000Z"
      *                           }
@@ -530,6 +547,14 @@ class UserController extends Controller
      *                         type="string",
      *                         description="Название физической кухни"
      *                      ),
+     *                      @OA\Property(
+     *                         property="product_types",
+     *                         type="array",
+     *                         description="Типы товаров для повара",
+     *                         @OA\Items(
+     *                             type="string",
+     *                         )
+     *                      ),
      *                     @OA\Property(
      *                         property="created_at",
      *                         type="string",
@@ -571,6 +596,7 @@ class UserController extends Controller
      *                      },
      *                      "kitchen_code": "sumy",
      *                      "kitchen_name": "Суми",
+     *                      "product_types": {"pizza"},
      *                      "created_at": "2021-07-24T12:47:09.000000Z",
      *                      "updated_at": "2021-07-24T12:47:09.000000Z",
      *                     }}
@@ -736,6 +762,14 @@ class UserController extends Controller
      *                         description="Название физической кухни"
      *                      ),
      *                      @OA\Property(
+     *                         property="product_types",
+     *                         type="array",
+     *                         description="Типы товаров для повара",
+     *                         @OA\Items(
+     *                             type="string",
+     *                         )
+     *                      ),
+     *                      @OA\Property(
      *                         property="updated_at",
      *                         type="string",
      *                         description="Дата последнего редактирования"
@@ -775,6 +809,7 @@ class UserController extends Controller
      *                               },
      *                               "kitchen_code": "sumy",
      *                               "kitchen_name": "Суми",
+     *                               "product_types": {"pizza"},
      *                               "updated_at": "2021-07-28T12:47:01.000000Z",
      *                               "created_at": "2021-07-28T12:47:01.000000Z"
      *                           }

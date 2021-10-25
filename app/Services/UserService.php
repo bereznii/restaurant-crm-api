@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Location;
 use App\Models\User;
 use App\Models\UserLocation;
+use App\Models\UserProductType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -33,6 +34,10 @@ class UserService
 
             if ($validated['role_name'] === User::ROLE_COURIER) {
                 $this->courierService->storeIikoData($user->id, $validated['iiko_id']);
+            }
+
+            if ($validated['role_name'] === User::ROLE_COOK) {
+                $this->storeCookTypes($user, $validated);
             }
 
             $this->createRelatedUserLocations($user, $validated);
@@ -70,6 +75,12 @@ class UserService
 
             if ($user->roles->contains('name', 'courier') && isset($validated['iiko_id'])) {
                 $this->courierService->updateIikoData($user->id, $validated['iiko_id']);
+            }
+
+            if ($user->roles->contains('name', 'cook')) {
+                UserProductType::where('user_id', $user->id)->delete();
+                $this->storeCookTypes($user, $validated);
+                $user->refresh();
             }
 
             $user->update($validated);
@@ -119,5 +130,17 @@ class UserService
             ->createMany(array_map(function ($locationId) {
                 return ['location_id' => $locationId];
             }, $locations));
+    }
+
+    /**
+     * @param User $user
+     * @param array $validated
+     */
+    private function storeCookTypes(User $user, array $validated): void
+    {
+        $user->productTypes()
+            ->createMany(array_map(function ($type) {
+                return ['product_type_sync_id' => $type];
+            }, $validated['product_types']));
     }
 }

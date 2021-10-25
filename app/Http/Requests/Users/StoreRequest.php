@@ -32,6 +32,8 @@ class StoreRequest extends FormRequest
             'password' => 'required|string|min:8',
             'role_name' => 'required|string|exists:rbac_roles,name',
             'iiko_id' => 'required_if:role_name,courier|uuid|unique:courier_iiko',
+            'product_types' => 'required_if:role_name,cook|array',
+            'product_types.*' => 'string|exists:product_types,sync_id',
             'kitchen_code' => 'required|string|exists:kitchens,code',
             'status' => 'filled|string|in:active,disabled',
         ];

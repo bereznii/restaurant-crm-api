@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Users;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -36,6 +37,10 @@ class UserResource extends JsonResource
             $userRecourse['iiko']['iiko_id'] = $this->iiko->iiko_id;
             $userRecourse['iiko']['created_at'] = $this->iiko->created_at;
             $userRecourse['iiko']['updated_at'] = $this->iiko->updated_at;
+        }
+
+        if ($this->roles->where('name', User::ROLE_COOK)->count() > 0) {
+            $userRecourse['product_types'] = $this->productTypes->pluck('product_type_sync_id')->toArray();
         }
 
         return $userRecourse;
