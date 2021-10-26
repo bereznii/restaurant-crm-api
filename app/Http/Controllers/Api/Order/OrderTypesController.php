@@ -14,6 +14,7 @@ class OrderTypesController extends Controller
      *     path="/order-types",
      *     tags={"Order"},
      *     security={{"Bearer":{}}},
+     *     summary="Список типов заказов по времени приготовления",
      *     @OA\Response(
      *         response="200",
      *         description="OK",

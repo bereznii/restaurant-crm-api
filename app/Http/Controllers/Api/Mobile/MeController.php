@@ -24,6 +24,7 @@ class MeController extends Controller
      * @OA\Put(
      *     path="/mobile/me/coordinates",
      *     tags={"Mobile.Me"},
+     *     summary="Курьерское приложение. Обновить свои координаты",
      *     description="Обновить свои координаты. Доступ для пользователей с ролью: <b>Courier</b>",
      *     security={{"Bearer":{}}},
      *     @OA\RequestBody(

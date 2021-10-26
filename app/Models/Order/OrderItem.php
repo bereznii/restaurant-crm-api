@@ -12,6 +12,22 @@ class OrderItem extends Model
     use HasFactory;
 
     public const STATUS_NEW = 'new';
+    public const STATUS_IN_PROCESS = 'in_process';
+    public const STATUS_READY = 'ready';
+    public const STATUSES = [
+        [
+            'name' => 'new',
+            'title' => 'Новый',
+        ],
+        [
+            'name' => 'in_process',
+            'title' => 'Готовится',
+        ],
+        [
+            'name' => 'ready',
+            'title' => 'Приготовлен',
+        ]
+    ] ;
 
     /** @var string[]  */
     protected $touches = ['order'];

@@ -23,6 +23,7 @@ class MainImageController extends Controller
      *     path="/products/{id}/main-image",
      *     tags={"Products"},
      *     security={{"Bearer":{}}},
+     *     summary="Получить главное фото для товара",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -107,6 +108,7 @@ class MainImageController extends Controller
      *     path="/products/{id}/main-image",
      *     tags={"Products"},
      *     security={{"Bearer":{}}},
+     *     summary="Заменить главное фото для товара",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

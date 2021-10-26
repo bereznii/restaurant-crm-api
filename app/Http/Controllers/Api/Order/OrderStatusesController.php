@@ -13,6 +13,7 @@ class OrderStatusesController extends Controller
      *     path="/order-statuses",
      *     tags={"Order"},
      *     security={{"Bearer":{}}},
+     *     summary="Список статусов заказов",
      *     @OA\Response(
      *         response="200",
      *         description="OK",

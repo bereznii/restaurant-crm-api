@@ -13,6 +13,7 @@ class OrderPaymentTypesController extends Controller
      *     path="/order-payment-types",
      *     tags={"Order"},
      *     security={{"Bearer":{}}},
+     *     summary="Список типов оплаты заказов",
      *     @OA\Response(
      *         response="200",
      *         description="OK",

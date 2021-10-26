@@ -21,6 +21,7 @@ class OrderController extends Controller
      * @OA\Get(
      *     path="/orders/{order_uuid}/courier",
      *     tags={"Orders"},
+     *     summary="Получить координаты курьера по заказку",
      *     security={{"Bearer":{}}},
      *     @OA\Parameter(
      *         name="order_uuid",

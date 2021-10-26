@@ -14,6 +14,7 @@ class ClientController extends Controller
      *     path="/clients",
      *     tags={"Clients"},
      *     security={{"Bearer":{}}},
+     *     summary="Получить список клиентов",
      *     @OA\Parameter(
      *         name="phone",
      *         in="query",
@@ -97,6 +98,50 @@ class ClientController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->limit(5)
                 ->get()
+        );
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/sources",
+     *     tags={"Clients"},
+     *     security={{"Bearer":{}}},
+     *     summary="Получить список источников клиентов",
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         content={
+     *             @OA\MediaType(
+     *                 mediaType="application/json",
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="name",
+     *                         type="string",
+     *                         description="Тип источника"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="title",
+     *                         type="integer",
+     *                         description="Название источника"
+     *                     ),
+     *                     example={"data":{
+     *                          {
+     *                              "name": "website",
+     *                              "title": "Сайт",
+     *                          }
+     *                      }}
+     *                 )
+     *             )
+     *         }
+     *     ),
+     * )
+     *
+     * @return DefaultCollection
+     */
+    public function sources()
+    {
+        return new DefaultCollection(
+            collect(Client::CLIENT_SOURCES)
         );
     }
 }

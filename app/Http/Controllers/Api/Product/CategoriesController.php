@@ -11,8 +11,9 @@ class CategoriesController extends Controller
     /**
      * @OA\Get(
      *     path="/product-categories",
-     *     tags={"Product.Categories"},
+     *     tags={"Products.Categories"},
      *     security={{"Bearer":{}}},
+     *     summary="Список категорий товаров для сайта",
      *     @OA\Response(
      *         response="200",
      *         description="OK",

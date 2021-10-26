@@ -22,6 +22,7 @@ class DeliveriesOlapController extends Controller
      *     path="/olap/deliveries",
      *     tags={"OLAP"},
      *     security={{"Bearer":{}}},
+     *     summary="Отчёт по пройденной дистанции по курьерам",
      *     @OA\Parameter(
      *         name="date_from",
      *         in="query",

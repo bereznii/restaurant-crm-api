@@ -14,6 +14,7 @@ class KitchenController extends Controller
      *     path="/kitchens",
      *     tags={"Kitchens"},
      *     security={{"Bearer":{}}},
+     *     summary="Список физических кухонь",
      *     @OA\Response(
      *         response="200",
      *         description="OK",

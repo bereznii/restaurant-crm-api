@@ -26,6 +26,7 @@ class OrderController extends Controller
      * @OA\Get(
      *     path="/mobile/orders",
      *     tags={"Mobile.Orders"},
+     *     summary="Курьерское приложение. Получить список заказов для доставки",
      *     description="Доступ для пользователей с ролью: <b>Courier</b>",
      *     security={{"Bearer":{}}},
      *     @OA\Response(
@@ -241,6 +242,7 @@ class OrderController extends Controller
      * @OA\Patch(
      *     path="/mobile/orders/{order_uuid}",
      *     tags={"Mobile.Orders"},
+     *     summary="Курьерское приложение. Изменить статус заказу из поездки",
      *     description="Отметить заказ доставленным или недоставленным. Доступ для пользователей с ролью: <b>Courier</b>",
      *     security={{"Bearer":{}}},
      *     @OA\Parameter(

@@ -15,6 +15,7 @@
                 "tags": [
                     "Auth"
                 ],
+                "summary": "Системная точка. Создать пользователя извне",
                 "operationId": "5d4fa5d5607ed675ba93907e1fc94534",
                 "requestBody": {
                     "required": true,
@@ -93,6 +94,7 @@
                 "tags": [
                     "Auth"
                 ],
+                "summary": "Логин",
                 "operationId": "67d6d0fdd54fba132e1b6f55ca254183",
                 "requestBody": {
                     "required": true,
@@ -151,6 +153,7 @@
                 "tags": [
                     "Auth"
                 ],
+                "summary": "Получить данные для текущего пользователя, сделавшего запрос",
                 "operationId": "bc2032a379aa97707ccc61511897c120",
                 "responses": {
                     "200": {
@@ -230,6 +233,7 @@
                 "tags": [
                     "Cities"
                 ],
+                "summary": "Получить список городов",
                 "operationId": "35f27c56ab81a2cb8480e4c363ddafbd",
                 "responses": {
                     "200": {
@@ -297,6 +301,7 @@
                 "tags": [
                     "Clients"
                 ],
+                "summary": "Получить список клиентов",
                 "operationId": "ac511655a19a0f6951735d8aeb4632db",
                 "parameters": [
                     {
@@ -376,7 +381,8 @@
                 "tags": [
                     "Clients"
                 ],
-                "operationId": "ea17a2a60bfc72539fc99954ba0c2aaf",
+                "summary": "Получить список источников клиентов",
+                "operationId": "40d967df257d21cb395d741abb8e510c",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -419,6 +425,7 @@
                 "tags": [
                     "Kitchens"
                 ],
+                "summary": "Список физических кухонь",
                 "operationId": "590fcd2884cb95c75b349a0d9cb231a7",
                 "responses": {
                     "200": {
@@ -477,6 +484,7 @@
                 "tags": [
                     "Locations"
                 ],
+                "summary": "Список доставочных терминалов из iiko для курьеров",
                 "operationId": "02645c8bfbf14f52457023b2bf782092",
                 "responses": {
                     "200": {
@@ -575,6 +583,7 @@
                 "tags": [
                     "Mobile.Deliveries"
                 ],
+                "summary": "Курьерское приложение. Создать поездку",
                 "description": "Создать доставку (поездку). Доступ для пользователей с ролью: <b>Courier</b>",
                 "operationId": "670cebde49f781237f96d6f8e473227c",
                 "requestBody": {
@@ -709,6 +718,7 @@
                 "tags": [
                     "Mobile.Me"
                 ],
+                "summary": "Курьерское приложение. Обновить свои координаты",
                 "description": "Обновить свои координаты. Доступ для пользователей с ролью: <b>Courier</b>",
                 "operationId": "b74a97f6023eb869d08630e4cd77889b",
                 "requestBody": {
@@ -765,6 +775,7 @@
                 "tags": [
                     "Mobile.Orders"
                 ],
+                "summary": "Курьерское приложение. Получить список заказов для доставки",
                 "description": "Доступ для пользователей с ролью: <b>Courier</b>",
                 "operationId": "757135def13829fa121e85a6ec8281e3",
                 "responses": {
@@ -962,6 +973,7 @@
                 "tags": [
                     "Mobile.Orders"
                 ],
+                "summary": "Курьерское приложение. Изменить статус заказу из поездки",
                 "description": "Отметить заказ доставленным или недоставленным. Доступ для пользователей с ролью: <b>Courier</b>",
                 "operationId": "15126adb21cb72a1f88d446ba7a8c49e",
                 "parameters": [
@@ -1030,6 +1042,7 @@
                 "tags": [
                     "OLAP"
                 ],
+                "summary": "Отчёт по пройденной дистанции по курьерам",
                 "operationId": "b69faf2842e3d2d9567340669ae4ae79",
                 "parameters": [
                     {
@@ -1934,8 +1947,9 @@
         "/order-items": {
             "get": {
                 "tags": [
-                    "Order"
+                    "Order.Items"
                 ],
+                "summary": "Список позиций из заказов для приготовления",
                 "description": "Доступна поварам. Выдает позиции для приготовления в зависимости от типа товара и кухни повара",
                 "operationId": "902a3de3f969553957a25940111279d2",
                 "responses": {
@@ -2044,11 +2058,200 @@
                 ]
             }
         },
+        "/order-items/{id}": {
+            "patch": {
+                "tags": [
+                    "Order.Items"
+                ],
+                "summary": "Редактирование позиций в заказе",
+                "description": "Доступна поварам",
+                "operationId": "1cd3715af3ecdf9602394a0abc8a266f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID позиции заказа",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "description": "Статус",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID",
+                                            "type": "integer"
+                                        },
+                                        "order_id": {
+                                            "description": "ID заказа",
+                                            "type": "integer"
+                                        },
+                                        "product_id": {
+                                            "description": "ID товара",
+                                            "type": "integer"
+                                        },
+                                        "quantity": {
+                                            "description": "Количество",
+                                            "type": "integer"
+                                        },
+                                        "sum": {
+                                            "description": "Стоимость",
+                                            "type": "integer"
+                                        },
+                                        "comment": {
+                                            "description": "Комментарий",
+                                            "type": "string"
+                                        },
+                                        "cook_id": {
+                                            "description": "ID повара",
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "description": "Статус",
+                                            "type": "string"
+                                        },
+                                        "product": {
+                                            "description": "Объект товара",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": {
+                                            "id": 28,
+                                            "order_id": 21,
+                                            "product_id": "88526c81-9dbd-4d8b-91df-6b12cebf5c0a",
+                                            "quantity": 2,
+                                            "sum": 150,
+                                            "comment": null,
+                                            "created_at": "2021-10-25T20:32:16.000000Z",
+                                            "updated_at": "2021-10-25T20:32:16.000000Z",
+                                            "cook_id": null,
+                                            "status": "new",
+                                            "product": {
+                                                "id": "88526c81-9dbd-4d8b-91df-6b12cebf5c0a",
+                                                "restaurant": "smaki",
+                                                "article": "art-2",
+                                                "title_ua": "Саке макі",
+                                                "title_ru": "Саке макі",
+                                                "weight": 250,
+                                                "weight_type": "г",
+                                                "category_sync_id": null,
+                                                "type_sync_id": "sushi",
+                                                "description_ua": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse blandit hendrerit mi eget aliquam. Mauris volutpat sem augue, quis tincidunt leo vehicula ut. Pellentesque convallis vel eros vitae luctus. Curabitur commodo fringilla risus, consectetur varius enim porttitor vel. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus magna sem, efficitur quis interdum quis, viverra in purus. Sed finibus odio euismod felis gravida mollis. Praesent ante sapien, ornare sed consectetur at, euismod eget nulla. Suspendisse accumsan imperdiet sagittis. Maecenas quis mi tortor. Integer vel ante ut nisi pulvinar tincidunt id sed metus. Nunc non erat ut tortor finibus gravida quis quis magna. Suspendisse varius odio sed leo scelerisque pretium. Praesent auctor odio sit amet leo posuere, nec tempus risus tincidunt.",
+                                                "description_ru": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse blandit hendrerit mi eget aliquam. Mauris volutpat sem augue, quis tincidunt leo vehicula ut. Pellentesque convallis vel eros vitae luctus. Curabitur commodo fringilla risus, consectetur varius enim porttitor vel. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus magna sem, efficitur quis interdum quis, viverra in purus. Sed finibus odio euismod felis gravida mollis. Praesent ante sapien, ornare sed consectetur at, euismod eget nulla. Suspendisse accumsan imperdiet sagittis. Maecenas quis mi tortor. Integer vel ante ut nisi pulvinar tincidunt id sed metus. Nunc non erat ut tortor finibus gravida quis quis magna. Suspendisse varius odio sed leo scelerisque pretium. Praesent auctor odio sit amet leo posuere, nec tempus risus tincidunt.",
+                                                "created_at": "2021-10-01T16:25:57.000000Z",
+                                                "updated_at": "2021-10-01T16:25:57.000000Z",
+                                                "image": "http://smaki.local/images/default.jpg",
+                                                "media": []
+                                            },
+                                            "links": {
+                                                "first": "https://api.smaki.com.ua/api/orders?page=1",
+                                                "last": "https://api.smaki.com.ua/api/orders?page=1",
+                                                "prev": null,
+                                                "next": null
+                                            },
+                                            "meta": {
+                                                "current_page": 1,
+                                                "from": 1,
+                                                "last_page": 1,
+                                                "links": [],
+                                                "path": "https://api.smaki.com.ua/api/orders",
+                                                "per_page": 20,
+                                                "to": 11,
+                                                "total": 11
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/order-items-statuses": {
+            "get": {
+                "tags": [
+                    "Order.Items"
+                ],
+                "summary": "Статусы позиций в заказе",
+                "operationId": "63cb5685259889dfaf52584552de5802",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "description": "Статус",
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "description": "Название статуса",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "name": "new",
+                                                "title": "Новый заказ"
+                                            },
+                                            {
+                                                "name": "in_process",
+                                                "title": "Готовится"
+                                            },
+                                            {
+                                                "name": "ready",
+                                                "title": "Приготовлен"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/order-payment-types": {
             "get": {
                 "tags": [
                     "Order"
                 ],
+                "summary": "Список типов оплаты заказов",
                 "operationId": "87a148f2733dfb0930e466b80e45e0ec",
                 "responses": {
                     "200": {
@@ -2092,6 +2295,7 @@
                 "tags": [
                     "Order"
                 ],
+                "summary": "Список статусов заказов",
                 "operationId": "5f3757dba1e5224ebe7c7e0190ec4bb6",
                 "responses": {
                     "200": {
@@ -2135,6 +2339,7 @@
                 "tags": [
                     "Order"
                 ],
+                "summary": "Список типов заказов по времени приготовления",
                 "operationId": "9bfe4618acd7393863e45580f5d018f3",
                 "responses": {
                     "200": {
@@ -2178,6 +2383,7 @@
                 "tags": [
                     "Orders"
                 ],
+                "summary": "Получить координаты курьера по заказку",
                 "operationId": "59547859bcbf678f3be39f30a2c87da7",
                 "parameters": [
                     {
@@ -2225,8 +2431,9 @@
         "/product-categories": {
             "get": {
                 "tags": [
-                    "Product.Categories"
+                    "Products.Categories"
                 ],
+                "summary": "Список категорий товаров для сайта",
                 "operationId": "2ec462b188bb644796350369cd45d0b6",
                 "responses": {
                     "200": {
@@ -2285,6 +2492,7 @@
                 "tags": [
                     "Products"
                 ],
+                "summary": "Получить главное фото для товара",
                 "operationId": "9fd7db31029ede8c97314e4adc5a6c1e",
                 "parameters": [
                     {
@@ -2362,6 +2570,7 @@
                 "tags": [
                     "Products"
                 ],
+                "summary": "Заменить главное фото для товара",
                 "operationId": "b98733aeed23d31b4b1e40f43638b2e8",
                 "parameters": [
                     {
@@ -2675,6 +2884,7 @@
                 "tags": [
                     "Products"
                 ],
+                "summary": "Для 1С. Синхронизация товаров",
                 "description": "Используется исключительно для синхронизации товаров с 1С",
                 "operationId": "62a01df2b17775a7c6644528bd322a2e",
                 "parameters": [
@@ -3182,8 +3392,9 @@
         "/product-types": {
             "get": {
                 "tags": [
-                    "Product.Types"
+                    "Products.Types"
                 ],
+                "summary": "Список типов товаров для определения повара",
                 "operationId": "911e5b6b384ba8640233bebf62a13994",
                 "responses": {
                     "200": {
@@ -3242,6 +3453,7 @@
                 "tags": [
                     "RBAC"
                 ],
+                "summary": "Получить список ролей",
                 "operationId": "155e40d142471fe5295b4bafd0fb687a",
                 "responses": {
                     "200": {

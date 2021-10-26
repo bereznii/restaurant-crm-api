@@ -51,13 +51,15 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('cities', CityController::class)->only(['index',]);
 
     Route::apiResource('clients', ClientController::class)->only(['index',]);
-    Route::get('/sources', [SourceController::class, 'index']);
+    Route::get('/sources', [ClientController::class, 'sources']);
 
     Route::apiResource('orders', BaseOrderController::class)->only(['index','store','update']);
-    Route::get('/order-items', [OrderItemsController::class, 'index']);
     Route::get('/order-types', [OrderTypesController::class, 'index']);
     Route::get('/order-statuses', [OrderStatusesController::class, 'index']);
     Route::get('/order-payment-types', [OrderPaymentTypesController::class, 'index']);
+
+    Route::apiResource('order-items', OrderItemsController::class)->only(['index','update']);
+    Route::get('/order-items-statuses', [OrderItemsController::class, 'status']);
 
     Route::apiResource('kitchens', KitchenController::class)->only(['index',]);
 

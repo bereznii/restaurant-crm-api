@@ -244,6 +244,7 @@ class ProductController extends Controller
      *     path="/{restaurant}/products",
      *     tags={"Products"},
      *     security={{"Bearer":{}}},
+     *     summary="Для 1С. Синхронизация товаров",
      *     description="Используется исключительно для синхронизации товаров с 1С",
      *     @OA\Parameter(
      *         name="restaurant",

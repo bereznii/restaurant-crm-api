@@ -16,6 +16,7 @@ class CityController extends Controller
      *     path="/cities",
      *     tags={"Cities"},
      *     security={{"Bearer":{}}},
+     *     summary="Получить список городов",
      *     @OA\Response(
      *         response="200",
      *         description="OK",

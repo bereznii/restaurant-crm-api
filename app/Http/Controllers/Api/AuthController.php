@@ -16,6 +16,7 @@ class AuthController extends ApiController
      * @OA\Post(
      *     path="/register",
      *     tags={"Auth"},
+     *     summary="Системная точка. Создать пользователя извне",
      *      @OA\RequestBody(
      *         required=true,
      *          @OA\MediaType(
@@ -108,6 +109,7 @@ class AuthController extends ApiController
      * @OA\Post(
      *     path="/login",
      *     tags={"Auth"},
+     *     summary="Логин",
      *      @OA\RequestBody(
      *         required=true,
      *          @OA\MediaType(
@@ -180,6 +182,7 @@ class AuthController extends ApiController
      *     path="/me",
      *     tags={"Auth"},
      *     security={{"Bearer":{}}},
+     *     summary="Получить данные для текущего пользователя, сделавшего запрос",
      *     @OA\Response(
      *         response="200",
      *         description="OK",

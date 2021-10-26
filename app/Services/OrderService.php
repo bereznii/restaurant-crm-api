@@ -140,9 +140,18 @@ class OrderService
      */
     public function update(array $validated, Order $order): Order
     {
-        $this->updateOrder($validated, $order);
-        $this->updateOrderAddress($validated, $order->id);
-        $this->updateOrderItems($validated, $order->id);
+        DB::beginTransaction();
+
+        try {
+            $this->updateOrder($validated, $order);
+            $this->updateOrderAddress($validated, $order->id);
+            $this->updateOrderItems($validated, $order->id);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+        }
 
         $updatedOrder = Order::with('client', 'address', 'items')
             ->where('id', $order->id)

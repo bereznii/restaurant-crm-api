@@ -24,6 +24,7 @@ class DeliveryController extends Controller
      * @OA\Post(
      *     path="/mobile/deliveries",
      *     tags={"Mobile.Deliveries"},
+     *     summary="Курьерское приложение. Создать поездку",
      *     description="Создать доставку (поездку). Доступ для пользователей с ролью: <b>Courier</b>",
      *     security={{"Bearer":{}}},
      *     @OA\RequestBody(

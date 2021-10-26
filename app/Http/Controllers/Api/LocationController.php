@@ -14,6 +14,7 @@ class LocationController extends Controller
      *     path="/locations",
      *     tags={"Locations"},
      *     security={{"Bearer":{}}},
+     *     summary="Список доставочных терминалов из iiko для курьеров",
      *     @OA\Response(
      *         response="200",
      *         description="OK",

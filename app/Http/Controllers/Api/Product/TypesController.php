@@ -12,8 +12,9 @@ class TypesController extends Controller
     /**
      * @OA\Get(
      *     path="/product-types",
-     *     tags={"Product.Types"},
+     *     tags={"Products.Types"},
      *     security={{"Bearer":{}}},
+     *     summary="Список типов товаров для определения повара",
      *     @OA\Response(
      *         response="200",
      *         description="OK",

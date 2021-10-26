@@ -14,6 +14,7 @@ class RoleController extends Controller
      *     path="/rbac/roles",
      *     tags={"RBAC"},
      *     security={{"Bearer":{}}},
+     *     summary="Получить список ролей",
      *     @OA\Response(
      *         response="200",
      *         description="OK",
