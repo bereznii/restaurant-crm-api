@@ -13,6 +13,8 @@ class Order extends Model
     use HasFactory;
 
     public const STATUS_NEW = 'new';
+    public const STATUS_COOKING = 'cooking';
+    public const STATUS_PREPARING = 'preparing';
     public const STATUSES = [
         [
             'name' => 'new',
@@ -65,6 +67,10 @@ class Order extends Model
             'name' => 'card',
             'title' => 'Картой',
         ],
+        [
+            'name' => 'bonus',
+            'title' => 'Бонусы',
+        ],
     ];
 
     /**
@@ -73,6 +79,14 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function history()
+    {
+        return $this->hasMany(OrderStatus::class);
     }
 
     /**

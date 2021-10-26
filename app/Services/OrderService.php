@@ -9,6 +9,7 @@ use App\Models\Order\OrderAddress;
 use App\Models\Order\OrderItem;
 use App\Models\Product\Product;
 use App\Models\Product\ProductPrice;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -23,22 +24,27 @@ class OrderService
         DB::beginTransaction();
 
         try {
+            $userId = Auth::id();
+
             $clientId = $this->saveClient($validated);
 
-            $order = $this->saveOrder($validated, $clientId);
+            $order = $this->saveOrder($validated, $clientId, $userId);
 
             $this->saveOrderAddress($validated, $order->id);
             $this->saveOrderItems($validated, $order->id);
 
             DB::commit();
+
+            $order = Order::where('id', $order->id)
+                ->with('items', 'address', 'client')
+                ->first();
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e->getMessage());
             Log::error($e->getMessage());
         }
 
-        return Order::where('id', $order->id)
-            ->with('items', 'address', 'client')
-            ->first();
+        return $order ?? null;
     }
 
     /**
@@ -74,24 +80,43 @@ class OrderService
     /**
      * @param array $validated
      * @param int $clientId
+     * @param int $userId
      * @return Order
      */
-    private function saveOrder(array $validated, int $clientId)
+    private function saveOrder(array $validated, int $clientId, int $userId)
     {
         $order = new Order();
         $order->restaurant = $validated['restaurant'];
         $order->kitchen_code = $validated['kitchen_code'];
         $order->payment_type = $validated['payment_type'];
         $order->type = $validated['type'];
+        $order->operator_id = $userId;
         $order->status = Order::STATUS_NEW;
         $order->return_call = $validated['return_call'];
         $order->courier_id = $validated['courier_id'];
         $order->client_comment = $validated['client_comment'];
         $order->client_id = $clientId;
+        $order->change_from = $validated['change_from'] ?? null;
         $order->delivered_till = $validated['delivered_till'] ?? now()->addMinutes(30);
         $order->save();
 
+        $this->updateStatusHistory($order, $userId, Order::STATUS_NEW);
+
         return $order;
+    }
+
+    /**
+     * @param Order $order
+     * @param int $userId
+     * @param string $status
+     */
+    private function updateStatusHistory(Order $order, int $userId, string $status)
+    {
+        $order->history()->create([
+            'status' => $status,
+            'user_id' => $userId,
+            'set_at' => date('Y-m-d H:i:s'),
+        ]);
     }
 
     /**
@@ -143,7 +168,9 @@ class OrderService
         DB::beginTransaction();
 
         try {
-            $this->updateOrder($validated, $order);
+            $userId = Auth::id();
+
+            $this->updateOrder($validated, $order, $userId);
             $this->updateOrderAddress($validated, $order->id);
             $this->updateOrderItems($validated, $order->id);
 
@@ -164,9 +191,14 @@ class OrderService
     /**
      * @param array $validated
      * @param Order $order
+     * @param int $userId
      */
-    private function updateOrder(array $validated, Order $order)
+    private function updateOrder(array $validated, Order $order, int $userId)
     {
+        if ($order->status !== $validated['status']) {
+            $this->updateStatusHistory($order, $userId, $validated['status']);
+        }
+
         $order->restaurant = $validated['restaurant'];
         $order->kitchen_code = $validated['kitchen_code'];
         $order->payment_type = $validated['payment_type'];
@@ -179,6 +211,7 @@ class OrderService
         if ($validated['type'] === Order::TYPE_REQUESTED_TIME) {
             $order->delivered_till = $validated['delivered_till'];
         }
+
         $order->save();
     }
 

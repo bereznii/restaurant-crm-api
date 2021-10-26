@@ -77,6 +77,11 @@ class OrderController extends Controller
      *                         enum={"online","cash","card"}
      *                      ),
      *                      @OA\Property(
+     *                         property="change_from",
+     *                         type="integer",
+     *                         description="Подготовить сдачу с"
+     *                      ),
+     *                      @OA\Property(
      *                         property="type",
      *                         type="string",
      *                         description="Тип заказа",
@@ -142,12 +147,21 @@ class OrderController extends Controller
      *                             type="object"
      *                         )
      *                      ),
+     *                      @OA\Property(
+     *                         property="history",
+     *                         type="array",
+     *                         description="История изменения статуса",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         )
+     *                      ),
      *                     example={"data":{
      *                      {
      *                          "id": 14,
      *                          "restaurant": "smaki",
      *                          "kitchen_code": "kulparkivska",
      *                          "payment_type": "cash",
+     *                          "change_from": 1000,
      *                          "type": "soon",
      *                          "status": "new",
      *                          "return_call": 0,
@@ -180,6 +194,22 @@ class OrderController extends Controller
      *                                  "created_at": "2021-10-25T15:10:59.000000Z",
      *                                  "updated_at": "2021-10-25T15:10:59.000000Z",
      *                                  "cook_id": null
+     *                              }
+     *                          },
+     *                          "history": {
+     *                              {
+     *                                  "id": 1,
+     *                                  "order_id": 14,
+     *                                  "user_id": 2,
+     *                                  "status": "new",
+     *                                  "set_at": "2021-10-26 14:46:48"
+     *                              },
+     *                              {
+     *                                  "id": 2,
+     *                                  "order_id": 14,
+     *                                  "user_id": 1,
+     *                                  "status": "cooking",
+     *                                  "set_at": "2021-10-26 14:50:48"
      *                              }
      *                          },
      *                          "address": {
@@ -262,7 +292,12 @@ class OrderController extends Controller
      *                  property="payment_type",
      *                  type="string",
      *                  description="Тип оплаты",
-     *                  enum={"online","cash","card"}
+     *                  enum={"online","cash","card","bonuses"}
+     *               ),
+     *               @OA\Property(
+     *                  property="change_from",
+     *                  type="integer",
+     *                  description="Подготовить сдачу с"
      *               ),
      *               @OA\Property(
      *                  property="type",
@@ -319,6 +354,7 @@ class OrderController extends Controller
      *                  "restaurant": "smaki",
      *                  "kitchen_code": "kulparkivska",
      *                  "payment_type": "cash",
+     *                  "change_from": 1000,
      *                  "type": "soon",
      *                  "status": "new",
      *                  "return_call": 0,
@@ -381,6 +417,11 @@ class OrderController extends Controller
      *                         type="string",
      *                         description="Тип оплаты",
      *                         enum={"online","cash","card"}
+     *                      ),
+     *                      @OA\Property(
+     *                         property="change_from",
+     *                         type="integer",
+     *                         description="Подготовить сдачу с"
      *                      ),
      *                      @OA\Property(
      *                         property="type",
@@ -448,12 +489,21 @@ class OrderController extends Controller
      *                             type="object"
      *                         )
      *                      ),
+     *                      @OA\Property(
+     *                         property="history",
+     *                         type="array",
+     *                         description="История изменения статуса",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         )
+     *                      ),
      *                     example={
      *                      "data": {
      *                          "id": 14,
      *                          "restaurant": "smaki",
      *                          "kitchen_code": "kulparkivska",
      *                          "payment_type": "cash",
+     *                          "change_from": 1000,
      *                          "type": "soon",
      *                          "status": "new",
      *                          "return_call": 0,
@@ -486,6 +536,22 @@ class OrderController extends Controller
      *                                  "created_at": "2021-10-25T15:10:59.000000Z",
      *                                  "updated_at": "2021-10-25T15:10:59.000000Z",
      *                                  "cook_id": null
+     *                              }
+     *                          },
+     *                          "history": {
+     *                              {
+     *                                  "id": 1,
+     *                                  "order_id": 14,
+     *                                  "user_id": 2,
+     *                                  "status": "new",
+     *                                  "set_at": "2021-10-26 14:46:48"
+     *                              },
+     *                              {
+     *                                  "id": 2,
+     *                                  "order_id": 14,
+     *                                  "user_id": 1,
+     *                                  "status": "cooking",
+     *                                  "set_at": "2021-10-26 14:50:48"
      *                              }
      *                          },
      *                          "address": {
@@ -556,6 +622,11 @@ class OrderController extends Controller
      *                  enum={"online","cash","card"}
      *               ),
      *               @OA\Property(
+     *                  property="change_from",
+     *                  type="integer",
+     *                  description="Подготовить сдачу с"
+     *               ),
+     *               @OA\Property(
      *                  property="type",
      *                  type="string",
      *                  description="Тип заказа",
@@ -602,6 +673,7 @@ class OrderController extends Controller
      *                  "restaurant": "smaki",
      *                  "kitchen_code": "kulparkivska",
      *                  "payment_type": "cash",
+     *                  "change_from": 1000,
      *                  "type": "soon",
      *                  "status": "closed",
      *                  "return_call": 0,
@@ -658,6 +730,11 @@ class OrderController extends Controller
      *                         type="string",
      *                         description="Тип оплаты",
      *                         enum={"online","cash","card"}
+     *                      ),
+     *                      @OA\Property(
+     *                         property="change_from",
+     *                         type="integer",
+     *                         description="Подготовить сдачу с"
      *                      ),
      *                      @OA\Property(
      *                         property="type",
@@ -725,12 +802,21 @@ class OrderController extends Controller
      *                             type="object"
      *                         )
      *                      ),
+     *                      @OA\Property(
+     *                         property="history",
+     *                         type="array",
+     *                         description="История изменения статуса",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         )
+     *                      ),
      *                     example={
      *                      "data": {
      *                          "id": 14,
      *                          "restaurant": "smaki",
      *                          "kitchen_code": "kulparkivska",
      *                          "payment_type": "cash",
+     *                          "change_from": 1000,
      *                          "type": "soon",
      *                          "status": "new",
      *                          "return_call": 0,
@@ -763,6 +849,22 @@ class OrderController extends Controller
      *                                  "created_at": "2021-10-25T15:10:59.000000Z",
      *                                  "updated_at": "2021-10-25T15:10:59.000000Z",
      *                                  "cook_id": null
+     *                              }
+     *                          },
+     *                          "history": {
+     *                              {
+     *                                  "id": 1,
+     *                                  "order_id": 14,
+     *                                  "user_id": 2,
+     *                                  "status": "new",
+     *                                  "set_at": "2021-10-26 14:46:48"
+     *                              },
+     *                              {
+     *                                  "id": 2,
+     *                                  "order_id": 14,
+     *                                  "user_id": 1,
+     *                                  "status": "cooking",
+     *                                  "set_at": "2021-10-26 14:50:48"
      *                              }
      *                          },
      *                          "address": {

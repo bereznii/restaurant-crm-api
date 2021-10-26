@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Order\Order;
 use App\Models\Order\OrderItem;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +25,8 @@ class OrderItemsRepository extends AbstractRepository
         return $this->_getInstance()
             ->with('product')
             ->whereHas('order', function ($query) use ($cookKitchen) {
-                return $query->where('kitchen_code', '=', $cookKitchen);
+                return $query->where('kitchen_code', '=', $cookKitchen)
+                    ->whereIn('status', [Order::STATUS_COOKING, Order::STATUS_PREPARING]);
             })
             ->whereHas('product', function ($query) use ($cookProductTypes) {
                 return $query->whereIn('type_sync_id', $cookProductTypes);
