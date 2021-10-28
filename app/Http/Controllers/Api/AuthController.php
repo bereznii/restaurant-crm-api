@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Resources\Users\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -225,11 +226,55 @@ class AuthController extends ApiController
      *                         type="string",
      *                         description="Статус"
      *                     ),
+     *                      @OA\Property(
+     *                         property="role_name",
+     *                         type="string",
+     *                         description="Идентификатор роли"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="role_title",
+     *                         type="string",
+     *                         description="Развание роли"
+     *                      ),
      *                     @OA\Property(
      *                         property="email_verified_at",
      *                         type="string",
      *                         description="Дата подтверждения кредов"
      *                     ),
+     *                     @OA\Property(
+     *                         property="locations",
+     *                         type="array",
+     *                         description="Массив сущностей локаций, к которым привязан пользователь",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         ),
+     *                     ),
+     *                     @OA\Property(
+     *                         property="iiko",
+     *                         type="array",
+     *                         description="Данные из iiko CRM (для пользователей с ролью Courier)",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         ),
+     *                     ),
+     *                      @OA\Property(
+     *                         property="kitchen_code",
+     *                         type="string",
+     *                         description="Идентификатор физической кухни"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="kitchen_name",
+     *                         type="string",
+     *                         description="Название физической кухни"
+     *                      ),
+     *                      @OA\Property(
+     *                         property="product_types",
+     *                         type="array",
+     *                         description="Типы товаров для повара",
+     *                         @OA\Items(
+     *                             type="string",
+     *                         )
+     *                      ),
      *                     @OA\Property(
      *                         property="created_at",
      *                         type="string",
@@ -240,18 +285,41 @@ class AuthController extends ApiController
      *                         type="string",
      *                         description="Дата последнего редактирования"
      *                     ),
-     *                     example={
-     *                      "id": "10",
+     *                     example={"data":{
+     *                      "id": 1,
      *                      "email": "admin@smaki.com",
-     *                      "phone": "380973334455",
+     *                      "phone": 380973334455,
      *                      "position": "Developer",
      *                      "first_name": "John",
      *                      "last_name": "Doe",
      *                      "status": "active",
+     *                      "role_name": "content_manager",
+     *                      "role_title": "Контент-менеджер",
      *                      "email_verified_at": "2021-07-24T12:47:09.000000Z",
+     *                      "locations": {{
+     *                          "id": 1,
+     *                          "restaurant": "smaki",
+     *                          "name": "Кульпарковская Смаки",
+     *                          "city_sync_id": "lviv",
+     *                          "city": "Львов",
+     *                          "street": "ул. Кульпарковская",
+     *                          "house_number": "95",
+     *                          "latitude": null,
+     *                          "longitude": null,
+     *                          "created_at": "2021-07-28T11:08:01.000000Z",
+     *                          "updated_at": "2021-07-28T11:08:01.000000Z"
+     *                      }},
+     *                      "iiko": {
+     *                          "iiko_id": "8f423953-8d9e-47c5-a409-1e7cb33c6f00",
+     *                          "created_at": "2021-08-25T20:36:13.000000Z",
+     *                          "updated_at": "2021-08-25T20:36:13.000000Z"
+     *                      },
+     *                      "kitchen_code": "sumy",
+     *                      "kitchen_name": "Суми",
+     *                      "product_types": {"pizza"},
      *                      "created_at": "2021-07-24T12:47:09.000000Z",
      *                      "updated_at": "2021-07-24T12:47:09.000000Z",
-     *                     }
+     *                     }}
      *                 )
      *             )
      *         }
@@ -263,6 +331,9 @@ class AuthController extends ApiController
      */
     public function me(Request $request)
     {
-        return $request->user();
+        return new UserResource(
+            User::with('roles', 'iiko', 'locations', 'kitchen')->findOrFail(Auth::id())
+        );
+//        return $request->user();
     }
 }
