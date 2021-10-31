@@ -91,7 +91,7 @@ class ClientController extends Controller
             Client::filterWhere(
                     'phone',
                     'like',
-                    ($request->validated()['phone'])
+                    ($request->validated()['phone'] ?? null)
                         ? "{$request->validated()['phone']}%"
                         : null
                 )
