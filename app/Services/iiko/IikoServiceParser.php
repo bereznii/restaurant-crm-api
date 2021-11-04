@@ -15,11 +15,11 @@ class IikoServiceParser
     /**
      * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=id.xsy1q2yg3v46
      *
-     * @param array $responseObjects
+     * @param array|null $responseObjects
      * @param Collection|null $ordersInDb
      * @return array
      */
-    public function parseDeliveryOrdersResponse(array $responseObjects, ?Collection $ordersInDb): array
+    public function parseDeliveryOrdersResponse(?array $responseObjects, ?Collection $ordersInDb): array
     {
         $parsed = [];
 

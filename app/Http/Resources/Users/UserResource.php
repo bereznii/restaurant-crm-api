@@ -28,7 +28,7 @@ class UserResource extends JsonResource
             'email_verified_at' => $this->email_verified_at,
             'locations' => $this->locations,
             'kitchen_code' => $this->kitchen_code,
-            'kitchen_name' => $this->kitchen->title,
+            'kitchen_name' => $this->kitchen?->title,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
