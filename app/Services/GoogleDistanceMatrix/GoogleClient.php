@@ -99,7 +99,7 @@ class GoogleClient
      */
     public function getDistancesFromDirections(Collection $deliveredOrders, Location $location): array
     {
-        $waypoints = implode('|', array_map(fn ($item) => "{$item['latitude']},{$item['longitude']}", $deliveredOrders->toArray()));
+        $waypoints = implode('|', array_map(fn ($item) => "{$item['address']}", $deliveredOrders->toArray()));
 
         $response = Http::get(self::DIRECTIONS_API_URL, [
             'origin' => $location->address,
