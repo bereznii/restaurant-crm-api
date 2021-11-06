@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\Client\ClientController;
-use App\Http\Controllers\Api\Client\SourceController;
 use App\Http\Controllers\Api\Order\OrderItemsController;
 use App\Http\Controllers\Api\Order\OrderPaymentTypesController;
 use App\Http\Controllers\Api\Order\OrderStatusesController;
@@ -59,7 +58,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/order-payment-types', [OrderPaymentTypesController::class, 'index']);
 
     Route::apiResource('order-items', OrderItemsController::class)->only(['index','update']);
-    Route::get('/order-items-statuses', [OrderItemsController::class, 'status']);
+    Route::get('/order-items-statuses', [OrderItemsController::class, 'statuses']);
 
     Route::apiResource('kitchens', KitchenController::class)->only(['index',]);
 
