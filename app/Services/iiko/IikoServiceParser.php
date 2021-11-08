@@ -12,6 +12,8 @@ class IikoServiceParser
     private const PAYMENTS_TO_SHOW = ['CASH', 'VISA'];
     private const PAYMENT_CODE_CASH = 'CASH';
 
+    private const SECONDARY_PAYMENTS_TO_SHOW = ['ON'];
+
     /**
      * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=id.xsy1q2yg3v46
      *
@@ -29,7 +31,7 @@ class IikoServiceParser
              * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.xqk6fzvxgaeo
              */
 
-            if ($orderInfo['statusCode'] !== 'ON_WAY') {
+            if (!in_array($orderInfo['statusCode'], ['ON_WAY', 'WAITING'])) {
                 continue;
             }
 
@@ -37,9 +39,17 @@ class IikoServiceParser
                 ? Location::SMAKI_MAKI_RESTAURANT
                 : Location::SUSHI_GO_RESTAURANT;
             $parsed[$key]['delivery_terminal_id'] = $orderInfo['deliveryTerminal']['deliveryTerminalId'];
+
+            /*
+             * Заказ в статусе WAITING, если:
+             * - У этого курьера нет начатой поездки
+             * - Если Заказа нет в начатой поездке
+             * Иначе, берется статус из бд.
+             */
             $parsed[$key]['status'] = $ordersInDb === null
                 ? DeliveryOrder::STATUS_WAITING
                 : $this->parseStatus($orderInfo, $ordersInDb);
+
             $parsed[$key]['order_uuid'] = $orderInfo['orderId'];
             $parsed[$key]['order_id'] = (int) $orderInfo['number'];
             $parsed[$key]['comment'] = $orderInfo['comment'];
@@ -96,6 +106,16 @@ class IikoServiceParser
             $parsedPayment['title'] = $mainPayment['paymentType']['name'];
             $parsedPayment['code'] = $mainPayment['paymentType']['code'];
             $parsedPayment['sum'] = $mainPayment['sum'];
+        } else {
+            $secondaryPayment = array_values(array_filter($payments, function ($item) {
+                return in_array($item['paymentType']['code'], self::SECONDARY_PAYMENTS_TO_SHOW);
+            }))[0] ?? null;
+
+            if (isset($secondaryPayment)) {
+                $parsedPayment['title'] = $secondaryPayment['paymentType']['name'];
+                $parsedPayment['code'] = $secondaryPayment['paymentType']['code'];
+                $parsedPayment['sum'] = $secondaryPayment['sum'];
+            }
         }
 
         return $parsedPayment;
