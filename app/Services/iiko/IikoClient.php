@@ -56,9 +56,7 @@ class IikoClient
             'user_id' => $this->userId,
             'user_secret' => $this->userSecret,
         ]);
-
-        Log::channel('outgoing')->info(self::API_URL . self::API_URL_ACCESS_TOKEN . ' : ' . $response->body());
-
+        
         return trim($response->body(), '"');
     }
 
