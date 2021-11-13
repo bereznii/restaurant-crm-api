@@ -28,26 +28,6 @@ class OrderController extends Controller
      *     path="/orders",
      *     tags={"Order"},
      *     security={{"Bearer":{}}},
-     *     @OA\Parameter(
-     *         name="per_page",
-     *         in="query",
-     *         description="Количество результатов на странице",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *             default="20"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Номер страницы",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *             default="1"
-     *         )
-     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="OK",
@@ -156,7 +136,7 @@ class OrderController extends Controller
      *                         )
      *                      ),
      *                     example={"data":{
-     *                      {
+     *                      "new":{{
      *                          "id": 14,
      *                          "restaurant": "smaki",
      *                          "kitchen_code": "kulparkivska",
@@ -233,23 +213,10 @@ class OrderController extends Controller
      *                              "created_at": "2021-10-23T13:09:16.000000Z",
      *                              "updated_at": "2021-10-23T13:09:16.000000Z"
      *                          }
-     *                          }},
-     *                      "links": {
-     *                          "first": "https://api.smaki.com.ua/api/orders?page=1",
-     *                          "last": "https://api.smaki.com.ua/api/orders?page=1",
-     *                          "prev": null,
-     *                          "next": null
-     *                      },
-     *                      "meta": {
-     *                          "current_page": 1,
-     *                          "from": 1,
-     *                          "last_page": 1,
-     *                          "links": {},
-     *                          "path": "https://api.smaki.com.ua/api/orders",
-     *                          "per_page": 20,
-     *                          "to": 11,
-     *                          "total": 11,
-     *                      },
+     *                          }}},
+     *                      "cooking":{},
+     *                      "preparing":{},
+     *                      "for_delivery":{},
      *                    }
      *                 )
      *             )
