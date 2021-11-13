@@ -2,8 +2,10 @@
 
 namespace App\Services\iiko;
 
+use App\Models\Delivery;
 use App\Models\DeliveryOrder;
 use App\Models\Location;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -25,12 +27,30 @@ class IikoServiceParser
     {
         $parsed = [];
 
+        if (Auth::user()->courierStatus === User::COURIER_STATUS_ON_DELIVERY) {
+            $currentDelivery = Delivery::where('id', Auth::user()->courierCurrentDeliveryId)->first();
+        }
+
         foreach ($responseObjects['deliveryOrders'] ?? [] as $key => $orderInfo) {
             /**
              * @var array $orderInfo
              * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.xqk6fzvxgaeo
              */
 
+            // Если у курьера есть активная поездка возвращать только те заказы, которые есть в этой поездке
+            if (Auth::user()->courierStatus === User::COURIER_STATUS_ON_DELIVERY) {
+                if (isset($currentDelivery)) {
+                    $currentOrderInDb = $ordersInDb
+                        ->where('iiko_order_id', $orderInfo['orderId'])
+                        ->where('delivery_id', $currentDelivery->id)
+                        ->first();
+                }
+                if (!isset($currentOrderInDb)) {
+                    continue;
+                }
+            }
+
+            // Взвращать только те заказы, которые в айко в статусах ON_WAY и WAITING
             if (!in_array($orderInfo['statusCode'], ['ON_WAY', 'WAITING'])) {
                 continue;
             }

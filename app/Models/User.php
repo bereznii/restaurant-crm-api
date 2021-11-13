@@ -22,6 +22,9 @@ class User extends Authenticatable
     public const STATUS_ACTIVE = 'active';
     public const STATUS_DISABLED = 'disabled';
 
+    public const COURIER_STATUS_WAITING = 'waiting';
+    public const COURIER_STATUS_ON_DELIVERY = 'on_delivery';
+
     public const ROLE_COURIER = 'courier';
     public const ROLE_COOK = 'cook';
 
@@ -125,6 +128,24 @@ class User extends Authenticatable
     }
 
     /**
+     * @param $value
+     * @return string
+     */
+    public function getCourierStatusAttribute($value)
+    {
+        return $this->iiko?->status;
+    }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getCourierCurrentDeliveryIdAttribute($value)
+    {
+        return $this->iiko?->current_order;
+    }
+
+    /**
      * @param Builder $query
      * @param string $column
      * @param string $operator
@@ -151,5 +172,16 @@ class User extends Authenticatable
         return isset($value)
             ? $query->whereRelation($relation, $column, $operator, $value)
             : $query;
+    }
+
+    /**
+     * @return void
+     */
+    public function setStatusWaiting()
+    {
+        $record = CourierIiko::where('user_id', $this->id)->first();
+        $record->status = self::COURIER_STATUS_WAITING;
+        $record->current_order = null;
+        $record->save();
     }
 }
