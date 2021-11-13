@@ -20,7 +20,7 @@ class OrderRepository extends AbstractRepository
     {
         $cookKitchen = Auth::user()->kitchen_code;
 
-        return $this->_getInstance()
+        $res = $this->_getInstance()
             ->with([
                 'address',
                 'items',
@@ -28,9 +28,21 @@ class OrderRepository extends AbstractRepository
                 'history'
             ])
             ->where('kitchen_code', '=', $cookKitchen)
+            ->orderByRaw(
+                "CASE
+                WHEN orders.status = 'new' THEN 1
+                WHEN orders.status = 'cooking' THEN 2
+                WHEN orders.status = 'preparing' THEN 3
+                WHEN orders.status = 'for_delivery' THEN 4
+                WHEN orders.status = 'closed' THEN 5
+                WHEN orders.status = 'rejected' THEN 6
+                 END asc"
+            )
             ->orderBy('created_at', 'desc')
             ->paginate(
                 (int) ($queryParams['per_page'] ?? self::DEFAULT_PAGE_SIZE)
             );
+
+        return $res;
     }
 }
