@@ -5,6 +5,7 @@ namespace App\Services\iiko;
 use App\Models\Delivery;
 use App\Models\DeliveryOrder;
 use App\Services\GoogleDistanceMatrix\GoogleClient;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class DeliveryOrderService
@@ -19,11 +20,9 @@ class DeliveryOrderService
     public function setAsDelivered(string $courierIikoUuid, int $userId, string $orderUuid, array $validated): void
     {
         // Получаем поездку
-        $delivery = Delivery::where([
-                ['iiko_courier_id', '=', $courierIikoUuid],
-                ['status', '=', Delivery::STATUS_ON_WAY],
-                ['user_id', '=', $userId],
-            ])->orderBy('id', 'desc')->first();
+        $delivery = Delivery::where('id', '=', Auth::user()->courierCurrentDeliveryId)
+            ->orderBy('id', 'desc')
+            ->first();
 
         if (!isset($delivery)) {
             throw new \RuntimeException(__METHOD__ . ': Поездка не найдена');
@@ -60,6 +59,10 @@ class DeliveryOrderService
             $delivery->delivery_distance = $distancesFromDirections['deliveryDistance'];
             $delivery->return_distance = $distancesFromDirections['returnDistance'];
             $delivery->save();
+
+            if ($delivery->save()) {
+                Auth::user()->setStatusWaiting();
+            }
         }
     }
 }

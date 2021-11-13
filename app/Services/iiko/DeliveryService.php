@@ -4,6 +4,9 @@ namespace App\Services\iiko;
 
 use App\Models\City;
 use App\Models\Delivery;
+use App\Models\iiko\CourierIiko;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Collection;
@@ -29,6 +32,7 @@ class DeliveryService
             $delivery->started_at = date('Y-m-d H:i:s');
             if ($delivery->save()) {
                 $success = $this->createRelatedDeliveryOrders($delivery, $validated);
+                $success = $success && $this->setCourierStatus($userId, $delivery->id);
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -100,17 +104,23 @@ class DeliveryService
     }
 
     /**
-     * @param string $courierIikoId
+     * @param int $userId
+     * @return mixed
+     */
+    private function setCourierStatus(int $userId, int $deliveryId): bool
+    {
+        $courierRecord = CourierIiko::where('user_id', '=', $userId)->first();
+        $courierRecord->status = User::COURIER_STATUS_ON_DELIVERY;
+        $courierRecord->current_order = $deliveryId;
+        return (bool) $courierRecord->save();
+    }
+
+    /**
      * @return Collection|null
      */
-    public function existingDeliveryForCourier(string $courierIikoId): ?Collection
+    public function existingDeliveryForCourier(): ?Collection
     {
-        return Delivery::with('orders')
-            ->where([
-                ['iiko_courier_id', '=', $courierIikoId],
-            ])
-            ->orderBy('id', 'desc')
-            ->first()
+        return Delivery::where('id', Auth::user()->courierCurrentDeliveryId)->first()
             ?->orders;
     }
 }
