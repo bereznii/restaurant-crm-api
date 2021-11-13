@@ -64,24 +64,24 @@ class IikoServiceInterface
                     throw new InvalidArgumentException();
             }
 
-//            $response = Http::post(
-//                IikoClient::API_URL . "/orders/set_order_delivered?access_token={$client->getAccessToken()}&organization={$organizationId}",
-//                [
-//                    'courierId' => $courierIikoId,
-//                    'orderId' => $orderUuid,
-//                    'delivered' => true,
-//                    'actualDeliveryTime' => date('Y-m-d H:i:s'),
-//                ]
-//            );
-//
-//            Log::channel('outgoing')->info($userId . ' | ' . IikoClient::API_URL . "/orders/set_order_delivered" . ' : ' . $response->body());
-//
-//            if ($response->successful()) {
+            $response = Http::post(
+                IikoClient::API_URL . "/orders/set_order_delivered?access_token={$client->getAccessToken()}&organization={$organizationId}",
+                [
+                    'courierId' => $courierIikoId,
+                    'orderId' => $orderUuid,
+                    'delivered' => true,
+                    'actualDeliveryTime' => date('Y-m-d H:i:s'),
+                ]
+            );
+
+            Log::channel('outgoing')->info($userId . ' | ' . IikoClient::API_URL . "/orders/set_order_delivered" . ' : ' . $response->body());
+
+            if ($response->successful()) {
                 $this->deliveryOrderService->setAsDelivered($courierIikoId, $userId, $orderUuid, $validated);
                 $success = true;
-//            } else {
-//                Log::error($response->body());
-//            }
+            } else {
+                Log::error($response->body());
+            }
 
         } catch (\Exception $e) {
             DB::rollBack();
