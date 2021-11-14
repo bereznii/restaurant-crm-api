@@ -142,7 +142,7 @@ class User extends Authenticatable
      */
     public function getCourierCurrentDeliveryIdAttribute($value)
     {
-        return $this->iiko?->current_order;
+        return $this->iiko?->current_delivery_id;
     }
 
     /**
@@ -181,7 +181,7 @@ class User extends Authenticatable
     {
         $record = CourierIiko::where('user_id', $this->id)->first();
         $record->status = self::COURIER_STATUS_WAITING;
-        $record->current_order = null;
+        $record->current_delivery_id = null;
         $record->save();
     }
 }

@@ -111,7 +111,7 @@ class DeliveryService
     {
         $courierRecord = CourierIiko::where('user_id', '=', $userId)->first();
         $courierRecord->status = User::COURIER_STATUS_ON_DELIVERY;
-        $courierRecord->current_order = $deliveryId;
+        $courierRecord->current_delivery_id = $deliveryId;
         return (bool) $courierRecord->save();
     }
 

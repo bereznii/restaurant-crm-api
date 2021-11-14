@@ -12,6 +12,7 @@ class DeliveryOrder extends Model
     public const STATUS_WAITING = 'waiting';
     public const STATUS_ON_WAY = 'on_way';
     public const STATUS_DELIVERED = 'delivered';
+    public const STATUS_CLOSED = 'closed';
 
     public const RANGE_TYPE_WITHIN_CITY = 'within_city';
     public const RANGE_TYPE_OUTSIDE_CITY = 'outside_city';

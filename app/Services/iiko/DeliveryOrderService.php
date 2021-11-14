@@ -5,6 +5,7 @@ namespace App\Services\iiko;
 use App\Models\Delivery;
 use App\Models\DeliveryOrder;
 use App\Services\GoogleDistanceMatrix\GoogleClient;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -50,19 +51,31 @@ class DeliveryOrderService
 
         // Проверяем остались ли ещё не доставленные заказы в поездке
         if ($remainingOrdersToDeliver->where('status', DeliveryOrder::STATUS_ON_WAY)->first() === null) {
-            // Отмечаем поездку завершенной, считаем расстояния
-            $delivery->status = Delivery::STATUS_DELIVERED;
+            $this->closeCurrentDelivery($delivery, $remainingOrdersToDeliver);
+        }
+    }
 
-//            $distances = (new GoogleClient())->getDistances($remainingOrdersToDeliver, $delivery->location);
-            $distancesFromDirections = (new GoogleClient())->getDistancesFromDirections($remainingOrdersToDeliver, $delivery->location);
+    /**
+     * @param Delivery $delivery
+     * @param Collection $ordersInDelivery
+     */
+    public static function closeCurrentDelivery(Delivery $delivery, Collection $ordersInDelivery)
+    {
+        // Отмечаем поездку завершенной, считаем расстояния
+        $delivery->status = Delivery::STATUS_DELIVERED;
 
-            $delivery->delivery_distance = $distancesFromDirections['deliveryDistance'];
-            $delivery->return_distance = $distancesFromDirections['returnDistance'];
-            $delivery->save();
+        // Считаем расстояния
+        $distancesFromDirections = (new GoogleClient())->getDistancesFromDirections(
+            $ordersInDelivery->where('status', DeliveryOrder::STATUS_DELIVERED),// Считаем дистанцию только для доставленных
+            $delivery->location
+        );
 
-            if ($delivery->save()) {
-                Auth::user()->setStatusWaiting();
-            }
+        $delivery->delivery_distance = $distancesFromDirections['deliveryDistance'];
+        $delivery->return_distance = $distancesFromDirections['returnDistance'];
+        $delivery->save();
+
+        if ($delivery->save()) {
+            Auth::user()->setStatusWaiting();
         }
     }
 }
