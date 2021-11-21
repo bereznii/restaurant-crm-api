@@ -51,12 +51,6 @@ class OrderController extends Controller
      *                         description="Идентификатор кухни"
      *                      ),
      *                      @OA\Property(
-     *                         property="payment_type",
-     *                         type="string",
-     *                         description="Тип оплаты",
-     *                         enum={"online","cash","card"}
-     *                      ),
-     *                      @OA\Property(
      *                         property="change_from",
      *                         type="integer",
      *                         description="Подготовить сдачу с"
@@ -128,6 +122,14 @@ class OrderController extends Controller
      *                         )
      *                      ),
      *                      @OA\Property(
+     *                         property="payments",
+     *                         type="array",
+     *                         description="Оплаты",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         )
+     *                      ),
+     *                      @OA\Property(
      *                         property="history",
      *                         type="array",
      *                         description="История изменения статуса",
@@ -140,7 +142,6 @@ class OrderController extends Controller
      *                          "id": 14,
      *                          "restaurant": "smaki",
      *                          "kitchen_code": "kulparkivska",
-     *                          "payment_type": "cash",
      *                          "change_from": 1000,
      *                          "type": "soon",
      *                          "status": "new",
@@ -192,6 +193,16 @@ class OrderController extends Controller
      *                                  "set_at": "2021-10-26 14:50:48"
      *                              }
      *                          },
+     *                          "payments": {
+     *                              {
+     *                                  "id": 1,
+     *                                  "order_id": 14,
+     *                                  "payment_type": "cash",
+     *                                  "sum": "500",
+     *                                  "created_at": "2021-10-25T15:10:59.000000Z",
+     *                                  "updated_at": "2021-10-25T15:10:59.000000Z"
+     *                              }
+     *                          },
      *                          "address": {
      *                              "id": 12,
      *                              "order_id": 14,
@@ -202,7 +213,9 @@ class OrderController extends Controller
      *                              "floor": "2",
      *                              "comment": null,
      *                              "created_at": "2021-10-25T15:10:59.000000Z",
-     *                              "updated_at": "2021-10-25T15:10:59.000000Z"
+     *                              "updated_at": "2021-10-25T15:10:59.000000Z",
+     *                              "latitude": "",
+     *                              "longitude": ""
      *                          },
      *                          "client": {
      *                              "id": 5,
@@ -244,7 +257,7 @@ class OrderController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *               required={"restaurant","kitchen_code","payment_type","type","status","return_call","courier_id","client","address","items"},
+     *               required={"restaurant","kitchen_code","payments","type","status","return_call","courier_id","client","address","items"},
      *               @OA\Property(
      *                  property="restaurant",
      *                  type="string",
@@ -254,12 +267,6 @@ class OrderController extends Controller
      *                  property="kitchen_code",
      *                  type="string",
      *                  description="Идентификатор кухни"
-     *               ),
-     *               @OA\Property(
-     *                  property="payment_type",
-     *                  type="string",
-     *                  description="Тип оплаты",
-     *                  enum={"online","cash","card","bonuses"}
      *               ),
      *               @OA\Property(
      *                  property="change_from",
@@ -317,10 +324,17 @@ class OrderController extends Controller
      *                      type="object"
      *                  )
      *               ),
+     *               @OA\Property(
+     *                  property="payments",
+     *                  type="array",
+     *                  description="Оплаты",
+     *                  @OA\Items(
+     *                      type="object"
+     *                  )
+     *               ),
      *              example={
      *                  "restaurant": "smaki",
      *                  "kitchen_code": "kulparkivska",
-     *                  "payment_type": "cash",
      *                  "change_from": 1000,
      *                  "type": "soon",
      *                  "status": "new",
@@ -339,7 +353,9 @@ class OrderController extends Controller
      *                      "house_number": "12",
      *                      "entrance": "3",
      *                      "floor": "2",
-     *                      "comment": ""
+     *                      "comment": "",
+     *                      "latitude": "",
+     *                      "longitude": ""
      *                  },
      *                  "items": {
      *                      {
@@ -351,6 +367,12 @@ class OrderController extends Controller
      *                          "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
      *                          "quantity": 3,
      *                          "comment": "без перца"
+     *                      }
+     *                  },
+     *                  "payments": {
+     *                      {
+     *                          "payment_type": "cash",
+     *                          "sum": 500,
      *                      }
      *                  }
      *                  }
@@ -378,12 +400,6 @@ class OrderController extends Controller
      *                         property="kitchen_code",
      *                         type="string",
      *                         description="Идентификатор кухни"
-     *                      ),
-     *                      @OA\Property(
-     *                         property="payment_type",
-     *                         type="string",
-     *                         description="Тип оплаты",
-     *                         enum={"online","cash","card"}
      *                      ),
      *                      @OA\Property(
      *                         property="change_from",
@@ -457,6 +473,14 @@ class OrderController extends Controller
      *                         )
      *                      ),
      *                      @OA\Property(
+     *                         property="payments",
+     *                         type="array",
+     *                         description="Оплаты",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         )
+     *                      ),
+     *                      @OA\Property(
      *                         property="history",
      *                         type="array",
      *                         description="История изменения статуса",
@@ -469,7 +493,6 @@ class OrderController extends Controller
      *                          "id": 14,
      *                          "restaurant": "smaki",
      *                          "kitchen_code": "kulparkivska",
-     *                          "payment_type": "cash",
      *                          "change_from": 1000,
      *                          "type": "soon",
      *                          "status": "new",
@@ -521,6 +544,16 @@ class OrderController extends Controller
      *                                  "set_at": "2021-10-26 14:50:48"
      *                              }
      *                          },
+     *                          "payments": {
+     *                              {
+     *                                  "id": 1,
+     *                                  "order_id": 14,
+     *                                  "payment_type": "cash",
+     *                                  "sum": 500,
+     *                                  "created_at": "2021-10-25T15:10:59.000000Z",
+     *                                  "updated_at": "2021-10-25T15:10:59.000000Z"
+     *                              }
+     *                          },
      *                          "address": {
      *                              "id": 12,
      *                              "order_id": 14,
@@ -530,8 +563,10 @@ class OrderController extends Controller
      *                              "entrance": "3",
      *                              "floor": "2",
      *                              "comment": null,
-     *                              "created_at": "2021-10-25T15:10:59.000000Z",
-     *                              "updated_at": "2021-10-25T15:10:59.000000Z"
+     *                              "comment": null,
+     *                              "comment": null,
+     *                              "latitude": "",
+     *                              "longitude": ""
      *                          },
      *                          "client": {
      *                              "id": 5,
@@ -571,7 +606,7 @@ class OrderController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *               required={"restaurant","kitchen_code","payment_type","type","status","return_call","courier_id","address","items"},
+     *               required={"restaurant","kitchen_code","payments","type","status","return_call","courier_id","address","items"},
      *               @OA\Property(
      *                  property="restaurant",
      *                  type="string",
@@ -581,12 +616,6 @@ class OrderController extends Controller
      *                  property="kitchen_code",
      *                  type="string",
      *                  description="Идентификатор кухни"
-     *               ),
-     *               @OA\Property(
-     *                  property="payment_type",
-     *                  type="string",
-     *                  description="Тип оплаты",
-     *                  enum={"online","cash","card"}
      *               ),
      *               @OA\Property(
      *                  property="change_from",
@@ -636,6 +665,14 @@ class OrderController extends Controller
      *                      type="object"
      *                  )
      *               ),
+     *               @OA\Property(
+     *                  property="payments",
+     *                  type="array",
+     *                  description="Оплаты",
+     *                  @OA\Items(
+     *                      type="object"
+     *                  )
+     *               ),
      *              example={
      *                  "restaurant": "smaki",
      *                  "kitchen_code": "kulparkivska",
@@ -652,7 +689,9 @@ class OrderController extends Controller
      *                      "house_number": "12",
      *                      "entrance": "3",
      *                      "floor": "2",
-     *                      "comment": ""
+     *                      "comment": "",
+     *                      "latitude": "",
+     *                      "longitude": ""
      *                  },
      *                  "items": {
      *                      {
@@ -664,6 +703,12 @@ class OrderController extends Controller
      *                          "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
      *                          "quantity": 3,
      *                          "comment": "без перца"
+     *                      }
+     *                  },
+     *                  "payments": {
+     *                      {
+     *                          "payment_type": "cash",
+     *                          "sum": 500,
      *                      }
      *                  }
      *                  }
@@ -691,12 +736,6 @@ class OrderController extends Controller
      *                         property="kitchen_code",
      *                         type="string",
      *                         description="Идентификатор кухни"
-     *                      ),
-     *                      @OA\Property(
-     *                         property="payment_type",
-     *                         type="string",
-     *                         description="Тип оплаты",
-     *                         enum={"online","cash","card"}
      *                      ),
      *                      @OA\Property(
      *                         property="change_from",
@@ -762,6 +801,14 @@ class OrderController extends Controller
      *                         )
      *                      ),
      *                      @OA\Property(
+     *                         property="payments",
+     *                         type="array",
+     *                         description="Оплаты",
+     *                         @OA\Items(
+     *                             type="object"
+     *                         )
+     *                      ),
+     *                      @OA\Property(
      *                         property="items",
      *                         type="array",
      *                         description="Позиции в заказе",
@@ -782,7 +829,6 @@ class OrderController extends Controller
      *                          "id": 14,
      *                          "restaurant": "smaki",
      *                          "kitchen_code": "kulparkivska",
-     *                          "payment_type": "cash",
      *                          "change_from": 1000,
      *                          "type": "soon",
      *                          "status": "new",
@@ -834,6 +880,16 @@ class OrderController extends Controller
      *                                  "set_at": "2021-10-26 14:50:48"
      *                              }
      *                          },
+     *                          "payments": {
+     *                              {
+     *                                  "id": 1,
+     *                                  "order_id": 14,
+     *                                  "payment_type": "cash",
+     *                                  "sum": 500,
+     *                                  "created_at": "2021-10-25T15:10:59.000000Z",
+     *                                  "updated_at": "2021-10-25T15:10:59.000000Z"
+     *                              }
+     *                          },
      *                          "address": {
      *                              "id": 12,
      *                              "order_id": 14,
@@ -844,7 +900,9 @@ class OrderController extends Controller
      *                              "floor": "2",
      *                              "comment": null,
      *                              "created_at": "2021-10-25T15:10:59.000000Z",
-     *                              "updated_at": "2021-10-25T15:10:59.000000Z"
+     *                              "updated_at": "2021-10-25T15:10:59.000000Z",
+     *                              "latitude": "",
+     *                              "longitude": ""
      *                          },
      *                          "client": {
      *                              "id": 5,

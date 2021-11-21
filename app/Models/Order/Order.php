@@ -84,6 +84,14 @@ class Order extends Model
     /**
      * @return HasMany
      */
+    public function payments()
+    {
+        return $this->hasMany(OrderPayment::class);
+    }
+
+    /**
+     * @return HasMany
+     */
     public function history()
     {
         return $this->hasMany(OrderStatus::class);

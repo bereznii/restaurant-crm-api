@@ -28,7 +28,6 @@ class StoreRequest extends FormRequest
         return [
             'restaurant' => 'required|string|in:go,smaki',
             'kitchen_code' => 'required|string|exists:kitchens,code',
-            'payment_type' => 'required|string|in:' . implode(',', array_column(Order::PAYMENT_TYPES, 'name')),
             'type' => 'required|string|in:' . implode(',', array_column(Order::TYPES, 'name')),
             'status' => 'required|string|in:' . implode(',', array_column(Order::STATUSES, 'name')),
             'return_call' => 'required|in:1,0',
@@ -36,6 +35,10 @@ class StoreRequest extends FormRequest
             'client_comment' => 'nullable|string|max:65000',
             'change_from' => 'nullable|integer',
             'delivered_till' => 'required_if:type,requested_time|prohibited_if:type,soon|date|date_format:Y-m-d H:i:s',
+
+            'payments' => 'required|array',
+            'payments.*.payment_type' => 'required|string|in:' . implode(',', array_column(Order::PAYMENT_TYPES, 'name')),
+            'payments.*.sum' => 'required|integer',
 
             'client' => 'required|array',
             'client.id' => 'filled|integer|exists:clients,id',
@@ -50,6 +53,8 @@ class StoreRequest extends FormRequest
             'address.entrance' => 'required|string',
             'address.floor' => 'required|string',
             'address.comment' => 'nullable|string|max:65000',
+            'address.latitude' => 'required|string',
+            'address.longitude' => 'required|string',
 
             'items' => 'required|array',
             'items.*.product_id' => 'required|uuid|exists:products,id',

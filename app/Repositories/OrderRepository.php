@@ -60,7 +60,8 @@ class OrderRepository extends AbstractRepository
                 'address',
                 'items',
                 'client',
-                'history'
+                'history',
+                'payments',
             ])
             ->where('kitchen_code', '=', $cookKitchen)
             ->whereIn('status', ['new', 'cooking', 'preparing', 'for_delivery'])

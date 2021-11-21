@@ -7,6 +7,7 @@ use App\Models\Client\Client;
 use App\Models\Order\Order;
 use App\Models\Order\OrderAddress;
 use App\Models\Order\OrderItem;
+use App\Models\Order\OrderPayment;
 use App\Models\Product\Product;
 use App\Models\Product\ProductPrice;
 use Illuminate\Support\Facades\Auth;
@@ -30,17 +31,18 @@ class OrderService
 
             $order = $this->saveOrder($validated, $clientId, $userId);
 
+            $this->savePayments($validated, $order->id);
             $this->saveOrderAddress($validated, $order->id);
             $this->saveOrderItems($validated, $order->id);
 
             DB::commit();
 
             $order = Order::where('id', $order->id)
-                ->with('items', 'address', 'client')
+                ->with('items', 'address', 'client', 'payments')
                 ->first();
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e->getMessage());
+//            dd($e->getMessage());
             Log::error($e->getMessage());
         }
 
@@ -88,7 +90,6 @@ class OrderService
         $order = new Order();
         $order->restaurant = $validated['restaurant'];
         $order->kitchen_code = $validated['kitchen_code'];
-        $order->payment_type = $validated['payment_type'];
         $order->type = $validated['type'];
         $order->operator_id = $userId;
         $order->status = Order::STATUS_NEW;
@@ -133,6 +134,8 @@ class OrderService
         $orderAddress->entrance = $validated['address']['entrance'];
         $orderAddress->floor = $validated['address']['floor'];
         $orderAddress->comment = $validated['address']['comment'];
+        $orderAddress->longitude = $validated['address']['longitude'];
+        $orderAddress->latitude = $validated['address']['latitude'];
         $orderAddress->save();
     }
 
@@ -160,6 +163,21 @@ class OrderService
 
     /**
      * @param array $validated
+     * @param int $orderId
+     */
+    private function savePayments(array $validated, int $orderId)
+    {
+        foreach ($validated['payments'] as $item) {
+            $orderPayment = new OrderPayment();
+            $orderPayment->order_id = $orderId;
+            $orderPayment->payment_type = $item['payment_type'];
+            $orderPayment->sum = $item['sum'];
+            $orderPayment->save();
+        }
+    }
+
+    /**
+     * @param array $validated
      * @param Order $order
      * @return Order
      */
@@ -171,16 +189,18 @@ class OrderService
             $userId = Auth::id();
 
             $this->updateOrder($validated, $order, $userId);
+            $this->updatePayments($validated, $order->id);
             $this->updateOrderAddress($validated, $order->id);
             $this->updateOrderItems($validated, $order->id);
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+//            dd($e->getMessage());
             Log::error($e->getMessage());
         }
 
-        $updatedOrder = Order::with('client', 'address', 'items')
+        $updatedOrder = Order::with('client', 'address', 'items', 'payments')
             ->where('id', $order->id)
             ->first();
 
@@ -201,7 +221,6 @@ class OrderService
 
         $order->restaurant = $validated['restaurant'];
         $order->kitchen_code = $validated['kitchen_code'];
-        $order->payment_type = $validated['payment_type'];
         $order->type = $validated['type'];
         $order->status = $validated['status'];
         $order->return_call = $validated['return_call'];
@@ -219,6 +238,23 @@ class OrderService
      * @param array $validated
      * @param int $orderId
      */
+    private function updatePayments(array $validated, int $orderId)
+    {
+        OrderPayment::where('order_id', $orderId)->delete();
+
+        foreach ($validated['payments'] as $item) {
+            $orderPayment = new OrderPayment();
+            $orderPayment->order_id = $orderId;
+            $orderPayment->payment_type = $item['payment_type'];
+            $orderPayment->sum = $item['sum'];
+            $orderPayment->save();
+        }
+    }
+
+    /**
+     * @param array $validated
+     * @param int $orderId
+     */
     private function updateOrderAddress(array $validated, int $orderId)
     {
         $orderAddress = OrderAddress::where('order_id', $orderId)->first();
@@ -228,6 +264,8 @@ class OrderService
         $orderAddress->entrance = $validated['address']['entrance'];
         $orderAddress->floor = $validated['address']['floor'];
         $orderAddress->comment = $validated['address']['comment'];
+        $orderAddress->longitude = $validated['address']['longitude'];
+        $orderAddress->latitude = $validated['address']['latitude'];
         $orderAddress->save();
     }
 

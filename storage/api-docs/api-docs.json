@@ -1241,15 +1241,6 @@
                                             "description": "Идентификатор кухни",
                                             "type": "string"
                                         },
-                                        "payment_type": {
-                                            "description": "Тип оплаты",
-                                            "type": "string",
-                                            "enum": [
-                                                "online",
-                                                "cash",
-                                                "card"
-                                            ]
-                                        },
                                         "change_from": {
                                             "description": "Подготовить сдачу с",
                                             "type": "integer"
@@ -1315,6 +1306,13 @@
                                                 "type": "object"
                                             }
                                         },
+                                        "payments": {
+                                            "description": "Оплаты",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
                                         "history": {
                                             "description": "История изменения статуса",
                                             "type": "array",
@@ -1331,7 +1329,6 @@
                                                     "id": 14,
                                                     "restaurant": "smaki",
                                                     "kitchen_code": "kulparkivska",
-                                                    "payment_type": "cash",
                                                     "change_from": 1000,
                                                     "type": "soon",
                                                     "status": "new",
@@ -1383,6 +1380,16 @@
                                                             "set_at": "2021-10-26 14:50:48"
                                                         }
                                                     ],
+                                                    "payments": [
+                                                        {
+                                                            "id": 1,
+                                                            "order_id": 14,
+                                                            "payment_type": "cash",
+                                                            "sum": "500",
+                                                            "created_at": "2021-10-25T15:10:59.000000Z",
+                                                            "updated_at": "2021-10-25T15:10:59.000000Z"
+                                                        }
+                                                    ],
                                                     "address": {
                                                         "id": 12,
                                                         "order_id": 14,
@@ -1393,7 +1400,9 @@
                                                         "floor": "2",
                                                         "comment": null,
                                                         "created_at": "2021-10-25T15:10:59.000000Z",
-                                                        "updated_at": "2021-10-25T15:10:59.000000Z"
+                                                        "updated_at": "2021-10-25T15:10:59.000000Z",
+                                                        "latitude": "",
+                                                        "longitude": ""
                                                     },
                                                     "client": {
                                                         "id": 5,
@@ -1436,7 +1445,7 @@
                                 "required": [
                                     "restaurant",
                                     "kitchen_code",
-                                    "payment_type",
+                                    "payments",
                                     "type",
                                     "status",
                                     "return_call",
@@ -1453,16 +1462,6 @@
                                     "kitchen_code": {
                                         "description": "Идентификатор кухни",
                                         "type": "string"
-                                    },
-                                    "payment_type": {
-                                        "description": "Тип оплаты",
-                                        "type": "string",
-                                        "enum": [
-                                            "online",
-                                            "cash",
-                                            "card",
-                                            "bonuses"
-                                        ]
                                     },
                                     "change_from": {
                                         "description": "Подготовить сдачу с",
@@ -1516,13 +1515,19 @@
                                         "items": {
                                             "type": "object"
                                         }
+                                    },
+                                    "payments": {
+                                        "description": "Оплаты",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object"
+                                        }
                                     }
                                 },
                                 "type": "object",
                                 "example": {
                                     "restaurant": "smaki",
                                     "kitchen_code": "kulparkivska",
-                                    "payment_type": "cash",
                                     "change_from": 1000,
                                     "type": "soon",
                                     "status": "new",
@@ -1541,7 +1546,9 @@
                                         "house_number": "12",
                                         "entrance": "3",
                                         "floor": "2",
-                                        "comment": ""
+                                        "comment": "",
+                                        "latitude": "",
+                                        "longitude": ""
                                     },
                                     "items": [
                                         {
@@ -1553,6 +1560,12 @@
                                             "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
                                             "quantity": 3,
                                             "comment": "без перца"
+                                        }
+                                    ],
+                                    "payments": [
+                                        {
+                                            "payment_type": "cash",
+                                            "sum": 500
                                         }
                                     ]
                                 }
@@ -1578,15 +1591,6 @@
                                         "kitchen_code": {
                                             "description": "Идентификатор кухни",
                                             "type": "string"
-                                        },
-                                        "payment_type": {
-                                            "description": "Тип оплаты",
-                                            "type": "string",
-                                            "enum": [
-                                                "online",
-                                                "cash",
-                                                "card"
-                                            ]
                                         },
                                         "change_from": {
                                             "description": "Подготовить сдачу с",
@@ -1653,6 +1657,13 @@
                                                 "type": "object"
                                             }
                                         },
+                                        "payments": {
+                                            "description": "Оплаты",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
                                         "history": {
                                             "description": "История изменения статуса",
                                             "type": "array",
@@ -1667,7 +1678,6 @@
                                             "id": 14,
                                             "restaurant": "smaki",
                                             "kitchen_code": "kulparkivska",
-                                            "payment_type": "cash",
                                             "change_from": 1000,
                                             "type": "soon",
                                             "status": "new",
@@ -1719,6 +1729,16 @@
                                                     "set_at": "2021-10-26 14:50:48"
                                                 }
                                             ],
+                                            "payments": [
+                                                {
+                                                    "id": 1,
+                                                    "order_id": 14,
+                                                    "payment_type": "cash",
+                                                    "sum": 500,
+                                                    "created_at": "2021-10-25T15:10:59.000000Z",
+                                                    "updated_at": "2021-10-25T15:10:59.000000Z"
+                                                }
+                                            ],
                                             "address": {
                                                 "id": 12,
                                                 "order_id": 14,
@@ -1728,8 +1748,8 @@
                                                 "entrance": "3",
                                                 "floor": "2",
                                                 "comment": null,
-                                                "created_at": "2021-10-25T15:10:59.000000Z",
-                                                "updated_at": "2021-10-25T15:10:59.000000Z"
+                                                "latitude": "",
+                                                "longitude": ""
                                             },
                                             "client": {
                                                 "id": 5,
@@ -1769,7 +1789,7 @@
                                 "required": [
                                     "restaurant",
                                     "kitchen_code",
-                                    "payment_type",
+                                    "payments",
                                     "type",
                                     "status",
                                     "return_call",
@@ -1785,15 +1805,6 @@
                                     "kitchen_code": {
                                         "description": "Идентификатор кухни",
                                         "type": "string"
-                                    },
-                                    "payment_type": {
-                                        "description": "Тип оплаты",
-                                        "type": "string",
-                                        "enum": [
-                                            "online",
-                                            "cash",
-                                            "card"
-                                        ]
                                     },
                                     "change_from": {
                                         "description": "Подготовить сдачу с",
@@ -1840,6 +1851,13 @@
                                         "items": {
                                             "type": "object"
                                         }
+                                    },
+                                    "payments": {
+                                        "description": "Оплаты",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object"
+                                        }
                                     }
                                 },
                                 "type": "object",
@@ -1859,7 +1877,9 @@
                                         "house_number": "12",
                                         "entrance": "3",
                                         "floor": "2",
-                                        "comment": ""
+                                        "comment": "",
+                                        "latitude": "",
+                                        "longitude": ""
                                     },
                                     "items": [
                                         {
@@ -1871,6 +1891,12 @@
                                             "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
                                             "quantity": 3,
                                             "comment": "без перца"
+                                        }
+                                    ],
+                                    "payments": [
+                                        {
+                                            "payment_type": "cash",
+                                            "sum": 500
                                         }
                                     ]
                                 }
@@ -1896,15 +1922,6 @@
                                         "kitchen_code": {
                                             "description": "Идентификатор кухни",
                                             "type": "string"
-                                        },
-                                        "payment_type": {
-                                            "description": "Тип оплаты",
-                                            "type": "string",
-                                            "enum": [
-                                                "online",
-                                                "cash",
-                                                "card"
-                                            ]
                                         },
                                         "change_from": {
                                             "description": "Подготовить сдачу с",
@@ -1964,6 +1981,13 @@
                                                 "type": "string"
                                             }
                                         },
+                                        "payments": {
+                                            "description": "Оплаты",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
                                         "items": {
                                             "description": "Позиции в заказе",
                                             "type": "array",
@@ -1985,7 +2009,6 @@
                                             "id": 14,
                                             "restaurant": "smaki",
                                             "kitchen_code": "kulparkivska",
-                                            "payment_type": "cash",
                                             "change_from": 1000,
                                             "type": "soon",
                                             "status": "new",
@@ -2037,6 +2060,16 @@
                                                     "set_at": "2021-10-26 14:50:48"
                                                 }
                                             ],
+                                            "payments": [
+                                                {
+                                                    "id": 1,
+                                                    "order_id": 14,
+                                                    "payment_type": "cash",
+                                                    "sum": 500,
+                                                    "created_at": "2021-10-25T15:10:59.000000Z",
+                                                    "updated_at": "2021-10-25T15:10:59.000000Z"
+                                                }
+                                            ],
                                             "address": {
                                                 "id": 12,
                                                 "order_id": 14,
@@ -2047,7 +2080,9 @@
                                                 "floor": "2",
                                                 "comment": null,
                                                 "created_at": "2021-10-25T15:10:59.000000Z",
-                                                "updated_at": "2021-10-25T15:10:59.000000Z"
+                                                "updated_at": "2021-10-25T15:10:59.000000Z",
+                                                "latitude": "",
+                                                "longitude": ""
                                             },
                                             "client": {
                                                 "id": 5,
