@@ -211,6 +211,7 @@ class OrderController extends Controller
      *                              "house_number": "12",
      *                              "entrance": "3",
      *                              "floor": "2",
+     *                              "apartment": "2",
      *                              "comment": null,
      *                              "created_at": "2021-10-25T15:10:59.000000Z",
      *                              "updated_at": "2021-10-25T15:10:59.000000Z",
@@ -257,7 +258,7 @@ class OrderController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *               required={"restaurant","kitchen_code","payments","type","status","return_call","courier_id","client","address","items"},
+     *               required={"restaurant","kitchen_code","payments","type","status","return_call","client","address","items"},
      *               @OA\Property(
      *                  property="restaurant",
      *                  type="string",
@@ -353,6 +354,7 @@ class OrderController extends Controller
      *                      "house_number": "12",
      *                      "entrance": "3",
      *                      "floor": "2",
+     *                      "apartment": "2",
      *                      "comment": "",
      *                      "latitude": "",
      *                      "longitude": ""
@@ -562,8 +564,7 @@ class OrderController extends Controller
      *                              "house_number": "12",
      *                              "entrance": "3",
      *                              "floor": "2",
-     *                              "comment": null,
-     *                              "comment": null,
+     *                              "apartment": null,
      *                              "comment": null,
      *                              "latitude": "",
      *                              "longitude": ""
@@ -606,7 +607,7 @@ class OrderController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *               required={"restaurant","kitchen_code","payments","type","status","return_call","courier_id","address","items"},
+     *               required={"restaurant","kitchen_code","payments","type","status","return_call","address","items"},
      *               @OA\Property(
      *                  property="restaurant",
      *                  type="string",

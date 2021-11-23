@@ -94,7 +94,7 @@ class OrderService
         $order->operator_id = $userId;
         $order->status = Order::STATUS_NEW;
         $order->return_call = $validated['return_call'];
-        $order->courier_id = $validated['courier_id'];
+        $order->courier_id = $validated['courier_id'] ?? null;
         $order->client_comment = $validated['client_comment'];
         $order->client_id = $clientId;
         $order->change_from = $validated['change_from'] ?? null;
@@ -133,9 +133,10 @@ class OrderService
         $orderAddress->house_number = $validated['address']['house_number'];
         $orderAddress->entrance = $validated['address']['entrance'];
         $orderAddress->floor = $validated['address']['floor'];
-        $orderAddress->comment = $validated['address']['comment'];
-        $orderAddress->longitude = $validated['address']['longitude'];
-        $orderAddress->latitude = $validated['address']['latitude'];
+        $orderAddress->apartment = $validated['address']['apartment'] ?? null;
+        $orderAddress->comment = $validated['address']['comment'] ?? null;
+        $orderAddress->longitude = $validated['address']['longitude'] ?? null;
+        $orderAddress->latitude = $validated['address']['latitude'] ?? null;
         $orderAddress->save();
     }
 
@@ -224,7 +225,7 @@ class OrderService
         $order->type = $validated['type'];
         $order->status = $validated['status'];
         $order->return_call = $validated['return_call'];
-        $order->courier_id = $validated['courier_id'];
+        $order->courier_id = $validated['courier_id'] ?? null;
         $order->client_comment = $validated['client_comment'];
 
         if ($validated['type'] === Order::TYPE_REQUESTED_TIME) {
@@ -263,9 +264,10 @@ class OrderService
         $orderAddress->house_number = $validated['address']['house_number'];
         $orderAddress->entrance = $validated['address']['entrance'];
         $orderAddress->floor = $validated['address']['floor'];
-        $orderAddress->comment = $validated['address']['comment'];
-        $orderAddress->longitude = $validated['address']['longitude'];
-        $orderAddress->latitude = $validated['address']['latitude'];
+        $orderAddress->apartment = $validated['address']['apartment'] ?? null;
+        $orderAddress->comment = $validated['address']['comment'] ?? null;
+        $orderAddress->longitude = $validated['address']['longitude'] ?? null;
+        $orderAddress->latitude = $validated['address']['latitude'] ?? null;
         $orderAddress->save();
     }
 

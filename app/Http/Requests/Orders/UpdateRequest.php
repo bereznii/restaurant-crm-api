@@ -30,7 +30,7 @@ class UpdateRequest extends FormRequest
             'type' => 'required|string|in:' . implode(',', array_column(Order::TYPES, 'name')),
             'status' => 'required|string|in:' . implode(',', array_column(Order::STATUSES, 'name')),
             'return_call' => 'required|in:1,0',
-            'courier_id' => 'required|integer|exists:users,id',
+            'courier_id' => 'nullable|integer|exists:users,id',
             'client_comment' => 'nullable|string|max:65000',
             'delivered_till' => 'required_if:type,requested_time|prohibited_if:type,soon|date|date_format:Y-m-d H:i:s',
 
@@ -44,9 +44,10 @@ class UpdateRequest extends FormRequest
             'address.house_number' => 'required|string',
             'address.entrance' => 'required|string',
             'address.floor' => 'required|string',
+            'address.apartment' => 'nullable|string',
             'address.comment' => 'nullable|string|max:65000',
-            'address.latitude' => 'required|string',
-            'address.longitude' => 'required|string',
+            'address.latitude' => 'nullable|string',
+            'address.longitude' => 'nullable|string',
 
             'items' => 'required|array',
             'items.*.product_id' => 'required|uuid|exists:products,id',
