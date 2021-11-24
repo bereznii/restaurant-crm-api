@@ -2895,6 +2895,15 @@
                                 "other"
                             ]
                         }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Строка для поиска по title_ua, title_ru и article",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {

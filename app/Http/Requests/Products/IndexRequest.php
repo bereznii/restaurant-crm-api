@@ -25,6 +25,7 @@ class IndexRequest extends FormRequest
     {
         return [
 //            'city_sync_id' => 'filled|exists:cities,sync_id',
+            'search' => 'string',
             'restaurant' => 'filled|in:go,smaki',
             'type_sync_id' => 'filled|in:pizza,sushi,soup,other',
             'category_sync_id' => 'filled|in:sushi,sets,pizza,drinks,additions,deserts,salads,other',

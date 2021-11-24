@@ -78,6 +78,15 @@ class ProductController extends Controller
      *             enum={"sushi","sets","pizza","drinks","additions","deserts","salads","other"},
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Строка для поиска по title_ua, title_ru и article",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="OK",
@@ -778,17 +787,6 @@ class ProductController extends Controller
     {
         return new ProductResource(
             $this->productService->update($product, $request->validated())
-        );
-    }
-
-    /**
-     * @param SearchRequest $request
-     * @return ProductsCollection
-     */
-    public function search(SearchRequest $request)
-    {
-        return new ProductsCollection(
-            $this->productRepository->search($request->validated())
         );
     }
 }

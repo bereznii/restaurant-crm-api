@@ -31,7 +31,7 @@ class ProductRepository extends AbstractRepository
      */
     public function index(array $queryParams): mixed
     {
-        return $this->_getInstance()
+        $query = $this->_getInstance()
             ->with([
 //                'prices' => function ($query) use ($queryParams) {
 //                    $query->filterWhere('city_sync_id', '=', $queryParams['city_sync_id'] ?? null)
@@ -43,18 +43,16 @@ class ProductRepository extends AbstractRepository
             ])
             ->filterWhere('restaurant', '=', $queryParams['restaurant'] ?? null)
             ->filterWhere('type_sync_id', '=', $queryParams['type_sync_id'] ?? null)
-            ->filterWhere('category_sync_id', '=', $queryParams['category_sync_id'] ?? null)
-            ->orderBy('created_at', 'desc')
-            ->paginate(
-                (int) ($queryParams['per_page'] ?? self::DEFAULT_PAGE_SIZE)
-            );
-    }
+            ->filterWhere('category_sync_id', '=', $queryParams['category_sync_id'] ?? null);
 
-    /**
-     * @param array $queryParams
-     */
-    public function search(array $queryParams)
-    {
-        dd($queryParams);
+        if (!empty($queryParams['search'])) {
+            $query->where('title_ua', 'like', "%{$queryParams['search']}%")
+                ->orWhere('title_ru', 'like', "%{$queryParams['search']}%")
+                ->orWhere('article', 'like', "%{$queryParams['search']}%");
+        }
+
+        return $query->orderBy('created_at', 'desc')->paginate(
+            (int) ($queryParams['per_page'] ?? self::DEFAULT_PAGE_SIZE)
+        );
     }
 }
