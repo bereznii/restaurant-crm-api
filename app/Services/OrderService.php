@@ -158,6 +158,7 @@ class OrderService
             $orderItem->quantity = $item['quantity'];
             $orderItem->comment = $item['comment'];
             $orderItem->sum = $productPrice->price * $item['quantity'];
+            $orderItem->price = $productPrice->price;
             $orderItem->save();
         }
     }
@@ -294,11 +295,13 @@ class OrderService
                 $orderItem->quantity = $item['quantity'];
                 $orderItem->comment = $item['comment'];
                 $orderItem->sum = $productPrice->price * $item['quantity'];
+                $orderItem->price = $productPrice->price;
                 $orderItem->save();
             } else { //Есть совпадение - обновить
                 $itemToUpdate->quantity = $item['quantity'];
                 $itemToUpdate->comment = $item['comment'];
                 $itemToUpdate->sum = $productPrice->price * $item['quantity'];
+                $itemToUpdate->price = $productPrice->price;
                 $itemToUpdate->save();
             }
         }
