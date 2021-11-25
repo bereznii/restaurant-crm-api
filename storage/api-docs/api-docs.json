@@ -1342,10 +1342,10 @@
                                                     "updated_at": "2021-10-25T15:10:59.000000Z",
                                                     "items": [
                                                         {
-                                                            "id": 13,
+                                                            "id": "024c60b3-d89d-443a-b472-711e1a734122",
                                                             "order_id": 14,
-                                                            "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
                                                             "quantity": 2,
+                                                            "product": [],
                                                             "sum": 220,
                                                             "comment": "без перца",
                                                             "created_at": "2021-10-25T15:10:59.000000Z",
@@ -1353,10 +1353,10 @@
                                                             "cook_id": null
                                                         },
                                                         {
-                                                            "id": 14,
+                                                            "id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
                                                             "order_id": 14,
-                                                            "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
                                                             "quantity": 3,
+                                                            "product": [],
                                                             "sum": 111,
                                                             "comment": "без перца",
                                                             "created_at": "2021-10-25T15:10:59.000000Z",
@@ -1553,12 +1553,12 @@
                                     },
                                     "items": [
                                         {
-                                            "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
+                                            "id": "024c60b3-d89d-443a-b472-711e1a734122",
                                             "quantity": 2,
                                             "comment": "без перца"
                                         },
                                         {
-                                            "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
+                                            "id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
                                             "quantity": 3,
                                             "comment": "без перца"
                                         }
@@ -1692,10 +1692,10 @@
                                             "updated_at": "2021-10-25T15:10:59.000000Z",
                                             "items": [
                                                 {
-                                                    "id": 13,
+                                                    "id": "024c60b3-d89d-443a-b472-711e1a734122",
                                                     "order_id": 14,
-                                                    "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
                                                     "quantity": 2,
+                                                    "product": [],
                                                     "sum": 220,
                                                     "comment": "без перца",
                                                     "created_at": "2021-10-25T15:10:59.000000Z",
@@ -1703,10 +1703,10 @@
                                                     "cook_id": null
                                                 },
                                                 {
-                                                    "id": 14,
+                                                    "id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
                                                     "order_id": 14,
-                                                    "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
                                                     "quantity": 3,
+                                                    "product": [],
                                                     "sum": 111,
                                                     "comment": "без перца",
                                                     "created_at": "2021-10-25T15:10:59.000000Z",
@@ -1884,12 +1884,12 @@
                                     },
                                     "items": [
                                         {
-                                            "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
+                                            "id": "024c60b3-d89d-443a-b472-711e1a734122",
                                             "quantity": 2,
                                             "comment": "без перца"
                                         },
                                         {
-                                            "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
+                                            "id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
                                             "quantity": 3,
                                             "comment": "без перца"
                                         }
@@ -2023,9 +2023,9 @@
                                             "updated_at": "2021-10-25T15:10:59.000000Z",
                                             "items": [
                                                 {
-                                                    "id": 13,
+                                                    "id": "024c60b3-d89d-443a-b472-711e1a734122",
                                                     "order_id": 14,
-                                                    "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
+                                                    "product": [],
                                                     "quantity": 2,
                                                     "sum": 220,
                                                     "comment": "без перца",
@@ -2034,9 +2034,9 @@
                                                     "cook_id": null
                                                 },
                                                 {
-                                                    "id": 14,
+                                                    "id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
                                                     "order_id": 14,
-                                                    "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
+                                                    "product": [],
                                                     "quantity": 3,
                                                     "sum": 111,
                                                     "comment": "без перца",

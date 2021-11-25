@@ -50,7 +50,7 @@ class UpdateRequest extends FormRequest
             'address.longitude' => 'nullable|string',
 
             'items' => 'required|array',
-            'items.*.product_id' => 'required|uuid|exists:products,id',
+            'items.*.id' => 'required|uuid|exists:products,id',
             'items.*.quantity' => 'required|integer',
             'items.*.comment' => 'nullable|string|max:65000',
         ];

@@ -59,6 +59,7 @@ class OrderRepository extends AbstractRepository
             ->with([
                 'address',
                 'items',
+                'items.product',
                 'client',
                 'history',
                 'payments',

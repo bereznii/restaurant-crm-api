@@ -38,8 +38,8 @@ class OrderService
             DB::commit();
 
             $order = Order::where('id', $order->id)
-                ->with('items', 'address', 'client', 'payments')
-                ->first();
+                ->with('items', 'items.product', 'address', 'client', 'payments')
+                ->first()->toArray();
         } catch (\Exception $e) {
             DB::rollBack();
 //            dd($e->getMessage());
@@ -149,12 +149,12 @@ class OrderService
         foreach ($validated['items'] as $item) {
             $productPrice = ProductPrice::where([
                 ['city_sync_id', '=', $validated['address']['city_sync_id']],
-                ['product_id', '=', $item['product_id']]
+                ['product_id', '=', $item['id']]
             ])->first();
 
             $orderItem = new OrderItem();
             $orderItem->order_id = $orderId;
-            $orderItem->product_id = $item['product_id'];
+            $orderItem->product_id = $item['id'];
             $orderItem->quantity = $item['quantity'];
             $orderItem->comment = $item['comment'];
             $orderItem->sum = $productPrice->price * $item['quantity'];
@@ -180,9 +180,9 @@ class OrderService
     /**
      * @param array $validated
      * @param Order $order
-     * @return Order
+     * @return array
      */
-    public function update(array $validated, Order $order): Order
+    public function update(array $validated, Order $order): array
     {
         DB::beginTransaction();
 
@@ -201,11 +201,10 @@ class OrderService
             Log::error($e->getMessage());
         }
 
-        $updatedOrder = Order::with('client', 'address', 'items', 'payments')
+        $updatedOrder = Order::with('client', 'address', 'items', 'items.product', 'payments')
             ->where('id', $order->id)
-            ->first();
+            ->first()->toArray();
 
-        /** @var $updatedOrder Order */
         return $updatedOrder;
     }
 
@@ -282,16 +281,16 @@ class OrderService
         foreach ($validated['items'] as $item) {
             $productPrice = ProductPrice::where([
                 ['city_sync_id', '=', $validated['address']['city_sync_id']],
-                ['product_id', '=', $item['product_id']]
+                ['product_id', '=', $item['id']]
             ])->first();
 
             //Взять товары в заказе
-            $itemToUpdate = $existingItems->where('product_id', $item['product_id'])->first();
+            $itemToUpdate = $existingItems->where('product_id', $item['id'])->first();
 
             if (!isset($itemToUpdate)) { //Если есть новый - добавить
                 $orderItem = new OrderItem();
                 $orderItem->order_id = $orderId;
-                $orderItem->product_id = $item['product_id'];
+                $orderItem->product_id = $item['id'];
                 $orderItem->quantity = $item['quantity'];
                 $orderItem->comment = $item['comment'];
                 $orderItem->sum = $productPrice->price * $item['quantity'];
@@ -305,7 +304,7 @@ class OrderService
         }
 
         //Если нет существующего - удалить
-        $receivedItems = array_column($validated['items'], 'product_id');
+        $receivedItems = array_column($validated['items'], 'id');
         $existingItems = OrderItem::where('order_id', $orderId)->pluck('product_id')->toArray();
         $itemsToDelete = array_diff($existingItems, $receivedItems);
 

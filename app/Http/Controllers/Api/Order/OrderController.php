@@ -8,6 +8,8 @@ use App\Http\Requests\Orders\StoreRequest;
 use App\Http\Requests\Orders\UpdateRequest;
 use App\Http\Resources\DefaultCollection;
 use App\Http\Resources\DefaultResource;
+use App\Http\Resources\Orders\OrderResource;
+use App\Http\Resources\Orders\OrdersCollection;
 use App\Models\Order\Order;
 use App\Repositories\OrderRepository;
 use App\Services\OrderService;
@@ -155,10 +157,10 @@ class OrderController extends Controller
      *                          "updated_at": "2021-10-25T15:10:59.000000Z",
      *                          "items": {
      *                              {
-     *                                  "id": 13,
+     *                                  "id": "024c60b3-d89d-443a-b472-711e1a734122",
      *                                  "order_id": 14,
-     *                                  "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
      *                                  "quantity": 2,
+     *                                  "product": {},
      *                                  "sum": 220,
      *                                  "comment": "без перца",
      *                                  "created_at": "2021-10-25T15:10:59.000000Z",
@@ -166,10 +168,10 @@ class OrderController extends Controller
      *                                  "cook_id": null
      *                              },
      *                              {
-     *                                  "id": 14,
+     *                                  "id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
      *                                  "order_id": 14,
-     *                                  "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
      *                                  "quantity": 3,
+     *                                  "product": {},
      *                                  "sum": 111,
      *                                  "comment": "без перца",
      *                                  "created_at": "2021-10-25T15:10:59.000000Z",
@@ -238,11 +240,11 @@ class OrderController extends Controller
      *     ),
      * )
      *
-     * @return DefaultCollection
+     * @return OrdersCollection
      */
     public function index(IndexRequest $request)
     {
-        return new DefaultCollection(
+        return new OrdersCollection(
             $this->orderRepository->index($request->validated())
         );
     }
@@ -361,12 +363,12 @@ class OrderController extends Controller
      *                  },
      *                  "items": {
      *                      {
-     *                          "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
+     *                          "id": "024c60b3-d89d-443a-b472-711e1a734122",
      *                          "quantity": 2,
      *                          "comment": "без перца"
      *                      },
      *                      {
-     *                          "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
+     *                          "id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
      *                          "quantity": 3,
      *                          "comment": "без перца"
      *                      }
@@ -508,10 +510,10 @@ class OrderController extends Controller
      *                          "updated_at": "2021-10-25T15:10:59.000000Z",
      *                          "items": {
      *                              {
-     *                                  "id": 13,
+     *                                  "id": "024c60b3-d89d-443a-b472-711e1a734122",
      *                                  "order_id": 14,
-     *                                  "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
      *                                  "quantity": 2,
+     *                                  "product": {},
      *                                  "sum": 220,
      *                                  "comment": "без перца",
      *                                  "created_at": "2021-10-25T15:10:59.000000Z",
@@ -519,10 +521,10 @@ class OrderController extends Controller
      *                                  "cook_id": null
      *                              },
      *                              {
-     *                                  "id": 14,
+     *                                  "id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
      *                                  "order_id": 14,
-     *                                  "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
      *                                  "quantity": 3,
+     *                                  "product": {},
      *                                  "sum": 111,
      *                                  "comment": "без перца",
      *                                  "created_at": "2021-10-25T15:10:59.000000Z",
@@ -587,11 +589,11 @@ class OrderController extends Controller
      * )
      *
      * @param StoreRequest $request
-     * @return DefaultResource
+     * @return OrderResource
      */
     public function store(StoreRequest $request)
     {
-        return new DefaultResource(
+        return new OrderResource(
             $this->orderService->store($request->validated())
         );
     }
@@ -696,12 +698,12 @@ class OrderController extends Controller
      *                  },
      *                  "items": {
      *                      {
-     *                          "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
+     *                          "id": "024c60b3-d89d-443a-b472-711e1a734122",
      *                          "quantity": 2,
      *                          "comment": "без перца"
      *                      },
      *                      {
-     *                          "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
+     *                          "id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
      *                          "quantity": 3,
      *                          "comment": "без перца"
      *                      }
@@ -843,9 +845,9 @@ class OrderController extends Controller
      *                          "updated_at": "2021-10-25T15:10:59.000000Z",
      *                          "items": {
      *                              {
-     *                                  "id": 13,
+     *                                  "id": "024c60b3-d89d-443a-b472-711e1a734122",
      *                                  "order_id": 14,
-     *                                  "product_id": "024c60b3-d89d-443a-b472-711e1a734122",
+     *                                  "product": {},
      *                                  "quantity": 2,
      *                                  "sum": 220,
      *                                  "comment": "без перца",
@@ -854,9 +856,9 @@ class OrderController extends Controller
      *                                  "cook_id": null
      *                              },
      *                              {
-     *                                  "id": 14,
+     *                                  "id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
      *                                  "order_id": 14,
-     *                                  "product_id": "25f7c5da-37f4-4e53-9b93-4ab42cab0028",
+     *                                  "product": {},
      *                                  "quantity": 3,
      *                                  "sum": 111,
      *                                  "comment": "без перца",
@@ -924,11 +926,11 @@ class OrderController extends Controller
      *
      * @param UpdateRequest $request
      * @param Order $order
-     * @return DefaultResource
+     * @return OrderResource
      */
     public function update(UpdateRequest $request, Order $order)
     {
-        return new DefaultResource(
+        return new OrderResource(
             $this->orderService->update($request->validated(), $order)
         );
     }
