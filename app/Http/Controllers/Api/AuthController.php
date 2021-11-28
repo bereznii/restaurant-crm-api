@@ -311,6 +311,8 @@ class AuthController extends ApiController
      *                      }},
      *                      "iiko": {
      *                          "iiko_id": "8f423953-8d9e-47c5-a409-1e7cb33c6f00",
+     *                          "status": "waiting",
+     *                          "current_delivery_id": null,
      *                          "created_at": "2021-08-25T20:36:13.000000Z",
      *                          "updated_at": "2021-08-25T20:36:13.000000Z"
      *                      },

@@ -35,6 +35,8 @@ class UserResource extends JsonResource
 
         if (isset($this->iiko)) {
             $userRecourse['iiko']['iiko_id'] = $this->iiko->iiko_id;
+            $userRecourse['iiko']['status'] = $this->iiko->status;
+            $userRecourse['iiko']['current_delivery_id'] = $this->iiko->current_delivery_id;
             $userRecourse['iiko']['created_at'] = $this->iiko->created_at;
             $userRecourse['iiko']['updated_at'] = $this->iiko->updated_at;
         }
