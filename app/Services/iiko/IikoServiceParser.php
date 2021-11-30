@@ -16,6 +16,8 @@ class IikoServiceParser
 
     private const SECONDARY_PAYMENTS_TO_SHOW = ['ON'];
 
+    private const PAYMENT_TYPES_BONUSES = ['BON', 'BALL'];
+
     /**
      * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=id.xsy1q2yg3v46
      *
@@ -86,6 +88,15 @@ class IikoServiceParser
                 $parsed[$key]['payment'] = null;
             }
 
+            $parsedBonusesPayment = $this->parseBonusesPayments($orderInfo['payments']);
+            if (isset($parsedBonusesPayment)) {
+                $parsed[$key]['bonusesPayment']['title'] = $parsedBonusesPayment['title'];
+                $parsed[$key]['bonusesPayment']['code'] = $parsedBonusesPayment['code'];
+                $parsed[$key]['bonusesPayment']['sum'] = $parsedBonusesPayment['sum'];
+            } else {
+                $parsed[$key]['bonusesPayment'] = null;
+            }
+
             /** @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.uknh114942rg */
             $parsed[$key]['customer']['name'] = trim("{$orderInfo['customer']['name']} {$orderInfo['customer']['surName']}") !== ''
                 ? trim("{$orderInfo['customer']['name']} {$orderInfo['customer']['surName']}")
@@ -139,6 +150,28 @@ class IikoServiceParser
         }
 
         return $parsedPayment;
+    }
+
+    /**
+     * @link https://docs.google.com/document/d/1pRQNIn46GH1LVqzBUY5TdIIUuSCOl-A_xeCBbogd2bE/edit#bookmark=kix.ka5lk06p09ui
+     * @param array $payments
+     * @return array|null
+     */
+    private function parseBonusesPayments(array $payments): ?array
+    {
+        $parsedBonusesPayment = null;
+
+        $bonusPayment = array_values(array_filter($payments, function ($item) {
+            return in_array($item['paymentType']['code'], self::PAYMENT_TYPES_BONUSES);
+        }))[0] ?? null;
+
+        if (isset($bonusPayment)) {
+            $parsedBonusesPayment['title'] = $bonusPayment['paymentType']['name'];
+            $parsedBonusesPayment['code'] = $bonusPayment['paymentType']['code'];
+            $parsedBonusesPayment['sum'] = $bonusPayment['sum'];
+        }
+
+        return $parsedBonusesPayment;
     }
 
     /**
