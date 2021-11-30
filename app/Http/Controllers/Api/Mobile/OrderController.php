@@ -218,7 +218,7 @@ class OrderController extends Controller
      *                          },
      *                          "bonusesPayment": {
      *                              "code": "BALL",
-     *                              "title": "Наличные",
+     *                              "title": "Оплата бонусами Smaki",
      *                              "sum": 70,
      *                          },
      *                          "comment": "Доставка за 29хв; | Замовлення онлайн | Підготувати решту з: готівка;",
