@@ -76,7 +76,7 @@ class IikoServiceInterface
                 ]
             );
 
-            Log::channel('outgoing')->info($userId . ' | ' . IikoClient::API_URL . "/orders/set_order_delivered" . ' : ' . $response->body());
+            Log::channel('outgoing')->info($userId . ' | ' . IikoClient::API_URL . "/orders/set_order_delivered" . ' : ' . $orderUuid);
 
             if ($response->successful()) {
                 $this->deliveryOrderService->setAsDelivered($courierIikoId, $userId, $orderUuid, $validated);
@@ -132,6 +132,10 @@ class IikoServiceInterface
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             throw $e;
+        }
+
+        if ($smakiOrders === null || $goOrders === null) { // Когда айко отдаёт невалидный json, например html с 502
+            return [];
         }
 
 //        $smakiOrders = json_decode($this->smaki, true);
