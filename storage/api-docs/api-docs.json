@@ -270,6 +270,8 @@
                                             ],
                                             "iiko": {
                                                 "iiko_id": "8f423953-8d9e-47c5-a409-1e7cb33c6f00",
+                                                "status": "waiting",
+                                                "current_delivery_id": null,
                                                 "created_at": "2021-08-25T20:36:13.000000Z",
                                                 "updated_at": "2021-08-25T20:36:13.000000Z"
                                             },
@@ -900,6 +902,23 @@
                                             },
                                             "type": "object"
                                         },
+                                        "bonusesPayment": {
+                                            "properties": {
+                                                "code": {
+                                                    "description": "Тип оплаты",
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "description": "Название типа оплаты",
+                                                    "type": "string"
+                                                },
+                                                "sum": {
+                                                    "description": "Сумма к оплате",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
                                         "customer": {
                                             "properties": {
                                                 "name": {
@@ -993,6 +1012,11 @@
                                                     "title": "Наличные",
                                                     "sum": 609,
                                                     "prepareChangeFrom": 700
+                                                },
+                                                "bonusesPayment": {
+                                                    "code": "BALL",
+                                                    "title": "Наличные",
+                                                    "sum": 70
                                                 },
                                                 "comment": "Доставка за 29хв; | Замовлення онлайн | Підготувати решту з: готівка;",
                                                 "expected_delivery_at": "2021-08-27 20:15:18",

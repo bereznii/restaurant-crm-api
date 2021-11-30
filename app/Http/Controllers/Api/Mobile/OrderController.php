@@ -96,6 +96,25 @@ class OrderController extends Controller
      *                        ),
      *                     ),
      *                     @OA\Property(
+     *                        property="bonusesPayment",
+     *                        type="object",
+     *                        @OA\Property(
+     *                            property="code",
+     *                            type="string",
+     *                            description="Тип оплаты"
+     *                        ),
+     *                        @OA\Property(
+     *                            property="title",
+     *                            type="string",
+     *                            description="Название типа оплаты"
+     *                        ),
+     *                        @OA\Property(
+     *                            property="sum",
+     *                            type="integer",
+     *                            description="Сумма к оплате"
+     *                        ),
+     *                     ),
+     *                     @OA\Property(
      *                        property="customer",
      *                        type="object",
      *                        @OA\Property(
@@ -196,6 +215,11 @@ class OrderController extends Controller
      *                              "title": "Наличные",
      *                              "sum": 609,
      *                              "prepareChangeFrom": 700,
+     *                          },
+     *                          "bonusesPayment": {
+     *                              "code": "BALL",
+     *                              "title": "Наличные",
+     *                              "sum": 70,
      *                          },
      *                          "comment": "Доставка за 29хв; | Замовлення онлайн | Підготувати решту з: готівка;",
      *                          "expected_delivery_at": "2021-08-27 20:15:18",
