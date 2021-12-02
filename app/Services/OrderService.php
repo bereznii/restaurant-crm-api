@@ -46,7 +46,7 @@ class OrderService
             Log::error($e->getMessage());
         }
 
-        return $order ?? null;
+        return $order ?? [];
     }
 
     /**
