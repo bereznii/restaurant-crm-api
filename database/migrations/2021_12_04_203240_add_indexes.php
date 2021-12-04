@@ -13,26 +13,36 @@ class AddIndexes extends Migration
      */
     public function up()
     {
-        Schema::table('courier_iiko', function (Blueprint $table) {
-            $table->index('user_id', 'courier_iiko-user_id');
-        });
+        try {
+            Schema::table('courier_iiko', function (Blueprint $table) {
+                $table->index('user_id', 'courier_iiko-user_id');
+            });
+        } catch (\Illuminate\Database\QueryException) {}
 
-        Schema::table('delivery_orders', function (Blueprint $table) {
-            $table->index(['delivery_id', 'status', 'iiko_order_id'], 'delivery_orders-delivery_id-status-iiko_order_id');
-        });
+        try {
+            Schema::table('delivery_orders', function (Blueprint $table) {
+                $table->index(['delivery_id', 'status', 'iiko_order_id'], 'delivery_orders-delivery_id-status-iiko_order_id');
+            });
+        } catch (\Illuminate\Database\QueryException) {}
 
-        Schema::table('user_coordinates', function (Blueprint $table) {
-            $table->unique('user_id', 'user_coordinates-user_id');
-        });
+        try {
+            Schema::table('user_coordinates', function (Blueprint $table) {
+                $table->unique('user_id', 'user_coordinates-user_id');
+            });
+        } catch (\Illuminate\Database\QueryException) {}
 
-        Schema::table('locations', function (Blueprint $table) {
-            $table->unique('delivery_terminal_id', 'locations-delivery_terminal_id');
-        });
+        try {
+            Schema::table('locations', function (Blueprint $table) {
+                $table->unique('delivery_terminal_id', 'locations-delivery_terminal_id');
+            });
+        } catch (\Illuminate\Database\QueryException) {}
 
-        Schema::table('users', function (Blueprint $table) {
-            $table->unique('phone', 'users-phone');
-            $table->index('kitchen_code', 'users-kitchen_code');
-        });
+        try {
+            Schema::table('users', function (Blueprint $table) {
+                $table->unique('phone', 'users-phone');
+                $table->index('kitchen_code', 'users-kitchen_code');
+            });
+        } catch (\Illuminate\Database\QueryException) {}
     }
 
     /**
@@ -58,7 +68,7 @@ class AddIndexes extends Migration
             $table->dropIndex('locations-delivery_terminal_id');
         });
 
-        Schema::table('locations', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->dropIndex('users-phone');
             $table->dropIndex('users-kitchen_code');
         });
