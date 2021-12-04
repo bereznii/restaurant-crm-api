@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\DefaultCollection;
 use App\Models\Order\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class OrderTypesController extends Controller
 {
@@ -46,8 +48,10 @@ class OrderTypesController extends Controller
      *
      * @return DefaultCollection
      */
-    public function index()
+    public function index(Request $request)
     {
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
+
         return new DefaultCollection(
             collect(Order::TYPES)
         );

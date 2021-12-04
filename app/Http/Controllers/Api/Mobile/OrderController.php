@@ -257,6 +257,8 @@ class OrderController extends Controller
      */
     public function index(IndexRequest $request)
     {
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
+
         return new OrdersCollection(
             $this->iikoService->getOrdersForCourier(Auth::user()->iikoId)
         );

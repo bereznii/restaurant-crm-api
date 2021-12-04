@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\DefaultCollection;
 use App\Models\Kitchen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class KitchenController extends Controller
 {
@@ -64,8 +66,10 @@ class KitchenController extends Controller
      *
      * @return DefaultCollection
      */
-    public function index()
+    public function index(Request $request)
     {
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
+
         return new DefaultCollection(
             Kitchen::get()
         );

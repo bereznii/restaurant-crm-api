@@ -15,6 +15,7 @@ use App\Services\OrderItemsService;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class OrderItemsController extends Controller
 {
@@ -143,6 +144,8 @@ class OrderItemsController extends Controller
      */
     public function index(IndexRequest $request)
     {
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
+
         return new DefaultCollection(
             $this->orderItemsRepository->index($request->validated())
         );
@@ -283,6 +286,8 @@ class OrderItemsController extends Controller
      */
     public function update(UpdateRequest $request, OrderItem $orderItem)
     {
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
+
         return new DefaultResource(
             $this->orderItemsService->update($request->validated(), $orderItem, Auth::id())
         );
@@ -333,8 +338,10 @@ class OrderItemsController extends Controller
      *
      * @return DefaultCollection
      */
-    public function statuses()
+    public function statuses(Request $request)
     {
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
+
         return new DefaultCollection(
             collect(OrderItem::STATUSES)
         );

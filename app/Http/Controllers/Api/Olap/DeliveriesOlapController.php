@@ -7,6 +7,8 @@ use App\Http\Requests\Olap\DeliveriesIndexRequest;
 use App\Http\Resources\Olap\DeliveriesOlapCollection;
 use App\Repositories\Olap\DeliveriesOlapRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class DeliveriesOlapController extends Controller
 {
@@ -129,6 +131,8 @@ class DeliveriesOlapController extends Controller
      */
     public function index(DeliveriesIndexRequest $request)
     {
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
+
         return new DeliveriesOlapCollection(
             $this->deliveriesOlapRepository->getStatistics($request->validated())
         );
