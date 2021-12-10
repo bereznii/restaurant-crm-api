@@ -52,6 +52,7 @@ class DeliveryOrderService
         // Проверяем остались ли ещё не доставленные заказы в поездке
         if ($remainingOrdersToDeliver->where('status', DeliveryOrder::STATUS_ON_WAY)->first() === null) {
             $this->closeCurrentDelivery($delivery, $remainingOrdersToDeliver);
+            Log::info(Auth::id() . ' | Поездка закрылась. Причина курьер закрыл последний заказ');
         }
     }
 

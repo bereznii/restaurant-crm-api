@@ -162,6 +162,7 @@ class IikoServiceInterface
             if ($anyOfOrdersInDbNotClosed === 0) {
                 $this->closeDelivery($existingOrdersInDb);
                 Auth::user()->setStatusWaiting();
+                Log::info(Auth::id() . ' | Поездка закрылась. Причина отсутствие пришедших заказов в бд.');
             }
         }
 
