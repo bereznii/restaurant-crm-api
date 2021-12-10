@@ -6,6 +6,7 @@ use App\Models\Location;
 use App\Models\User;
 use App\Models\UserLocation;
 use App\Models\UserProductType;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -45,7 +46,7 @@ class UserService
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error(Auth::id() . ' | ' . $e->getMessage());
             throw new \RuntimeException($e->getMessage());
         }
 
@@ -94,7 +95,7 @@ class UserService
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error(Auth::id() . ' | ' . $e->getMessage());
         }
 
         return $user;

@@ -35,7 +35,7 @@ class DeliveryService
                 $success = $success && $this->setCourierStatus($userId, $delivery->id);
             }
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
+            Log::error(Auth::id() . ' | ' . $e->getMessage());
             $success = false;
         }
 

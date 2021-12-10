@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\City;
 use App\Models\Product\Product;
 use App\Models\Product\ProductPrice;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -54,7 +55,7 @@ class ProductService
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error(Auth::id() . ' | ' . $e->getMessage());
             throw new \RuntimeException($e->getMessage());
         }
 
@@ -142,7 +143,7 @@ class ProductService
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error(Auth::id() . ' | ' . $e->getMessage());
             throw new \RuntimeException($e->getMessage());
         }
     }

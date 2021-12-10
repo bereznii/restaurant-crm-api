@@ -39,7 +39,7 @@ class OrderItemsService
                 ->first();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error(Auth::id() . ' | ' . $e->getMessage());
         }
 
         return $orderItem ?? null;

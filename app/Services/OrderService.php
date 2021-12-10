@@ -43,7 +43,7 @@ class OrderService
         } catch (\Exception $e) {
             DB::rollBack();
 //            dd($e->getMessage());
-            Log::error($e->getMessage());
+            Log::error(Auth::id() . ' | ' . $e->getMessage());
         }
 
         return $order ?? [];
@@ -199,7 +199,7 @@ class OrderService
         } catch (\Exception $e) {
             DB::rollBack();
 //            dd($e->getMessage());
-            Log::error($e->getMessage());
+            Log::error(Auth::id() . ' | ' . $e->getMessage());
         }
 
         $updatedOrder = Order::with('client', 'address', 'items', 'items.product', 'payments')

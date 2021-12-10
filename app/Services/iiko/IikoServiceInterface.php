@@ -82,12 +82,12 @@ class IikoServiceInterface
                 $this->deliveryOrderService->setAsDelivered($courierIikoId, $userId, $orderUuid, $validated);
                 $success = true;
             } else {
-                Log::error($response->body());
+                Log::error(Auth::id() . ' | ' . $response->body());
             }
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error(Auth::id() . ' | ' . $e->getMessage());
         }
 
         if ($success) {
@@ -130,7 +130,7 @@ class IikoServiceInterface
 
             $goOrders = $response->json();
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
+            Log::error(Auth::id() . ' | ' . $e->getMessage());
             throw $e;
         }
 
