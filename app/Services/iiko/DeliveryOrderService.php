@@ -26,7 +26,7 @@ class DeliveryOrderService
             ->first();
 
         if (!isset($delivery)) {
-            throw new \RuntimeException(__METHOD__ . ': Поездка не найдена');
+            throw new \RuntimeException(__METHOD__ . ': Поездка не найдена. Текущий статус курьера:' . Auth::user()->courierStatus . '(' . Auth::user()->courierCurrentDeliveryId . ')');
         }
 
         // Обновляем статус нужному заказу в поездке
