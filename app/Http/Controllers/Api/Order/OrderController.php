@@ -623,7 +623,7 @@ class OrderController extends Controller
      *     path="/orders/{id}",
      *     tags={"Order"},
      *     security={{"Bearer":{}}},
-     *     description="Передавать нужно объект заказа целиком",
+     *     description="Передавать нужно объект заказа целиком. Если клиент подобран из предикшена, в объекте client нужно передать id. Если не подобран, передать имя, номер телефона и источник, чтобы создать нового.",
      *      @OA\RequestBody(
      *         required=true,
      *          @OA\MediaType(

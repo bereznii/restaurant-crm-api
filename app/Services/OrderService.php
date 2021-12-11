@@ -42,7 +42,6 @@ class OrderService
                 ->first()->toArray();
         } catch (\Exception $e) {
             DB::rollBack();
-//            dd($e->getMessage());
             Log::error(Auth::id() . ' | ' . $e->getMessage());
         }
 
@@ -51,11 +50,19 @@ class OrderService
 
     /**
      * @param array $validated
-     * @return int
+     * @return int|null
      */
-    private function saveClient(array $validated): int
+    private function saveClient(array $validated): ?int
     {
-        if (!isset($validated['client']['id'])) {
+        if (!isset($validated['client'])) {
+            return null;
+        }
+
+        $client = Client::where('id', $validated['client']['id'] ?? 0)
+            ->orWhere('phone', $validated['client']['phone'] ?? 0)
+            ->first();
+
+        if (!isset($client)) {
             // Если id клиента не пришёл, создать клиента и записать его id
             $client = new Client();
             $client->name = $validated['client']['name'];
@@ -64,9 +71,7 @@ class OrderService
             $client->is_regular = Client::NOT_REGULAR;
             $client->save();
         } else {
-            // Если id клиента пришёл, записать его
-            $client = Client::find($validated['client']['id']);
-
+            // Если id клиента пришёл или такой телефон уже есть, записать его
             // Если это не первый заказ клиента и клиент не постоянный, сделать его постоянным
             if ($client->is_regular === Client::NOT_REGULAR) {
                 if (Order::where('client_id', '=', $client->id)->count() > 0) {
@@ -190,7 +195,9 @@ class OrderService
         try {
             $userId = Auth::id();
 
-            $this->updateOrder($validated, $order, $userId);
+            $clientId = $this->saveClient($validated);
+
+            $this->updateOrder($validated, $order, $userId, $clientId);
             $this->updatePayments($validated, $order->id);
             $this->updateOrderAddress($validated, $order->id);
             $this->updateOrderItems($validated, $order->id);
@@ -198,7 +205,6 @@ class OrderService
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-//            dd($e->getMessage());
             Log::error(Auth::id() . ' | ' . $e->getMessage());
         }
 
@@ -213,8 +219,9 @@ class OrderService
      * @param array $validated
      * @param Order $order
      * @param int $userId
+     * @param int|null $clientId
      */
-    private function updateOrder(array $validated, Order $order, int $userId)
+    private function updateOrder(array $validated, Order $order, int $userId, ?int $clientId)
     {
         if ($order->status !== $validated['status']) {
             $this->updateStatusHistory($order, $userId, $validated['status']);
@@ -227,6 +234,13 @@ class OrderService
         $order->return_call = $validated['return_call'];
         $order->courier_id = $validated['courier_id'] ?? null;
         $order->client_comment = $validated['client_comment'];
+
+        if (isset($clientId)) {
+            $order->client_id = $clientId;
+        }
+
+        $order->change_from = $validated['change_from'] ?? null;
+        $order->delivered_till = $validated['delivered_till'] ?? now()->addMinutes(30);
 
         if ($validated['type'] === Order::TYPE_REQUESTED_TIME) {
             $order->delivered_till = $validated['delivered_till'];

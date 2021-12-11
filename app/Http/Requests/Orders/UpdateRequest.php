@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Orders;
 
+use App\Models\Client\Client;
 use App\Models\Order\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -32,11 +33,19 @@ class UpdateRequest extends FormRequest
             'return_call' => 'required|in:1,0',
             'courier_id' => 'nullable|integer|exists:users,id',
             'client_comment' => 'nullable|string|max:65000',
+            'change_from' => 'nullable|integer',
             'delivered_till' => 'required_if:type,requested_time|prohibited_if:type,soon|date|date_format:Y-m-d H:i:s',
+
 
             'payments' => 'required|array',
             'payments.*.payment_type' => 'required|string|in:' . implode(',', array_column(Order::PAYMENT_TYPES, 'name')),
             'payments.*.sum' => 'required|integer',
+
+            'client' => 'nullable|array',
+            'client.id' => 'nullable|integer|exists:clients,id',
+            'client.name' => 'nullable|string|max:255',
+            'client.phone' => 'nullable|numeric|digits:12',
+            'client.source' => 'nullable|string|in:' . implode(',', array_column(Client::CLIENT_SOURCES, 'name')),
 
             'address' => 'required|array',
             'address.city_sync_id' => 'required|string|exists:cities,sync_id',
