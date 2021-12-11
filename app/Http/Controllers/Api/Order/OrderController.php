@@ -32,6 +32,16 @@ class OrderController extends Controller
      *     path="/orders",
      *     tags={"Order"},
      *     security={{"Bearer":{}}},
+     *     @OA\Parameter(
+     *         name="type",
+     *         in="query",
+     *         description="Тип заказов: завершенные/незавершенные",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string",
+     *             enum={"completed"},
+     *         )
+     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="OK",

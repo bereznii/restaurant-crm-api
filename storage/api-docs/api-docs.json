@@ -1246,6 +1246,20 @@
                     "Order"
                 ],
                 "operationId": "e90a654e8c917c36ded9379e8ec62165",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Тип заказов: завершенные/незавершенные",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "completed"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

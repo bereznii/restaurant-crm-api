@@ -12,6 +12,7 @@ class Order extends Model
 {
     use HasFactory;
 
+    public const TYPE_END_STATUSES = 'completed';
     public const STATUS_NEW = 'new';
     public const STATUS_COOKING = 'cooking';
     public const STATUS_PREPARING = 'preparing';

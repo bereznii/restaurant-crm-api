@@ -28,6 +28,12 @@ class User extends Authenticatable
     public const ROLE_COURIER = 'courier';
     public const ROLE_COOK = 'cook';
 
+    public const ACCESS_ALL_ORDERS = [
+        'system_administrator',
+        'call_center_operator',
+        'analyst'
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

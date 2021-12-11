@@ -26,6 +26,7 @@ class IndexRequest extends FormRequest
         return [
             'per_page' => 'filled|numeric|max:500',
             'page' => 'filled|numeric',
+            'type' => 'nullable|string|in:completed'
         ];
     }
 }
