@@ -131,8 +131,8 @@ class OrderService
         $orderAddress->city_sync_id = $validated['address']['city_sync_id'];
         $orderAddress->street = $validated['address']['street'];
         $orderAddress->house_number = $validated['address']['house_number'];
-        $orderAddress->entrance = $validated['address']['entrance'];
-        $orderAddress->floor = $validated['address']['floor'];
+        $orderAddress->entrance = $validated['address']['entrance'] ?? null;
+        $orderAddress->floor = $validated['address']['floor'] ?? null;
         $orderAddress->apartment = $validated['address']['apartment'] ?? null;
         $orderAddress->comment = $validated['address']['comment'] ?? null;
         $orderAddress->longitude = $validated['address']['longitude'] ?? null;
@@ -262,8 +262,8 @@ class OrderService
         $orderAddress->city_sync_id = $validated['address']['city_sync_id'];
         $orderAddress->street = $validated['address']['street'];
         $orderAddress->house_number = $validated['address']['house_number'];
-        $orderAddress->entrance = $validated['address']['entrance'];
-        $orderAddress->floor = $validated['address']['floor'];
+        $orderAddress->entrance = $validated['address']['entrance'] ?? null;
+        $orderAddress->floor = $validated['address']['floor'] ?? null;
         $orderAddress->apartment = $validated['address']['apartment'] ?? null;
         $orderAddress->comment = $validated['address']['comment'] ?? null;
         $orderAddress->longitude = $validated['address']['longitude'] ?? null;
