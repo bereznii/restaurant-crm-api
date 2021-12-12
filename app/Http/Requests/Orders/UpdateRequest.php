@@ -32,6 +32,7 @@ class UpdateRequest extends FormRequest
             'status' => 'required|string|in:' . implode(',', array_column(Order::STATUSES, 'name')),
             'return_call' => 'required|in:1,0',
             'courier_id' => 'nullable|integer|exists:users,id',
+            'operator_id' => 'nullable|integer|exists:users,id',
             'client_comment' => 'nullable|string|max:65000',
             'change_from' => 'nullable|integer',
             'delivered_till' => 'required_if:type,requested_time|prohibited_if:type,soon|date|date_format:Y-m-d H:i:s',

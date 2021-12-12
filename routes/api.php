@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/order-types', [OrderTypesController::class, 'index']);
     Route::get('/order-statuses', [OrderStatusesController::class, 'index']);
     Route::get('/order-payment-types', [OrderPaymentTypesController::class, 'index']);
+    Route::post('/orders/{id}/set-in-process', [BaseOrderController::class, 'setInProcess']);
 
     Route::apiResource('order-items', OrderItemsController::class)->only(['index','update']);
     Route::get('/order-items-statuses', [OrderItemsController::class, 'statuses']);

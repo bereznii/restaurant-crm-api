@@ -96,7 +96,7 @@ class OrderService
         $order->restaurant = $validated['restaurant'];
         $order->kitchen_code = $validated['kitchen_code'];
         $order->type = $validated['type'];
-        $order->operator_id = $userId;
+        $order->operator_id = null;
         $order->status = Order::STATUS_NEW;
         $order->return_call = $validated['return_call'];
         $order->courier_id = $validated['courier_id'] ?? null;
@@ -233,6 +233,7 @@ class OrderService
         $order->status = $validated['status'];
         $order->return_call = $validated['return_call'];
         $order->courier_id = $validated['courier_id'] ?? null;
+        $order->operator_id = $validated['operator_id'];
         $order->client_comment = $validated['client_comment'];
 
         if (isset($clientId)) {
@@ -333,5 +334,31 @@ class OrderService
                 ])
                 ->delete();
         }
+    }
+
+    /**
+     * @param int $orderId
+     * @return bool[]|false[]
+     */
+    public function setInProcess(int $orderId)
+    {
+        $order = Order::find($orderId);
+        $currentUserId = Auth::id();
+
+        switch ($order->operator_id) {
+            case null:
+                $order->operator_id = $currentUserId;
+                $order->save();
+                $response = ['allowAccess' => true];
+                break;
+            case $currentUserId:
+                $response = ['allowAccess' => true];
+                break;
+            default:
+                $response = ['allowAccess' => false];
+                break;
+        }
+
+        return $response;
     }
 }

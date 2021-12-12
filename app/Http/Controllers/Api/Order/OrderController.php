@@ -13,6 +13,7 @@ use App\Http\Resources\Orders\OrdersCollection;
 use App\Models\Order\Order;
 use App\Repositories\OrderRepository;
 use App\Services\OrderService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -663,6 +664,11 @@ class OrderController extends Controller
      *                  description="ID пользователя курьера"
      *               ),
      *               @OA\Property(
+     *                  property="operator_id",
+     *                  type="integer",
+     *                  description="ID оператора"
+     *               ),
+     *               @OA\Property(
      *                  property="client_comment",
      *                  type="string",
      *                  description="Комментарий клиента"
@@ -956,6 +962,45 @@ class OrderController extends Controller
 
         return new OrderResource(
             $this->orderService->update($request->validated(), $order)
+        );
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/orders/{id}/set-in-process",
+     *     tags={"Order"},
+     *     security={{"Bearer":{}}},
+     *     description="Отметить текущего пользователя как оператора обрабатывающего заказ",
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         content={
+     *             @OA\MediaType(
+     *                 mediaType="application/json",
+     *                 @OA\Schema(
+     *                      @OA\Property(
+     *                         property="allowAccess",
+     *                         type="boolean",
+     *                         description="Можно ли получить доступ"
+     *                      ),
+     *                     example={
+     *                      "data": {
+     *                          "allowAccess": false,
+     *                      }}
+     *                 )
+     *             )
+     *         }
+     *     ),
+     * )
+     *
+     * @param Request $request
+     * @param int $orderId
+     * @return DefaultResource
+     */
+    public function setInProcess(Request $request, int $orderId)
+    {
+        return new DefaultResource(
+            $this->orderService->setInProcess($orderId)
         );
     }
 }

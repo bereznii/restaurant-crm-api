@@ -1873,6 +1873,10 @@
                                         "description": "ID пользователя курьера",
                                         "type": "integer"
                                     },
+                                    "operator_id": {
+                                        "description": "ID оператора",
+                                        "type": "integer"
+                                    },
                                     "client_comment": {
                                         "description": "Комментарий клиента",
                                         "type": "string"
@@ -2138,6 +2142,43 @@
                                                 "created_at": "2021-10-23T13:09:16.000000Z",
                                                 "updated_at": "2021-10-23T13:09:16.000000Z"
                                             }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/orders/{id}/set-in-process": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "description": "Отметить текущего пользователя как оператора обрабатывающего заказ",
+                "operationId": "0e6e7a055f58c98555d6efea96c24c1b",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "allowAccess": {
+                                            "description": "Можно ли получить доступ",
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": {
+                                            "allowAccess": false
                                         }
                                     }
                                 }
