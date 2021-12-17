@@ -33,4 +33,18 @@ class Delivery extends Model
     {
         return $this->hasOne(Location::class, 'delivery_terminal_id', 'delivery_terminal_id');
     }
+
+    /**
+     * @param Builder $query
+     * @param string $column
+     * @param string $operator
+     * @param $value
+     * @return Builder
+     */
+    public function scopeFilterWhere($query, string $column, string $operator, $value)
+    {
+        return isset($value)
+            ? $query->where($column, $operator, $value)
+            : $query;
+    }
 }

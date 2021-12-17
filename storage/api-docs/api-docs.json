@@ -1269,13 +1269,13 @@
                 ]
             }
         },
-        "/olap/deliveries": {
+        "/olap/distances": {
             "get": {
                 "tags": [
                     "OLAP"
                 ],
                 "summary": "Отчёт по пройденной дистанции по курьерам",
-                "operationId": "b69faf2842e3d2d9567340669ae4ae79",
+                "operationId": "90559eca02f1c87f8a58b5a43c5201aa",
                 "parameters": [
                     {
                         "name": "date_from",
@@ -1367,6 +1367,176 @@
                                                 "sum_return_distance": 10596,
                                                 "orders_within_city": 3,
                                                 "orders_outside_city": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/olap/deliveries": {
+            "get": {
+                "tags": [
+                    "OLAP"
+                ],
+                "summary": "Отчёт по поездкам курьеров",
+                "operationId": "35dc16d49ba2906f0847841f98fcdf78",
+                "parameters": [
+                    {
+                        "name": "date_from",
+                        "in": "query",
+                        "description": "Дата доставок от (включительно)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "date_to",
+                        "in": "query",
+                        "description": "Дата доставок до (включительно)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kitchen_code",
+                        "in": "query",
+                        "description": "Код кухни",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "Id пользователя-курьера",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "delivery_terminal_id": {
+                                            "description": "ID доставочного терминала из айко",
+                                            "type": "string"
+                                        },
+                                        "iiko_courier_id": {
+                                            "description": "ID курьера из айко",
+                                            "type": "string"
+                                        },
+                                        "user_id": {
+                                            "description": "ID пользователя в системе",
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "description": "Статус поездки",
+                                            "type": "string"
+                                        },
+                                        "delivery_distance": {
+                                            "description": "Дистанция от кухни до адреса последнего доставленного заказа в поездке",
+                                            "type": "string"
+                                        },
+                                        "return_distance": {
+                                            "description": "Дистанция от адреса последнего доставленного заказа в поездке обратно на кухни",
+                                            "type": "string"
+                                        },
+                                        "started_at": {
+                                            "description": "Время начала поездки",
+                                            "type": "string"
+                                        },
+                                        "orders": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "delivery_id": {
+                                                        "description": "Id доставки",
+                                                        "type": "integer"
+                                                    },
+                                                    "restaurant": {
+                                                        "description": "Ресторан",
+                                                        "type": "string"
+                                                    },
+                                                    "iiko_order_id": {
+                                                        "description": "UUID заказа в айко",
+                                                        "type": "string"
+                                                    },
+                                                    "status": {
+                                                        "description": "Статус заявки",
+                                                        "type": "string"
+                                                    },
+                                                    "range_type": {
+                                                        "description": "В пределах города или за пределами",
+                                                        "type": "string"
+                                                    },
+                                                    "address": {
+                                                        "description": "Адрес",
+                                                        "type": "string"
+                                                    },
+                                                    "latitude": {
+                                                        "description": "Широта",
+                                                        "type": "string"
+                                                    },
+                                                    "longitude": {
+                                                        "description": "Долгота",
+                                                        "type": "string"
+                                                    },
+                                                    "delivered_at": {
+                                                        "description": "Время доставки",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "data": [
+                                            {
+                                                "id": 18,
+                                                "delivery_terminal_id": "aa15c7b2-768f-dbf1-016c-8fc96e6aa61b",
+                                                "iiko_courier_id": "f3b8acfa-da99-454c-9ba4-9220130b85ac",
+                                                "user_id": 21,
+                                                "status": "delivered",
+                                                "delivery_distance": 825541,
+                                                "return_distance": 825541,
+                                                "started_at": "2021-10-20 16:01:06",
+                                                "created_at": "2021-10-20T13:01:06.000000Z",
+                                                "updated_at": "2021-10-20T14:06:15.000000Z",
+                                                "orders": [
+                                                    {
+                                                        "id": 32,
+                                                        "delivery_id": 18,
+                                                        "restaurant": "smaki",
+                                                        "iiko_order_id": "49040721-963d-43f8-8bac-8df7f78e54ef",
+                                                        "status": "delivered",
+                                                        "range_type": "within_city",
+                                                        "address": "Львів, Любінська вул. 102",
+                                                        "latitude": "49.8221257",
+                                                        "longitude": "23.9697845",
+                                                        "delivered_at": "2021-10-20 16:02:53",
+                                                        "created_at": "2021-10-20T13:01:06.000000Z",
+                                                        "updated_at": "2021-10-20T13:02:53.000000Z"
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }

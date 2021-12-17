@@ -4,6 +4,7 @@ namespace App\Repositories\Olap;
 
 use App\Models\Delivery;
 use App\Models\DeliveryOrder;
+use App\Models\Location;
 use App\Models\User;
 use App\Repositories\AbstractRepository;
 use Illuminate\Database\Query\Builder;
@@ -95,5 +96,33 @@ class DeliveriesOlapRepository extends AbstractRepository
         }
 
         return $query;
+    }
+
+    /**
+     * @param array $validated
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function getDeliveriesStatistics(array $validated): \Illuminate\Database\Eloquent\Collection|array
+    {
+        $query = Delivery::with('orders')
+            ->filterWhere('user_id', '=', $validated['user_id'] ?? null);
+
+        if (isset($validated['date_from'])) {
+            $query->whereDate('created_at', '>=', $validated['date_from']);
+        }
+
+        if (isset($validated['date_to'])) {
+            $query->whereDate('created_at', '<=', $validated['date_to']);
+        }
+
+        if (isset($validated['kitchen_code'])) {
+            $deliveryTerminalIds = Location::select('delivery_terminal_id')
+                ->where('kitchen_code', '=', $validated['kitchen_code'])
+                ->pluck('delivery_terminal_id')
+                ->toArray();
+            $query->whereIn('delivery_terminal_id', $deliveryTerminalIds);
+        }
+
+        return $query->get();
     }
 }

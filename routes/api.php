@@ -88,6 +88,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     });
 
     Route::prefix('olap')->group(function () {
-        Route::get('/deliveries', [DeliveriesOlapController::class, 'index']);
+        Route::get('/distances', [DeliveriesOlapController::class, 'distances']);
+        Route::get('/deliveries', [DeliveriesOlapController::class, 'deliveries']);
     });
 });
