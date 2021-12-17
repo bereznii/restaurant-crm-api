@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Api\Mobile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Mobile\Me\UpdateCoordinatesRequest;
 use App\Http\Resources\DefaultResource;
-use App\Models\UserCoordinate;
 use App\Services\Mobile\MeService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -71,7 +69,7 @@ class MeController extends Controller
      */
     public function updateCoordinates(UpdateCoordinatesRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
+//        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
 
         return new DefaultResource([
             'success' => $this->meService->updateCoordinates($request->validated()),

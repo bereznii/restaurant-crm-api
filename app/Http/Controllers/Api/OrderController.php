@@ -6,9 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Couriers\CoordinatesRequest;
 use App\Http\Resources\DefaultResource;
 use App\Repositories\CourierRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -64,8 +61,6 @@ class OrderController extends Controller
      */
     public function courier(CoordinatesRequest $request, string $orderUuid)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new DefaultResource(
             $this->courierRepository->getCoordinates($orderUuid)
         );

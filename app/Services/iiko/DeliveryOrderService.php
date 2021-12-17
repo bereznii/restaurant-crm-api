@@ -42,7 +42,7 @@ class DeliveryOrderService
             'longitude' => $validated['longitude'],
         ]);
 
-        Log::channel('mobile')->debug("{$userId} | Закрыл заказ {$orderUuid}");
+        Log::channel('order_flow')->debug("{$userId} | Закрыл заказ {$orderUuid}");
 
         // Берем заказы с текущей поездки по порядку доставки
         $remainingOrdersToDeliver = DeliveryOrder::where([
@@ -52,7 +52,7 @@ class DeliveryOrderService
         // Проверяем остались ли ещё не доставленные заказы в поездке
         if ($remainingOrdersToDeliver->where('status', DeliveryOrder::STATUS_ON_WAY)->first() === null) {
             $this->closeCurrentDelivery($delivery, $remainingOrdersToDeliver);
-            Log::info(Auth::id() . ' | Поездка закрылась. Причина курьер закрыл последний заказ');
+            Log::channel('order_flow')->info(Auth::id() . ' | Поездка закрылась. Причина курьер закрыл последний заказ');
         }
     }
 

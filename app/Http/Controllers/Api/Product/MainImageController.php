@@ -8,8 +8,6 @@ use App\Http\Resources\Products\DefaultMediaResource;
 use App\Models\Product\Product;
 use App\Services\ProductImageService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class MainImageController extends Controller
 {
@@ -100,8 +98,6 @@ class MainImageController extends Controller
      */
     public function index(Product $product, Request $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new DefaultMediaResource(
             $product->getFirstMedia()
         );
@@ -203,8 +199,6 @@ class MainImageController extends Controller
      */
     public function store(Product $product, ProductMainImageStoreRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new DefaultMediaResource(
             $this->productImageService->storeMainImage($product)
         );

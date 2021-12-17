@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Mobile\Deliveries\StoreRequest;
 use App\Http\Resources\Mobile\Deliveries\DeliveryResource;
 use App\Services\iiko\DeliveryService;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -147,7 +145,7 @@ class DeliveryController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
+//        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
 
         return new DeliveryResource(
             $this->deliveryService->store(Auth::user()->iikoId, Auth::id(), $request->validated())

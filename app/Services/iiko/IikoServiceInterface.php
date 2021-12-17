@@ -76,7 +76,7 @@ class IikoServiceInterface
                 ]
             );
 
-            Log::channel('outgoing')->info($userId . ' | ' . IikoClient::API_URL . "/orders/set_order_delivered" . ' : ' . $orderUuid);
+            Log::channel('order_flow')->info($userId . ' | ' . IikoClient::API_URL . "/orders/set_order_delivered" . ' : ' . $orderUuid);
 
             if ($response->successful()) {
                 $this->deliveryOrderService->setAsDelivered($courierIikoId, $userId, $orderUuid, $validated);
@@ -116,7 +116,7 @@ class IikoServiceInterface
                 'organization' => IikoClient::ORGANIZATION_ID_SMAKI
             ]);
 
-            Log::channel('outgoing')->info(Auth::id() . ' | ' . IikoClient::API_URL . "/orders/get_courier_orders" . ' : ' . $response->body());
+//            Log::channel('outgoing')->info(Auth::id() . ' | ' . IikoClient::API_URL . "/orders/get_courier_orders" . ' : ' . $response->body());
 
             $smakiOrders = $response->json();
 
@@ -126,7 +126,7 @@ class IikoServiceInterface
                 'organization' => IikoClient::ORGANIZATION_ID_GO
             ]);
 
-            Log::channel('outgoing')->info(Auth::id() . ' | ' . IikoClient::API_URL . "/orders/get_courier_orders" . ' : ' . $response->body());
+//            Log::channel('outgoing')->info(Auth::id() . ' | ' . IikoClient::API_URL . "/orders/get_courier_orders" . ' : ' . $response->body());
 
             $goOrders = $response->json();
         } catch (\Exception $e) {
@@ -162,7 +162,7 @@ class IikoServiceInterface
             if ($anyOfOrdersInDbNotClosed === 0) {
                 $this->closeDelivery($existingOrdersInDb);
                 Auth::user()->setStatusWaiting();
-                Log::info(Auth::id() . ' | Поездка закрылась. Причина отсутствие пришедших заказов в бд.');
+                Log::channel('order_flow')->info(Auth::id() . ' | Поездка закрылась. Причина отсутствие пришедших заказов в бд.');
             }
         }
 

@@ -131,7 +131,7 @@ class DeliveriesOlapController extends Controller
      */
     public function index(DeliveriesIndexRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
+//        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
 
         return new DeliveriesOlapCollection(
             $this->deliveriesOlapRepository->getStatistics($request->validated())

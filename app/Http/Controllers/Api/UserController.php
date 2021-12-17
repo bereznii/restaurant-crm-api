@@ -8,18 +8,9 @@ use App\Http\Requests\Users\StoreRequest;
 use App\Http\Requests\Users\UpdateRequest;
 use App\Http\Resources\Users\UserCollection;
 use App\Http\Resources\Users\UserResource;
-use App\Models\iiko\CourierIiko;
-use App\Models\Location;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UserController extends Controller
 {
@@ -228,8 +219,6 @@ class UserController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new UserCollection(
             User::with('roles', 'iiko', 'locations', 'kitchen')
                 ->whereNotIn('phone', [env('PRODUCTS_SYNC_LOGIN'), env('MOBILE_APP_LOGIN')])
@@ -452,8 +441,6 @@ class UserController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new UserResource(
             $this->userService->store($request->validated())
         );
@@ -617,8 +604,6 @@ class UserController extends Controller
      */
     public function show($id, Request $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new UserResource(
             User::with('roles', 'iiko', 'locations', 'kitchen')->findOrFail($id)
         );
@@ -834,8 +819,6 @@ class UserController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new UserResource(
             $this->userService->update($id, $request->validated())
         );

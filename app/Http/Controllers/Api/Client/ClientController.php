@@ -7,8 +7,6 @@ use App\Http\Requests\Clients\IndexRequest;
 use App\Http\Resources\DefaultCollection;
 use App\Models\Client\Client;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
@@ -90,8 +88,6 @@ class ClientController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new DefaultCollection(
             Client::filterWhere(
                     'phone',
@@ -145,8 +141,6 @@ class ClientController extends Controller
      */
     public function sources(Request $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new DefaultCollection(
             collect(Client::CLIENT_SOURCES)
         );

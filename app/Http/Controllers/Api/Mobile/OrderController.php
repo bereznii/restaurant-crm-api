@@ -8,9 +8,7 @@ use App\Http\Requests\Mobile\Orders\UpdateRequest;
 use App\Http\Resources\Mobile\Orders\OrderResource;
 use App\Http\Resources\Mobile\Orders\OrdersCollection;
 use App\Services\iiko\IikoService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
@@ -257,7 +255,7 @@ class OrderController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
+//        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
 
         return new OrdersCollection(
             $this->iikoService->getOrdersForCourier(Auth::user()->iikoId)
@@ -328,7 +326,7 @@ class OrderController extends Controller
      */
     public function update(UpdateRequest $request, string $orderUuid)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
+//        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
 
         return new OrderResource(
             $this->iikoService->setOrderDelivered(Auth::user()->iikoId, Auth::id(), $orderUuid, $request->validated())

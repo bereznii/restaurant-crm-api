@@ -4,12 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CityCollection;
-use App\Http\Resources\LocationCollection;
 use App\Models\City;
-use App\Models\Location;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class CityController extends Controller
 {
@@ -81,8 +77,6 @@ class CityController extends Controller
      */
     public function index(Request $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new CityCollection(City::get());
     }
 }

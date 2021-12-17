@@ -116,8 +116,6 @@ class LocationController extends Controller
      */
     public function index(Request $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new LocationCollection(Location::with('city')->get());
     }
 }

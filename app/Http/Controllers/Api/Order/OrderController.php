@@ -259,8 +259,6 @@ class OrderController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new OrdersCollection(
             $this->orderRepository->index($request->validated())
         );
@@ -612,8 +610,6 @@ class OrderController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new OrderResource(
             $this->orderService->store($request->validated())
         );
@@ -958,8 +954,6 @@ class OrderController extends Controller
      */
     public function update(UpdateRequest $request, Order $order)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new OrderResource(
             $this->orderService->update($request->validated(), $order)
         );

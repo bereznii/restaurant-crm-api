@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\DefaultCollection;
 use App\Models\Order\Order;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class OrderPaymentTypesController extends Controller
 {
@@ -50,8 +48,6 @@ class OrderPaymentTypesController extends Controller
      */
     public function index(Request $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new DefaultCollection(
             collect(Order::PAYMENT_TYPES)
         );

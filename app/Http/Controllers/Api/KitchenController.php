@@ -68,8 +68,6 @@ class KitchenController extends Controller
      */
     public function index(Request $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new DefaultCollection(
             Kitchen::get()
         );

@@ -144,8 +144,6 @@ class OrderItemsController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new DefaultCollection(
             $this->orderItemsRepository->index($request->validated())
         );
@@ -286,8 +284,6 @@ class OrderItemsController extends Controller
      */
     public function update(UpdateRequest $request, OrderItem $orderItem)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new DefaultResource(
             $this->orderItemsService->update($request->validated(), $orderItem, Auth::id())
         );
@@ -340,8 +336,6 @@ class OrderItemsController extends Controller
      */
     public function statuses(Request $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new DefaultCollection(
             collect(OrderItem::STATUSES)
         );

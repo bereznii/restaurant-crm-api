@@ -246,8 +246,6 @@ class ProductController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new ProductsCollection(
             $this->productRepository->index($request->validated())
         );
@@ -383,8 +381,6 @@ class ProductController extends Controller
      */
     public function massStore(string $restaurant, MassStoreRequest $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return response()->json([
             'message' => $this->productService->massStore($restaurant, $request->validated())
                 ? 'OK'
@@ -546,8 +542,6 @@ class ProductController extends Controller
      */
     public function show($id, Request $request)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new ProductResource(
             $this->productRepository->show($id)
         );
@@ -794,8 +788,6 @@ class ProductController extends Controller
      */
     public function update(UpdateRequest $request, Product $product)
     {
-        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
-
         return new ProductResource(
             $this->productService->update($product, $request->validated())
         );
