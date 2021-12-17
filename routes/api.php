@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/order-items-statuses', [OrderItemsController::class, 'statuses']);
 
     Route::apiResource('kitchens', KitchenController::class)->only(['index',]);
+    Route::get('/kitchens/{kitchen_code}/couriers', [KitchenController::class, 'couriers']);
 
     Route::apiResource('users', UserController::class)->except(['destroy',]);
 
