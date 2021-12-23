@@ -104,7 +104,7 @@ class DeliveriesOlapRepository extends AbstractRepository
      */
     public function getDeliveriesStatistics(array $validated): \Illuminate\Database\Eloquent\Collection|array
     {
-        $query = Delivery::with('orders')
+        $query = Delivery::with('orders', 'user')
             ->filterWhere('user_id', '=', $validated['user_id'] ?? null);
 
         if (isset($validated['date_from'])) {

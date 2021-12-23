@@ -223,6 +223,11 @@ class DeliveriesOlapController extends Controller
      *                         description="Время начала поездки"
      *                     ),
      *                     @OA\Property(
+     *                         property="user",
+     *                         type="object",
+     *                         description="Курьер"
+     *                     ),
+     *                     @OA\Property(
      *                         property="orders",
      *                         type="array",
      *                          @OA\Items(
@@ -300,6 +305,19 @@ class DeliveriesOlapController extends Controller
      *                                  "created_at": "2021-10-20T13:01:06.000000Z",
      *                                  "updated_at": "2021-10-20T13:02:53.000000Z"
      *                              }
+     *                          },
+     *                          "user":{
+     *                              "id": 21,
+     *                              "email": "yes7@yes.yes",
+     *                              "phone": 380997775573,
+     *                              "position": "курьер",
+     *                              "first_name": "Василий",
+     *                              "last_name": "Пупкин",
+     *                              "status": "active",
+     *                              "kitchen_code": "vinnytsia",
+     *                              "email_verified_at": null,
+     *                              "created_at": "2021-08-25T10:19:34.000000Z",
+     *                              "updated_at": "2021-09-02T13:13:03.000000Z"
      *                          }
      *                      }}
      *                    }
