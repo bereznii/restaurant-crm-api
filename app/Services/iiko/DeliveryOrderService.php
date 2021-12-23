@@ -67,7 +67,7 @@ class DeliveryOrderService
 
         // Считаем расстояния
         $distancesFromDirections = (new GoogleClient())->getDistancesFromDirections(
-            $ordersInDelivery->where('status', DeliveryOrder::STATUS_DELIVERED),// Считаем дистанцию только для доставленных
+            $ordersInDelivery->whereIn('status', [DeliveryOrder::STATUS_DELIVERED, DeliveryOrder::STATUS_CLOSED]),
             $delivery->location
         );
 
