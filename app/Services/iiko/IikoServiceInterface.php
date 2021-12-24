@@ -186,8 +186,7 @@ class IikoServiceInterface
 
         // Получаю аргументы для закрытия поездки
         $ordersInCurrentDelivery = DeliveryOrder::where([
-            ['delivery_id', '=', Auth::user()->courierCurrentDeliveryId],
-            ['status', '=', DeliveryOrder::STATUS_DELIVERED]
+            ['delivery_id', '=', Auth::user()->courierCurrentDeliveryId]
         ])->orderBy('delivered_at', 'asc')->get();
         $delivery = Delivery::find(Auth::user()->courierCurrentDeliveryId);
 
