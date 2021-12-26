@@ -65,11 +65,19 @@ class DeliveryOrderService
         // Отмечаем поездку завершенной, считаем расстояния
         $delivery->status = Delivery::STATUS_DELIVERED;
 
-        // Считаем расстояния
-        $distancesFromDirections = (new GoogleClient())->getDistancesFromDirections(
-            $ordersInDelivery->whereIn('status', [DeliveryOrder::STATUS_DELIVERED, DeliveryOrder::STATUS_CLOSED]),
-            $delivery->location
-        );
+        if (isset($delivery->location)) {
+            // Считаем расстояния
+            $distancesFromDirections = (new GoogleClient())->getDistancesFromDirections(
+                $ordersInDelivery->whereIn('status', [DeliveryOrder::STATUS_DELIVERED, DeliveryOrder::STATUS_CLOSED]),
+                $delivery->location
+            );
+        } else {
+            Log::error(Auth::id() . ' | Поездка: ' . $delivery->id . ' | Терминал ' . $delivery->delivery_terminal_id . ' не добавлен в бд.');
+            $distancesFromDirections = [
+                'deliveryDistance' => 0,
+                'returnDistance' => 0,
+            ];
+        }
 
         $delivery->delivery_distance = $distancesFromDirections['deliveryDistance'];
         $delivery->return_distance = $distancesFromDirections['returnDistance'];
