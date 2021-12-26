@@ -79,7 +79,7 @@ class DeliveryOrderService
             if ($delivery->save()) {
                 Auth::user()->setStatusWaiting();
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error(Auth::id() . ' | ' . $e->getMessage());
         }
     }
