@@ -145,7 +145,7 @@ class DeliveryController extends Controller
      */
     public function store(StoreRequest $request)
     {
-//        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
 
         return new DeliveryResource(
             $this->deliveryService->store(Auth::user()->iikoId, Auth::id(), $request->validated())

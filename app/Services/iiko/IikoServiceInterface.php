@@ -116,7 +116,7 @@ class IikoServiceInterface
                 'organization' => IikoClient::ORGANIZATION_ID_SMAKI
             ]);
 
-//            Log::channel('outgoing')->info(Auth::id() . ' | ' . IikoClient::API_URL . "/orders/get_courier_orders" . ' : ' . $response->body());
+            Log::channel('outgoing')->info(Auth::id() . ' | ' . IikoClient::API_URL . "/orders/get_courier_orders" . ' : ' . $response->body());
 
             $smakiOrders = $response->json();
 
@@ -126,7 +126,7 @@ class IikoServiceInterface
                 'organization' => IikoClient::ORGANIZATION_ID_GO
             ]);
 
-//            Log::channel('outgoing')->info(Auth::id() . ' | ' . IikoClient::API_URL . "/orders/get_courier_orders" . ' : ' . $response->body());
+            Log::channel('outgoing')->info(Auth::id() . ' | ' . IikoClient::API_URL . "/orders/get_courier_orders" . ' : ' . $response->body());
 
             $goOrders = $response->json();
         } catch (\Exception $e) {

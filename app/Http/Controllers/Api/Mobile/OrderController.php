@@ -255,7 +255,7 @@ class OrderController extends Controller
      */
     public function index(IndexRequest $request)
     {
-//        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri());
 
         return new OrdersCollection(
             $this->iikoService->getOrdersForCourier(Auth::user()->iikoId)
@@ -326,7 +326,7 @@ class OrderController extends Controller
      */
     public function update(UpdateRequest $request, string $orderUuid)
     {
-//        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
+        Log::channel('mobile')->info(Auth::id() . ' | ' . $request->getMethod() . ' ' . $request->getRequestUri() . ' : ' . json_encode($request->validated()));
 
         return new OrderResource(
             $this->iikoService->setOrderDelivered(Auth::user()->iikoId, Auth::id(), $orderUuid, $request->validated())
