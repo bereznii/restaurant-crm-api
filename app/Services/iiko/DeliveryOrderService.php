@@ -42,7 +42,7 @@ class DeliveryOrderService
             'longitude' => $validated['longitude'],
         ]);
 
-        Log::channel('order_flow')->debug("{$userId} | Закрыл заказ {$orderUuid}");
+        Log::channel('order_flow')->info("{$userId} | Закрыл заказ {$orderUuid}");
 
         // Берем заказы с текущей поездки по порядку доставки
         $remainingOrdersToDeliver = DeliveryOrder::where([
@@ -62,21 +62,25 @@ class DeliveryOrderService
      */
     public static function closeCurrentDelivery(Delivery $delivery, Collection $ordersInDelivery)
     {
-        // Отмечаем поездку завершенной, считаем расстояния
-        $delivery->status = Delivery::STATUS_DELIVERED;
+        try {
+            // Отмечаем поездку завершенной, считаем расстояния
+            $delivery->status = Delivery::STATUS_DELIVERED;
 
-        // Считаем расстояния
-        $distancesFromDirections = (new GoogleClient())->getDistancesFromDirections(
-            $ordersInDelivery->whereIn('status', [DeliveryOrder::STATUS_DELIVERED, DeliveryOrder::STATUS_CLOSED]),
-            $delivery->location
-        );
+            // Считаем расстояния
+            $distancesFromDirections = (new GoogleClient())->getDistancesFromDirections(
+                $ordersInDelivery->whereIn('status', [DeliveryOrder::STATUS_DELIVERED, DeliveryOrder::STATUS_CLOSED]),
+                $delivery->location
+            );
 
-        $delivery->delivery_distance = $distancesFromDirections['deliveryDistance'];
-        $delivery->return_distance = $distancesFromDirections['returnDistance'];
-        $delivery->save();
+            $delivery->delivery_distance = $distancesFromDirections['deliveryDistance'];
+            $delivery->return_distance = $distancesFromDirections['returnDistance'];
+            $delivery->save();
 
-        if ($delivery->save()) {
-            Auth::user()->setStatusWaiting();
+            if ($delivery->save()) {
+                Auth::user()->setStatusWaiting();
+            }
+        } catch (\Exception $e) {
+            Log::error(Auth::id() . ' | ' . $e->getMessage());
         }
     }
 }
