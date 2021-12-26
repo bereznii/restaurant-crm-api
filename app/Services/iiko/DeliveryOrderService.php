@@ -62,25 +62,21 @@ class DeliveryOrderService
      */
     public static function closeCurrentDelivery(Delivery $delivery, Collection $ordersInDelivery)
     {
-        try {
-            // Отмечаем поездку завершенной, считаем расстояния
-            $delivery->status = Delivery::STATUS_DELIVERED;
+        // Отмечаем поездку завершенной, считаем расстояния
+        $delivery->status = Delivery::STATUS_DELIVERED;
 
-            // Считаем расстояния
-            $distancesFromDirections = (new GoogleClient())->getDistancesFromDirections(
-                $ordersInDelivery->whereIn('status', [DeliveryOrder::STATUS_DELIVERED, DeliveryOrder::STATUS_CLOSED]),
-                $delivery->location
-            );
+        // Считаем расстояния
+        $distancesFromDirections = (new GoogleClient())->getDistancesFromDirections(
+            $ordersInDelivery->whereIn('status', [DeliveryOrder::STATUS_DELIVERED, DeliveryOrder::STATUS_CLOSED]),
+            $delivery->location
+        );
 
-            $delivery->delivery_distance = $distancesFromDirections['deliveryDistance'];
-            $delivery->return_distance = $distancesFromDirections['returnDistance'];
-            $delivery->save();
+        $delivery->delivery_distance = $distancesFromDirections['deliveryDistance'];
+        $delivery->return_distance = $distancesFromDirections['returnDistance'];
+        $delivery->save();
 
-            if ($delivery->save()) {
-                Auth::user()->setStatusWaiting();
-            }
-        } catch (\Throwable $e) {
-            Log::error(Auth::id() . ' | ' . $e->getMessage());
+        if ($delivery->save()) {
+            Auth::user()->setStatusWaiting();
         }
     }
 }
